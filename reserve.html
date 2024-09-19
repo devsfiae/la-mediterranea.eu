@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservierung @ La Mediterranea</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <!-- Open Graph Meta-Tags -->
+    <meta property="og:title" content="Reservierung @ La Mediterranea">
+    <meta property="og:description" content="Reservieren Sie einen Tisch in Es Pujols/Formentera">
+    <meta property="og:image" content="http://la-mediterranea.eu/images/beach_restaurant_sunset.jpg">
+    <meta property="og:url" content="http://la-mediterranea.eu/reserve.html">
+    <!-- Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Verknüpfung mit externer CSS-Datei -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Einbindung von jQuery UI CSS -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Einbindung von jQuery Timepicker Plugin CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
+</head>
+<body>
+    <!-- Toggle für Dark/Light-Modus -->
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="theme-checkbox">
+            <input type="checkbox" id="theme-checkbox">
+            <span class="slider round"></span>
+        </label>
+        <span id="mode-text">Dark Mode</span>
+    </div>
+
+    <!-- Fixierte Navigation oben -->
+    <header class="header">
+        <div class="logo">
+            <h1>La Mediterranea</h1>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="reserve.html">Reservierung</a></li>
+                <li><a href="card.php">Speisekarte</a></li>
+                <li><a href="cocktails.php">Cocktailkarte</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="team.html">Unser Team</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hauptinhalt -->
+    <main class="main-content">
+        <!-- Fixierte Sidebar links -->
+        <aside class="sidebar">
+            <section class="opening-hours">
+                <h2>Reservierung</h2>
+                <p>
+                    <label for="datepicker">Datum:</label><br>
+                    <input type="text" id="datepicker" name="date">
+                </p>
+                <p>
+                    <label for="timepicker">Uhrzeit:</label><br> 
+                    <input type="text" id="timepicker" name="time">
+                </p>
+                <p>
+                    <label for="quantity">Personen:</label><br>
+                    <select id="quantity" name="quantity">
+                        <option value="">Anzahl</option>
+                        <!-- Optionen von 1 bis 16 -->
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                    </select>
+                </p>
+                <p>
+                    <button type="submit">Reservieren</button>
+                </p>
+            </section>
+        </aside>
+
+        <!-- Scrollbarer Hauptbereich -->
+        <div class="main-area">
+            <section class="hero">
+                <h1>Unsere Plätze</h1>
+                <p><img src="images/beach_restaurant_sunset.jpg" alt="Plätze"></p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Fixierter Footer unten -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="legal.html">Impressum</a> |
+            <a href="transparancy.html" target="_blank">Datenschutz</a>
+        </div>
+        <p>© 2024 by Hiba, Irina Puya & Heiko</p>
+    </footer>
+
+    <!-- Einbindung von jQuery und jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <!-- Einbindung von jQuery Timepicker Plugin JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
+    <!-- Einbindung der externen JavaScript-Dateien -->
+    <script src="js/script.js"></script>
+    <script src="js/datepicker.js"></script>
+    <script src="js/timepicker.js"></script>
+</body>
+</html>

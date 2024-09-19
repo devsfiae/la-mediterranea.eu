@@ -1,0 +1,268 @@
+/* CSS Variablen für Farben */
+:root {
+    --background-color: #FFFFFF;
+    --text-color: #000000;
+    --header-footer-bg: #F2F2F7;
+    --nav-bg: #FFFFFF;
+    --accent-color: #0A84FF;
+    --accent-hover: #5AC8FA;
+    --divider-color: #C7C7CC;
+}
+
+[data-theme="dark"] {
+    --background-color: #1C1C1E;
+    --text-color: #FFFFFF;
+    --header-footer-bg: #2C2C2E;
+    --nav-bg: #2C2C2E;
+    --accent-color: #0A84FF;
+    --accent-hover: #5AC8FA;
+    --divider-color: #3A3A3C;
+}
+
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-top: 60px; /* Platz für fixierte Navigation */
+    padding-left: 220px; /* Platz für fixierte Sidebar (200px + 20px Padding) */
+    padding-bottom: 60px; /* Platz für fixierten Footer */
+    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+}
+
+/* Theme Switcher */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Styles für Theme Switcher bleiben unverändert */
+
+/* Fixierte Header-Navigation */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--header-footer-bg);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--divider-color);
+    z-index: 999;
+}
+
+.header .logo {
+    position: absolute;
+    left: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.header .logo h1 {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.header .navigation ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+}
+
+.header .navigation ul li {
+    margin-left: 20px;
+}
+
+.header .navigation ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.header .navigation ul li a:hover {
+    color: var(--accent-color);
+}
+
+/* Fixierte Sidebar */
+.sidebar {
+    position: fixed;
+    top: 60px; /* Höhe der fixierten Navigation */
+    left: 0;
+    width: 200px;
+    height: calc(100% - 120px); /* Höhe des Viewports minus Header und Footer */
+    background-color: var(--header-footer-bg);
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 1px solid var(--divider-color);
+}
+
+.sidebar h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.sidebar h2::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color);
+    margin-top: 5px;
+}
+
+.sidebar p {
+    color: var(--text-color);
+}
+
+.sidebar p, .sidebar a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+/* Hauptinhalt */
+.main-content {
+    margin-left: 0;
+}
+
+.main-area {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-area .hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.main-area .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.main-area .hero h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background-color: var(--accent-color);
+    margin: 10px auto;
+}
+
+.main-area .hero p {
+    margin-bottom: 20px;
+}
+
+.main-area .hero img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.main-area section {
+    margin-bottom: 40px;
+}
+
+.main-area h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.main-area h2::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 2px;
+    background-color: var(--accent-color);
+    margin-top: 5px;
+}
+
+.main-area p, .main-area a {
+    color: var(--text-color);
+}
+
+/* Fixierter Footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--header-footer-bg);
+    color: var(--text-color);
+    padding: 10px 20px;
+    text-align: center;
+    border-top: 1px solid var(--divider-color);
+}
+
+.footer .footer-links {
+    margin-bottom: 5px;
+}
+
+.footer .footer-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.footer .footer-links a:hover {
+    color: var(--accent-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding-left: 0;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0;
+        padding-top: 80px; /* Platz für Header */
+        border-right: none;
+        border-top: 1px solid var(--divider-color);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .header .navigation ul li {
+        margin-left: 10px;
+    }
+
+    .header .navigation ul li a {
+        font-size: 0.9rem;
+    }
+
+    .main-area .hero h1 {
+        font-size: 2rem;
+    }
+
+    .main-area h2 {
+        font-size: 1.5rem;
+    }
+}
