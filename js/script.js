@@ -1,23 +1,37 @@
-const toggleSwitch = document.querySelector('#theme-checkbox');
-const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
+// js/script.js
 
-if (currentTheme) {
-    document.documentElement.setAttribute('data-theme', currentTheme);
+function initThemeSwitching() {
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    const modeText = document.getElementById('mode-text');
 
-    if (currentTheme === 'light') {
-        toggleSwitch.checked = true;
-        document.getElementById('mode-text').textContent = 'Light Mode';
+    // Lade die Theme-Präferenz aus localStorage
+    const darkMode = localStorage.getItem('dark-mode') === 'true';
+
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+        themeCheckbox.checked = true;
+        modeText.textContent = 'Light Mode';
+    } else {
+        document.body.classList.remove('dark-mode');
+        themeCheckbox.checked = false;
+        modeText.textContent = 'Dark Mode';
     }
+
+    // Event Listener für den Wechsel des Themes
+    themeCheckbox.addEventListener('change', () => {
+        if (themeCheckbox.checked) {
+            document.body.classList.add('dark-mode');
+            modeText.textContent = 'Light Mode';
+            localStorage.setItem('dark-mode', 'true');
+        } else {
+            document.body.classList.remove('dark-mode');
+            modeText.textContent = 'Dark Mode';
+            localStorage.setItem('dark-mode', 'false');
+        }
+    });
 }
 
-toggleSwitch.addEventListener('change', function() {
-    if (this.checked) {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-        document.getElementById('mode-text').textContent = 'Light Mode';
-    } else {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-        document.getElementById('mode-text').textContent = 'Dark Mode';
-    }
+// Initialisieren des Theme Switches, nachdem der DOM vollständig geladen ist
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeSwitching();
 });

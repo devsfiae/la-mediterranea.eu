@@ -1,0 +1,96 @@
+<!-- cocktails.htm -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Cocktailkarte - La Mediterranea</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <!-- Open Graph Meta-Tags -->
+    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
+    <meta property="og:description" content="Cocktailkarte">
+    <meta property="og:image" content="http://la-mediterranea.eu/img/cocktail_menu.jpg">
+    <meta property="og:url" content="http://la-mediterranea.eu/cocktails.htm">
+    <meta property="og:type" content="website">
+    <!-- Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Verknüpfung mit externer CSS-Datei -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Toggle für Dark/Light-Modus -->
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="theme-checkbox">
+            <input type="checkbox" id="theme-checkbox">
+            <span class="slider round"></span>
+        </label>
+        <span id="mode-text">Dark Mode</span>
+    </div>
+
+    <!-- Header wird per loadIncludes.js geladen -->
+    <div id="header"></div>
+
+    <!-- Hauptinhalt -->
+    <main class="main-content">
+        <!-- Fixierte Sidebar links -->
+        <aside class="sidebar">
+            <section class="category-selection">
+                <button class="category-button active" data-category="alle" aria-pressed="true">Alle</button>
+                <button class="category-button" data-category="spritze" aria-pressed="false">Spritze</button>
+                <button class="category-button" data-category="klassisch" aria-pressed="false">Klassisch</button>
+                <button class="category-button" data-category="exklusiv" aria-pressed="false">Exklusiv</button>
+                <button class="category-button" data-category="nachtisch" aria-pressed="false">Nachtisch</button>
+            </section>
+            <section class="adresse">
+                <h2>Adresse</h2>
+                <p>
+                    Vendes Ca Mari 3431 Carrer San Ferran, Km 7,8<br />
+                    07871 Sant Ferran de ses Roques<br />
+                    Balearic Islands, Spanien
+                </p>
+            </section>
+        </aside>
+
+        <!-- Scrollbarer Hauptbereich -->
+        <div class="main-area">
+            <section class="hero">
+                <h1>Cocktailkarte</h1>
+                <p><img src="images/cocktail_menu_banner.png" alt="Cocktailkarte" style="width:100%; height:auto;"></p>
+                <div class="card-container">
+                    <!-- Beispielhafte Cocktail-Karten - Ersetzen Sie diese durch Ihren tatsächlichen Inhalt -->
+                    <div class="card" data-category="spritze">
+                        <img src="images/cocktail_spritze.png" alt="Spritze">
+                        <h3>Spritze</h3>
+                        <p>Erfrischende Mischung aus Weißwein und Sprudelwasser mit einem Hauch Zitrone.</p>
+                    </div>
+                    <div class="card" data-category="klassisch">
+                        <img src="images/cocktail_martini.png" alt="Klassisch">
+                        <h3>Martini</h3>
+                        <p>Eleganter Cocktail aus Gin und trockenem Wermut, serviert mit einer Olive.</p>
+                    </div>
+                    <div class="card" data-category="exklusiv">
+                        <img src="images/cocktail_mojito.png" alt="Exklusiv">
+                        <h3>Mojito</h3>
+                        <p>Belebender Cocktail mit weißem Rum, frischer Minze, Limettensaft, Zucker und Soda.</p>
+                    </div>
+                    <div class="card" data-category="nachtisch">
+                        <img src="images/cocktail_tiramisu.png" alt="Nachtisch">
+                        <h3>Tiramisu</h3>
+                        <p>Verführerischer Cocktail inspiriert vom klassischen italienischen Dessert.</p>
+                    </div>
+                    <!-- Weitere Karten hinzufügen nach Bedarf -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer wird per loadIncludes.js geladen -->
+    <div id="footer"></div>
+
+    <!-- JavaScript zum Laden von Header und Footer -->
+    <script src="js/loadIncludes.js"></script>
+    <!-- Externe Theme-Switch-JavaScript-Datei -->
+    <script src="js/script.js"></script>
+    <!-- Externe Filter-JavaScript-Datei -->
+    <script src="js/filter.js"></script>
+</body>
+</html>

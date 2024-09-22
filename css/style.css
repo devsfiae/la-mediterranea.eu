@@ -1,268 +1,345 @@
-/* CSS Variablen für Farben */
-:root {
-    --background-color: #FFFFFF;
-    --text-color: #000000;
-    --header-footer-bg: #F2F2F7;
-    --nav-bg: #FFFFFF;
-    --accent-color: #0A84FF;
-    --accent-hover: #5AC8FA;
-    --divider-color: #C7C7CC;
-}
+/* css/style.css */
 
-[data-theme="dark"] {
-    --background-color: #1C1C1E;
-    --text-color: #FFFFFF;
-    --header-footer-bg: #2C2C2E;
-    --nav-bg: #2C2C2E;
-    --accent-color: #0A84FF;
-    --accent-hover: #5AC8FA;
-    --divider-color: #3A3A3C;
-}
-
-/* Global Styles */
+/* Grundlegende Styles */
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    line-height: 1.6;
-    padding-top: 60px; /* Platz für fixierte Navigation */
-    padding-left: 220px; /* Platz für fixierte Sidebar (200px + 20px Padding) */
-    padding-bottom: 60px; /* Platz für fixierten Footer */
-    overflow-x: hidden; /* Verhindert horizontales Scrollen */
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Theme Switcher */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    z-index: 1000;
+:root {
+    --background-color: white;
+    --text-color: black;
+    --card-background: #f9f9f9;
+    --card-text: #333;
+    --card-border: #ddd;
+    --separator-color: #e0e0e0; /* Helles Grau für Light Mode */
 }
 
-/* Styles für Theme Switcher bleiben unverändert */
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --card-background: #333;
+    --card-text: #e0e0e0;
+    --card-border: #555;
+    --separator-color: #444; /* Dunkleres Grau für Dark Mode */
+}
 
-/* Fixierte Header-Navigation */
+/* Header Styles */
 .header {
-    position: fixed;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: center; /* Zentriert den gesamten Inhalt */
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed; /* Fixiert den Header oben */
     top: 0;
     left: 0;
     width: 100%;
-    background-color: var(--header-footer-bg);
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 20px;
-    border-bottom: 1px solid var(--divider-color);
-    z-index: 999;
+    z-index: 1000; /* Über anderen Elementen */
 }
 
 .header .logo {
     position: absolute;
-    left: 20px;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    left: 40px; /* Abstand vom linken Rand */
 }
 
 .header .logo h1 {
-    font-size: 1.5rem;
     margin: 0;
 }
 
-.header .navigation ul {
+.navigation ul {
     list-style: none;
+    padding: 0;
     display: flex;
+    gap: 15px;
     margin: 0;
 }
 
-.header .navigation ul li {
-    margin-left: 20px;
-}
-
-.header .navigation ul li a {
+.navigation a {
     color: var(--text-color);
     text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.header .navigation ul li a:hover {
-    color: var(--accent-color);
+.navigation a:hover {
+    background-color: #007AFF; /* Apple Blau */
+    color: white;
 }
 
-/* Fixierte Sidebar */
-.sidebar {
-    position: fixed;
-    top: 60px; /* Höhe der fixierten Navigation */
-    left: 0;
-    width: 200px;
-    height: calc(100% - 120px); /* Höhe des Viewports minus Header und Footer */
-    background-color: var(--header-footer-bg);
-    padding: 20px;
-    overflow-y: auto;
-    border-right: 1px solid var(--divider-color);
-}
-
-.sidebar h2 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.sidebar h2::after {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 2px;
-    background-color: var(--accent-color);
-    margin-top: 5px;
-}
-
-.sidebar p {
-    color: var(--text-color);
-}
-
-.sidebar p, .sidebar a {
-    color: var(--text-color);
-    text-decoration: none;
-}
-
-/* Hauptinhalt */
-.main-content {
-    margin-left: 0;
-}
-
-.main-area {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.main-area .hero {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.main-area .hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-}
-
-.main-area .hero h1::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 2px;
-    background-color: var(--accent-color);
-    margin: 10px auto;
-}
-
-.main-area .hero p {
-    margin-bottom: 20px;
-}
-
-.main-area .hero img {
-    max-width: 100%;
-    height: auto;
-    max-height: 400px;
-    display: block;
-    margin: 0 auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.main-area section {
-    margin-bottom: 40px;
-}
-
-.main-area h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    position: relative;
-}
-
-.main-area h2::after {
-    content: "";
-    display: block;
-    width: 40px;
-    height: 2px;
-    background-color: var(--accent-color);
-    margin-top: 5px;
-}
-
-.main-area p, .main-area a {
-    color: var(--text-color);
-}
-
-/* Fixierter Footer */
+/* Footer Styles */
 .footer {
-    position: fixed;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    position: fixed; /* Fixiert den Footer unten */
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--header-footer-bg);
-    color: var(--text-color);
-    padding: 10px 20px;
-    text-align: center;
-    border-top: 1px solid var(--divider-color);
+    z-index: 1000; /* Über anderen Elementen */
 }
 
-.footer .footer-links {
-    margin-bottom: 5px;
-}
-
-.footer .footer-links a {
+.footer a {
     color: var(--text-color);
     text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.3s ease;
+    transition: background-color 0.3s, color 0.3s;
+    padding: 4px 8px;
+    border-radius: 4px;
 }
 
-.footer .footer-links a:hover {
-    color: var(--accent-color);
+.footer a:hover {
+    background-color: #007AFF; /* Apple Blau */
+    color: white;
 }
 
-/* Responsive Design */
+/* Dark Mode Anpassung für Sidebar */
+body.dark-mode .sidebar {
+    background-color: var(--background-color); /* Setzt die Sidebar auf die Haupt-Hintergrundfarbe */
+    /* Alternativ können Sie eine andere Farbe wählen, z.B.: */
+    /* background-color: #1e1e1e; */
+}
+
+/* Dark/Light Mode Switch Styles */
+
+/* Wrapper für den Switch */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    position: fixed; /* Fixiert den Switch auf der Seite */
+    top: 20px;
+    right: 20px;
+    z-index: 1001; /* Über dem Header */
+}
+
+/* Label für den Switch */
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+/* Das versteckte Checkbox-Eingabefeld */
+.theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Slider-Stil */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* Wenn die Checkbox aktiviert ist */
+.theme-switch input:checked + .slider {
+    background-color: #007AFF; /* Apple Blau */
+}
+
+.theme-switch input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Modifikation für den Text */
+#mode-text {
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Hauptinhalt Layout */
+.main-content {
+    display: flex; /* Flexbox für das Layout */
+    margin-top: 80px; /* Platz für den fixierten Header */
+    margin-bottom: 50px; /* Platz für den fixierten Footer */
+    min-height: calc(100vh - 130px); /* Gesamthöhe minus Header und Footer */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px; /* Feste Breite für die Sidebar */
+    background-color: var(--card-background);
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.sidebar section {
+    padding-bottom: 20px; /* Abstand nach unten für mehr Raum */
+    position: relative; /* Für die Positionierung des Pseudo-Elements */
+}
+
+/* Trennelement zwischen den Abschnitten */
+.sidebar section:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px; /* Dicke der Linie */
+    background-color: var(--separator-color);
+    opacity: 0.7; /* Leichte Transparenz für subtilen Effekt */
+}
+
+.sidebar .category-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-button {
+    padding: 12px 20px;
+    border: 2px solid #007AFF; /* Apple Blau */
+    border-radius: 20px;
+    background-color: transparent;
+    color: #007AFF;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+}
+
+.category-button:hover,
+.category-button.active {
+    background-color: #007AFF;
+    color: white;
+}
+
+.sidebar .adresse h2 {
+    margin-top: 0;
+}
+
+.sidebar .adresse p {
+    line-height: 1.5;
+}
+
+/* Main Area Styles */
+.main-area {
+    flex: 1; /* Nimmt den verbleibenden Platz ein */
+    padding: 20px;
+}
+
+.hero h1 {
+    margin-top: 0;
+}
+
+/* Banner Styles */
+.banner {
+    width: 100%;
+    height: 20vh; /* 20% der Bildschirmhöhe */
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 21 / 10; /* 21:10 Seitenverhältnis */
+}
+
+/* Card Container Styles */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.card {
+    background-color: var(--card-background);
+    color: var(--card-text);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    width: 300px;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background-color 0.3s, color 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.card h3 {
+    margin-top: 12px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.card p {
+    text-align: center;
+}
+
+/* Responsive Anpassungen */
 @media (max-width: 768px) {
-    body {
-        padding-left: 0;
+    .main-content {
+        flex-direction: column; /* Sidebar und Hauptinhalt untereinander */
+        margin-top: 100px; /* Platz für den fixierten Header */
+        margin-bottom: 60px; /* Platz für den fixierten Footer */
     }
 
     .sidebar {
-        position: relative;
-        width: 100%;
-        height: auto;
-        top: 0;
-        padding-top: 80px; /* Platz für Header */
-        border-right: none;
-        border-top: 1px solid var(--divider-color);
+        width: 100%; /* Sidebar nimmt die volle Breite ein */
+        box-shadow: none; /* Entfernen der Schatten für kleinere Bildschirme */
     }
 
-    .main-content {
-        margin-left: 0;
+    .category-selection {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
     }
 
-    .header .navigation ul li {
-        margin-left: 10px;
+    .category-button {
+        flex: 1 1 45%;
+        margin: 5px;
     }
 
-    .header .navigation ul li a {
-        font-size: 0.9rem;
-    }
-
-    .main-area .hero h1 {
-        font-size: 2rem;
-    }
-
-    .main-area h2 {
-        font-size: 1.5rem;
+    .navigation ul {
+        flex-direction: column;
+        gap: 10px;
     }
 }
