@@ -1,15 +1,14 @@
-<!-- cocktails.htm -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Cocktailkarte - La Mediterranea</title>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
     <meta property="og:title" content="Bar/Restaurant La Mediterranea">
     <meta property="og:description" content="Cocktailkarte">
-    <meta property="og:image" content="http://la-mediterranea.eu/img/cocktail_menu.jpg">
-    <meta property="og:url" content="http://la-mediterranea.eu/cocktails.htm">
+    <meta property="og:image" content="http://la-mediterranea.eu/images/cocktails.png">
+    <meta property="og:url" content="http://la-mediterranea.eu/cocktails.html">
     <meta property="og:type" content="website">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,17 +16,30 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Toggle für Dark/Light-Modus -->
+    <!-- Dark/Light Mode Switch -->
     <div class="theme-switch-wrapper">
         <label class="theme-switch" for="theme-checkbox">
-            <input type="checkbox" id="theme-checkbox">
+            <input type="checkbox" id="theme-checkbox" title="Toggle Dark/Light Mode">
             <span class="slider round"></span>
         </label>
         <span id="mode-text">Dark Mode</span>
     </div>
 
-    <!-- Header wird per loadIncludes.js geladen -->
-    <div id="header"></div>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <h1><a href="index.html">La Mediterranea</a></h1>
+        </div>
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="reserve.html">Reservierung</a></li>
+                <li><a href="card.html">Speisekarte</a></li>
+                <li><a href="events.html">Entertainment</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </nav>
+    </header>
 
     <!-- Hauptinhalt -->
     <main class="main-content">
@@ -35,47 +47,58 @@
         <aside class="sidebar">
             <section class="category-selection">
                 <button class="category-button active" data-category="alle" aria-pressed="true">Alle</button>
-                <button class="category-button" data-category="spritze" aria-pressed="false">Spritze</button>
-                <button class="category-button" data-category="klassisch" aria-pressed="false">Klassisch</button>
-                <button class="category-button" data-category="exklusiv" aria-pressed="false">Exklusiv</button>
-                <button class="category-button" data-category="nachtisch" aria-pressed="false">Nachtisch</button>
+                <button class="category-button" data-category="fruchtig-erfrischend" aria-pressed="false">Fruchtig &amp; erfrischend</button>
+                <button class="category-button" data-category="fruchtig-suess" aria-pressed="false">Fruchtig &amp; süß</button>
+                <button class="category-button" data-category="suess-cremig" aria-pressed="false">Süß &amp; cremig</button>
+                <button class="category-button" data-category="herb-trocken" aria-pressed="false">Herb &amp; trocken</button>
+                <button class="category-button" data-category="alkoholfrei" aria-pressed="false">Alkoholfrei</button>
+                <button class="category-button" data-category="heiße-getraenke" aria-pressed="false">Heiße Getränke (saisonal)</button>
             </section>
-            <section class="adresse">
-                <h2>Adresse</h2>
-                <p>
-                    Vendes Ca Mari 3431 Carrer San Ferran, Km 7,8<br />
-                    07871 Sant Ferran de ses Roques<br />
-                    Balearic Islands, Spanien
-                </p>
+            <section class="empfehlung">
+                <h2>Empfehlung</h2>
+                <h3>Signature Cocktail</h3>
+                <p>Unser hauseigener Cocktail mit einer einzigartigen Mischung aus Aromen und Zutaten.</p>
             </section>
         </aside>
 
         <!-- Scrollbarer Hauptbereich -->
         <div class="main-area">
             <section class="hero">
-                <h1>Cocktailkarte</h1>
-                <p><img src="images/cocktail_menu_banner.png" alt="Cocktailkarte" style="width:100%; height:auto;"></p>
+                <h1>Unsere Cocktailkarte</h1>
+                <div class="banner">
+                    <img src="images/cocktails_banner.png" alt="Cocktailkarte Banner">
+                </div>
                 <div class="card-container">
-                    <!-- Beispielhafte Cocktail-Karten - Ersetzen Sie diese durch Ihren tatsächlichen Inhalt -->
-                    <div class="card" data-category="spritze">
-                        <img src="images/cocktail_spritze.png" alt="Spritze">
-                        <h3>Spritze</h3>
-                        <p>Erfrischende Mischung aus Weißwein und Sprudelwasser mit einem Hauch Zitrone.</p>
+                    <!-- Beispielhafte Karten - Ersetzen Sie diese durch Ihren tatsächlichen Inhalt -->
+                    <div class="card" data-category="fruchtig-erfrischend">
+                        <img src="images/cocktails/mojito.png" alt="Fruchtig & erfrischend">
+                        <h3>Fruchtiger Mojito</h3>
+                        <p>Ein klassischer Mojito mit frischer Minze und Limetten.</p>
                     </div>
-                    <div class="card" data-category="klassisch">
-                        <img src="images/cocktail_martini.png" alt="Klassisch">
-                        <h3>Martini</h3>
-                        <p>Eleganter Cocktail aus Gin und trockenem Wermut, serviert mit einer Olive.</p>
+                    <div class="card" data-category="fruchtig-suess">
+                        <img src="images/cocktails/daiquiri.png" alt="Fruchtig & süß">
+                        <h3>Süßer Daiquiri</h3>
+                        <p>Ein süßer Daiquiri mit Limette und Zucker.</p>
                     </div>
-                    <div class="card" data-category="exklusiv">
-                        <img src="images/cocktail_mojito.png" alt="Exklusiv">
-                        <h3>Mojito</h3>
-                        <p>Belebender Cocktail mit weißem Rum, frischer Minze, Limettensaft, Zucker und Soda.</p>
+                    <div class="card" data-category="suess-cremig">
+                        <img src="images/cocktails/pinacolada.png" alt="Süß & cremig">
+                        <h3>Cremiger Pina Colada</h3>
+                        <p>Eine cremige Mischung aus Kokosnuss und Ananas.</p>
                     </div>
-                    <div class="card" data-category="nachtisch">
-                        <img src="images/cocktail_tiramisu.png" alt="Nachtisch">
-                        <h3>Tiramisu</h3>
-                        <p>Verführerischer Cocktail inspiriert vom klassischen italienischen Dessert.</p>
+                    <div class="card" data-category="herb-trocken">
+                        <img src="images/cocktails/martini.png" alt="Herb & trocken">
+                        <h3>Trockener Martini</h3>
+                        <p>Ein klassischer Martini mit Gin und einem Hauch von Vermouth.</p>
+                    </div>
+                    <div class="card" data-category="alkoholfrei">
+                        <img src="images/cocktails/virginmargerita.png" alt="Alkoholfrei">
+                        <h3>Virgin Margarita</h3>
+                        <p>Eine alkoholfreie Margarita mit frischer Limette.</p>
+                    </div>
+                    <div class="card" data-category="heiße-getraenke">
+                        <img src="images/cocktails/chocolate.png" alt="Heiße Getränke">
+                        <h3>Heiße Schokolade</h3>
+                        <p>Eine reichhaltige heiße Schokolade mit Sahne.</p>
                     </div>
                     <!-- Weitere Karten hinzufügen nach Bedarf -->
                 </div>
@@ -83,11 +106,17 @@
         </div>
     </main>
 
-    <!-- Footer wird per loadIncludes.js geladen -->
-    <div id="footer"></div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="legal.html">Impressum</a> |
+            <a href="transparancy.html" target="_blank">Datenschutz</a> |
+            <a href="mailto:info@la-mediterranea.eu">info@la-mediterranea.eu</a>
+        </div>
+        <p>© 2024 by Hiba, Irina Puya & <a href="https://www.fanieng.com">Heiko Fanieng</a></p>
+    </footer>
 
-    <!-- JavaScript zum Laden von Header und Footer -->
-    <script src="js/loadIncludes.js"></script>
+    <!-- JavaScript-Dateien -->
     <!-- Externe Theme-Switch-JavaScript-Datei -->
     <script src="js/script.js"></script>
     <!-- Externe Filter-JavaScript-Datei -->

@@ -37,6 +37,7 @@ body.dark-mode {
     color: var(--text-color);
     padding: 20px 40px;
     display: flex;
+    height: 80px;
     justify-content: center; /* Zentriert den gesamten Inhalt */
     align-items: center;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -54,6 +55,14 @@ body.dark-mode {
 
 .header .logo h1 {
     margin: 0;
+}
+
+
+
+/* Entfernt die Unterstreichung und setzt die Textfarbe auf die des Eltern-Elements */
+.logo h1 a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .navigation ul {
@@ -198,21 +207,18 @@ body.dark-mode .sidebar {
     transition: background-color 0.3s ease; /* Smooth transition */
 }
 
-.sidebar section {
-    padding-bottom: 20px; /* Abstand nach unten für mehr Raum */
-    position: relative; /* Für die Positionierung des Pseudo-Elements */
-}
 
-/* Trennelement zwischen den Abschnitten */
+/* Trennelement zwischen den Sidebar-Abschnitten */
 .sidebar section:not(:last-child)::after {
     content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px; /* Dicke der Linie */
-    background-color: var(--separator-color);
+    display: block;
+    height: 1px; /* Dickere Linie */
+    background-color: #007AFF; /* Auffälliges Apple Blau */
+    margin: 20px 0; /* Abstand nach oben und unten */
+    border-radius: 2px; /* Abgerundete Ecken */
+    opacity: 1; /* Vollständig sichtbar */
     opacity: 0.7; /* Leichte Transparenz für subtilen Effekt */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
 }
 
 .sidebar .category-selection {
@@ -256,6 +262,7 @@ body.dark-mode .sidebar {
 
 .hero h1 {
     margin-top: 0;
+    text-align: center;
 }
 
 /* Banner Styles */
