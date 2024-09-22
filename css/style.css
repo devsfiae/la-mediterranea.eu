@@ -350,3 +350,77 @@ body.dark-mode .sidebar {
         gap: 10px;
     }
 }
+
+/* Sidebar Buttons im Apple-Design */
+.category-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-button {
+    padding: 12px 20px;
+    border: 2px solid #007AFF; /* Apple Blau */
+    border-radius: 20px;
+    background-color: transparent;
+    color: #007AFF;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+}
+
+.category-button:hover,
+.category-button.active {
+    background-color: #007AFF;
+    color: white;
+}
+
+/* Reservierungscontainer und -karten */
+.reservation-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.reservation-row {
+    display: flex;
+    gap: 20px;
+}
+
+.table-card {
+    background-color: var(--card-background);
+    color: var(--card-text);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    flex: 1;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background-color 0.3s, color 0.3s;
+}
+
+.table-card:hover {
+    transform: scale(1.05);
+}
+
+.table-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #007AFF;
+}
+
+.table-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.table-card li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--separator-color);
+}
+
+.table-card li:last-child {
+    border-bottom: none;
+}
