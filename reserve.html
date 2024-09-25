@@ -51,16 +51,16 @@
         <!-- Fixierte Sidebar links -->
         <aside class="sidebar">
             <section class="category-selection">
-                <button class="category-button active" data-category="alle" aria-pressed="true">Alle Tische</button>
-                <button class="category-button" data-category="tisch-1" aria-pressed="false">Tisch 1</button>
-                <button class="category-button" data-category="tisch-2" aria-pressed="false">Tisch 2</button>
-                <button class="category-button" data-category="tisch-3" aria-pressed="false">Tisch 3</button>
-                <button class="category-button" data-category="tisch-4" aria-pressed="false">Tisch 4</button>
+                <button class="category-button active" data-category="alle" aria-pressed="true">Datum</button>
+                <button class="category-button" data-category="tisch-1" aria-pressed="false">17:00</button>
+                <button class="category-button" data-category="tisch-2" aria-pressed="false">19:00</button>
+                <button class="category-button" data-category="tisch-3" aria-pressed="false">21:00</button>
             </section>
             <section class="empfehlung">
                 <h2>Empfehlung</h2>
                 <h3>Reservieren Sie Ihren Tisch</h3>
-                <p>Wählen Sie einen Tisch aus, um die aktuellen Reservierungen anzuzeigen.</p>
+                <p>Wählen Sie ein Datum aus</p>
+                <p>Wählen Sie einen freien Tisch aus, um zu reservieren</p>
             </section>
         </aside>
 
@@ -70,103 +70,119 @@
                 <h1>Reservierungen</h1>
                 <div class="reservation-container">
                     <!-- Zeile 1 für Werktage -->
-                    <div class="reservation-row" data-day="weekday">
+                    <div class="reservation-row">
                         <div class="table-card" data-table="1">
-                            <h3>Tisch 1</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>18:00 - 2 Personen</li>
-                                <li>20:30 - 4 Personen</li>
+                                <li>Person 1</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="2">
-                            <h3>Tisch 2</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>19:00 - 3 Personen</li>
-                                <li>21:00 - 2 Personen</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="3">
-                            <h3>Tisch 3</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>18:30 - 4 Personen</li>
-                                <li>20:00 - 2 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="4">
-                            <h3>Tisch 4</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>19:30 - 1 Person</li>
-                                <li>21:30 - 3 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>Person 3</li>
+                                <li>Person 4</li>
                             </ul>
                         </div>
                     </div>
                     <!-- Zeile 2 für Wochenenden -->
                     <div class="reservation-row" data-day="weekend">
                         <div class="table-card" data-table="1">
-                            <h3>Tisch 1</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>17:00 - 2 Personen</li>
-                                <li>19:00 - 4 Personen</li>
-                                <li>21:30 - 3 Personen</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="2">
-                            <h3>Tisch 2</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>18:00 - 3 Personen</li>
-                                <li>20:00 - 2 Personen</li>
-                                <li>22:00 - 1 Person</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="3">
-                            <h3>Tisch 3</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>17:30 - 4 Personen</li>
-                                <li>19:30 - 2 Personen</li>
-                                <li>21:00 - 3 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>Person 3</li>
+                                <li>Person 4</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="4">
-                            <h3>Tisch 4</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>18:30 - 1 Person</li>
-                                <li>20:30 - 3 Personen</li>
-                                <li>22:30 - 2 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>Person 3</li>
+                                <li>Person 4</li>
                             </ul>
                         </div>
                     </div>
                     <!-- Zeile 3 für Feiertage (optional) -->
                     <div class="reservation-row" data-day="holiday">
                         <div class="table-card" data-table="1">
-                            <h3>Tisch 1</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>16:00 - 2 Personen</li>
-                                <li>18:00 - 4 Personen</li>
-                                <li>20:00 - 2 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>Person 3</li>
+                                <li>Person 4</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="2">
-                            <h3>Tisch 2</h3>
+                            <h3>Strand</h3>
                             <ul>
-                                <li>17:00 - 3 Personen</li>
-                                <li>19:00 - 2 Personen</li>
-                                <li>21:00 - 1 Person</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>Person 3</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="3">
-                            <h3>Tisch 3</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>17:30 - 4 Personen</li>
-                                <li>19:30 - 2 Personen</li>
-                                <li>21:30 - 3 Personen</li>
+                                <li>Person 1</li>
+                                <li>Person 2</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                         <div class="table-card" data-table="4">
-                            <h3>Tisch 4</h3>
+                            <h3>Innen</h3>
                             <ul>
-                                <li>18:30 - 1 Person</li>
-                                <li>20:30 - 3 Personen</li>
-                                <li>22:30 - 2 Personen</li>
+                                <li>Person 1</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
+                                <li>&nbsp;</li>
                             </ul>
                         </div>
                     </div>
@@ -193,5 +209,6 @@
     <script src="js/script.js"></script>
     <script src="js/datepicker.js"></script>
     <script src="js/timepicker.js"></script>
+    <script src="js/date.js"></script>
 </body>
 </html>

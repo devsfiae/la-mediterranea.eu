@@ -57,8 +57,6 @@ body.dark-mode {
     margin: 0;
 }
 
-
-
 /* Entfernt die Unterstreichung und setzt die Textfarbe auf die des Eltern-Elements */
 .logo h1 a {
     text-decoration: none;
@@ -195,18 +193,21 @@ body.dark-mode .sidebar {
     display: flex; /* Flexbox für das Layout */
     margin-top: 80px; /* Platz für den fixierten Header */
     margin-bottom: 50px; /* Platz für den fixierten Footer */
-    min-height: calc(100vh - 130px); /* Gesamthöhe minus Header und Footer */
 }
 
 /* Sidebar Styles */
 .sidebar {
+    position: fixed;
+    top: 80px; /* Höhe des Headers */
+    bottom: 50px; /* Höhe des Footers */
+    left: 0;
     width: 250px; /* Feste Breite für die Sidebar */
     background-color: var(--card-background);
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
     transition: background-color 0.3s ease; /* Smooth transition */
+    overflow-y: auto; /* Ermöglicht Scrollen innerhalb der Sidebar, falls nötig */
 }
-
 
 /* Trennelement zwischen den Sidebar-Abschnitten */
 .sidebar section:not(:last-child)::after {
@@ -216,7 +217,6 @@ body.dark-mode .sidebar {
     background-color: #007AFF; /* Auffälliges Apple Blau */
     margin: 20px 0; /* Abstand nach oben und unten */
     border-radius: 2px; /* Abgerundete Ecken */
-    opacity: 1; /* Vollständig sichtbar */
     opacity: 0.7; /* Leichte Transparenz für subtilen Effekt */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
 }
@@ -256,8 +256,9 @@ body.dark-mode .sidebar {
 
 /* Main Area Styles */
 .main-area {
-    flex: 1; /* Nimmt den verbleibenden Platz ein */
+    margin-left: 270px; /* Breite der Sidebar plus etwas Abstand */
     padding: 20px;
+    flex: 1; /* Nimmt den verbleibenden Platz ein */
 }
 
 .hero h1 {
@@ -330,8 +331,15 @@ body.dark-mode .sidebar {
     }
 
     .sidebar {
+        position: static;
         width: 100%; /* Sidebar nimmt die volle Breite ein */
         box-shadow: none; /* Entfernen der Schatten für kleinere Bildschirme */
+        margin-bottom: 20px;
+        height: auto;
+    }
+
+    .main-area {
+        margin-left: 0;
     }
 
     .category-selection {
