@@ -1,5 +1,18 @@
 // js/model.js
 
+export class Table {
+    constructor(id, location, capacity, reservations = []) {
+        this.id = id;
+        this.location = location;
+        this.capacity = capacity;
+        this.reservations = reservations;
+    }
+
+    isAvailable(time) {
+        return !this.reservations.includes(time);
+    }
+}
+
 export class ReservationModel {
     constructor() {
         this.reservations = [];
