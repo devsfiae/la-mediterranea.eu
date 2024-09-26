@@ -1,5 +1,3 @@
-/* css/style.css */
-
 /* Grundlegende Styles */
 * {
     box-sizing: border-box;
@@ -13,13 +11,14 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Farbvariablen für Light und Dark Mode */
 :root {
     --background-color: white;
     --text-color: black;
     --card-background: #f9f9f9;
     --card-text: #333;
     --card-border: #ddd;
-    --separator-color: #e0e0e0; /* Helles Grau für Light Mode */
+    --separator-color: #e0e0e0;
 }
 
 body.dark-mode {
@@ -28,361 +27,10 @@ body.dark-mode {
     --card-background: #333;
     --card-text: #e0e0e0;
     --card-border: #555;
-    --separator-color: #444; /* Dunkleres Grau für Dark Mode */
+    --separator-color: #444;
 }
 
-/* Header Styles */
-.header {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    padding: 20px 40px;
-    display: flex;
-    height: 80px;
-    justify-content: center; /* Zentriert den gesamten Inhalt */
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: fixed; /* Fixiert den Header oben */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* Über anderen Elementen */
-}
-
-.header .logo {
-    position: absolute;
-    left: 40px; /* Abstand vom linken Rand */
-}
-
-.header .logo h1 {
-    margin: 0;
-}
-
-/* Entfernt die Unterstreichung und setzt die Textfarbe auf die des Eltern-Elements */
-.logo h1 a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.navigation ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-}
-
-.navigation a {
-    color: var(--text-color);
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.navigation a:hover {
-    background-color: #007AFF; /* Apple Blau */
-    color: white;
-}
-
-/* Footer Styles */
-.footer {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    padding: 10px;
-    text-align: center;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    position: fixed; /* Fixiert den Footer unten */
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* Über anderen Elementen */
-}
-
-.footer a {
-    color: var(--text-color);
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
-
-.footer a:hover {
-    background-color: #007AFF; /* Apple Blau */
-    color: white;
-}
-
-/* Dark Mode Anpassung für Sidebar */
-body.dark-mode .sidebar {
-    background-color: var(--background-color); /* Setzt die Sidebar auf die Haupt-Hintergrundfarbe */
-    /* Alternativ können Sie eine andere Farbe wählen, z.B.: */
-    /* background-color: #1e1e1e; */
-}
-
-/* Dark/Light Mode Switch Styles */
-
-/* Wrapper für den Switch */
-.theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    position: fixed; /* Fixiert den Switch auf der Seite */
-    top: 20px;
-    right: 20px;
-    z-index: 1001; /* Über dem Header */
-}
-
-/* Label für den Switch */
-.theme-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-/* Das versteckte Checkbox-Eingabefeld */
-.theme-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-/* Slider-Stil */
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 24px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
-}
-
-/* Wenn die Checkbox aktiviert ist */
-.theme-switch input:checked + .slider {
-    background-color: #007AFF; /* Apple Blau */
-}
-
-.theme-switch input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-/* Modifikation für den Text */
-#mode-text {
-    font-size: 16px;
-    color: var(--text-color);
-}
-
-/* Hauptinhalt Layout */
-.main-content {
-    display: flex; /* Flexbox für das Layout */
-    margin-top: 80px; /* Platz für den fixierten Header */
-    margin-bottom: 50px; /* Platz für den fixierten Footer */
-}
-
-/* Sidebar Styles */
-.sidebar {
-    position: fixed;
-    top: 80px; /* Höhe des Headers */
-    bottom: 50px; /* Höhe des Footers */
-    left: 0;
-    width: 250px; /* Feste Breite für die Sidebar */
-    background-color: var(--card-background);
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-    transition: background-color 0.3s ease; /* Smooth transition */
-    overflow-y: auto; /* Ermöglicht Scrollen innerhalb der Sidebar, falls nötig */
-}
-
-/* Trennelement zwischen den Sidebar-Abschnitten */
-.sidebar section:not(:last-child)::after {
-    content: "";
-    display: block;
-    height: 1px; /* Dickere Linie */
-    background-color: #007AFF; /* Auffälliges Apple Blau */
-    margin: 20px 0; /* Abstand nach oben und unten */
-    border-radius: 2px; /* Abgerundete Ecken */
-    opacity: 0.7; /* Leichte Transparenz für subtilen Effekt */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Leichter Schatten */
-}
-
-.sidebar .category-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.category-button {
-    padding: 12px 20px;
-    border: 2px solid #007AFF; /* Apple Blau */
-    border-radius: 20px;
-    background-color: transparent;
-    color: #007AFF;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    outline: none;
-}
-
-.category-button:hover,
-.category-button.active {
-    background-color: #007AFF;
-    color: white;
-}
-
-.sidebar .adresse h2 {
-    margin-top: 0;
-}
-
-.sidebar .adresse p {
-    line-height: 1.5;
-}
-
-/* Main Area Styles */
-.main-area {
-    margin-left: 270px; /* Breite der Sidebar plus etwas Abstand */
-    padding: 20px;
-    flex: 1; /* Nimmt den verbleibenden Platz ein */
-}
-
-.hero h1 {
-    margin-top: 0;
-    text-align: center;
-}
-
-/* Banner Styles */
-.banner {
-    width: 100%;
-    height: 20vh; /* 20% der Bildschirmhöhe */
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-.banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    aspect-ratio: 21 / 10; /* 21:10 Seitenverhältnis */
-}
-
-/* Card Container Styles */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px 0;
-}
-
-.card {
-    background-color: var(--card-background);
-    color: var(--card-text);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    width: 300px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.2s, background-color 0.3s, color 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.card h3 {
-    margin-top: 12px;
-    margin-bottom: 8px;
-    text-align: center;
-}
-
-.card p {
-    text-align: center;
-}
-
-/* Responsive Anpassungen */
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column; /* Sidebar und Hauptinhalt untereinander */
-        margin-top: 100px; /* Platz für den fixierten Header */
-        margin-bottom: 60px; /* Platz für den fixierten Footer */
-    }
-
-    .sidebar {
-        position: static;
-        width: 100%; /* Sidebar nimmt die volle Breite ein */
-        box-shadow: none; /* Entfernen der Schatten für kleinere Bildschirme */
-        margin-bottom: 20px;
-        height: auto;
-    }
-
-    .main-area {
-        margin-left: 0;
-    }
-
-    .category-selection {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .category-button {
-        flex: 1 1 45%;
-        margin: 5px;
-    }
-
-    .navigation ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
-/* Sidebar Buttons im Apple-Design */
-.category-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.category-button {
-    padding: 12px 20px;
-    border: 2px solid #007AFF; /* Apple Blau */
-    border-radius: 20px;
-    background-color: transparent;
-    color: #007AFF;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    outline: none;
-}
-
-.category-button:hover,
-.category-button.active {
-    background-color: #007AFF;
-    color: white;
-}
+/* Weitere Styles hier... */
 
 /* Reservierungscontainer und -karten */
 .reservation-container {
@@ -395,6 +43,19 @@ body.dark-mode .sidebar {
 .reservation-row {
     display: flex;
     gap: 20px;
+    align-items: flex-start;
+}
+
+.time-column {
+    width: 80px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.table-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .table-card {
@@ -402,9 +63,11 @@ body.dark-mode .sidebar {
     color: var(--card-text);
     border: 1px solid var(--card-border);
     border-radius: 8px;
-    flex: 1;
+    width: 200px;
     padding: 16px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
+    cursor: pointer;
     transition: transform 0.2s, background-color 0.3s, color 0.3s;
 }
 
@@ -432,3 +95,49 @@ body.dark-mode .sidebar {
 .table-card li:last-child {
     border-bottom: none;
 }
+
+.reserve-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 16px;
+    background-color: #007aff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.reserve-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.reserve-button:hover:not([disabled]) {
+    background-color: #005bb5;
+}
+
+/* Unverfügbare Tischkarten */
+.table-card.unavailable {
+    background-color: #f8d7da; /* Leichtes Rot */
+    border-color: #f5c6cb;
+}
+
+.table-card.unavailable h3 {
+    color: #721c24; /* Dunkleres Rot */
+}
+
+.table-card.unavailable:hover {
+    transform: none;
+    cursor: not-allowed;
+}
+
+.reserve-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.reserve-button:hover:not([disabled]) {
+    background-color: #005bb5;
+}
+
