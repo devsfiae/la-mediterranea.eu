@@ -5,9 +5,9 @@ header('Content-Type: application/json');
 
 // Datenbankverbindung herstellen
 $servername = "localhost";
-$username = "DB_USERNAME";
-$password = "DB_PASSWORD";
-$dbname = "reservations_db";
+$username = "root";
+$password = "root";
+$dbname = "la_mediterranea";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
