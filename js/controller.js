@@ -18,10 +18,9 @@ export class AppController {
     }
 
     async init() {
-        await this.model.loadReservations();
         this.view.bindDateButton(() => this.handleDateButtonClick());
         this.view.bindReserveButton((tableId, time) => this.handleReservation(tableId, time));
-        this.updateView();
+        await this.updateView();
     }
 
     async updateView() {
@@ -46,6 +45,7 @@ export class AppController {
             }
 
             // Lade die Reservierungen für das ausgewählte Datum
+            await this.model.loadReservations(selectedDateString);
             const reservationsForDate = this.model.getReservationsByDate(selectedDateString);
 
             // Aktualisiere die Belegung der Tische
@@ -62,6 +62,32 @@ export class AppController {
             this.view.renderReservations(this.tables, this.availableTimes);
         }
     }
+
+
+    async handleReservation(tableId, time) {
+        const reservation = {
+            date_field: this.selectedDate.toISOString().split('T')[0],
+            time_field: time + ':00',
+            table_id: tableId.toString(),
+            state_id: '1',
+            persons: '0', // Sie können hier die tatsächliche Anzahl der Personen angeben
+            name: '',     // Optional: Name des Kunden
+            email: ''     // Optional: E-Mail des Kunden
+        };
+
+        // Speichern der Reservierung
+        await this.model.saveReservation(reservation);
+
+        // Aktualisiere die Ansicht
+        await this.updateView();
+
+        alert(`Reservierung für Tisch ${tableId} um ${time} Uhr am ${this.selectedDate.toLocaleDateString('de-DE')} wurde gespeichert.`);
+    }
+
+    handleDateButtonClick() {
+        // ... (Ihr bestehender Code)
+    }
+
 
     handleDateButtonClick() {
         const datePicker = document.createElement('input');
