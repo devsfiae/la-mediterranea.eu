@@ -3,18 +3,8 @@
 
 header('Content-Type: application/json');
 
-// Datenbankverbindung herstellen
-$servername = "localhost";
-$username = "root";
-$password = "root";
-$dbname = "la_mediterranea";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Überprüfen der Verbindung
-if ($conn->connect_error) {
-    die(json_encode(["error" => "Verbindung fehlgeschlagen: " . $conn->connect_error]));
-}
+// Die Datenbankverbindung aus der config/database.php-Datei laden
+$conn = require_once __DIR__ . '/../config/database.php';
 
 // Eingabedaten abrufen und validieren
 $data = json_decode(file_get_contents('php://input'), true);
