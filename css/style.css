@@ -1,143 +1,322 @@
-/* Grundlegende Styles */
+/* Reset styles */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
-}
-
-/* Farbvariablen für Light und Dark Mode */
-:root {
-    --background-color: white;
-    --text-color: black;
-    --card-background: #f9f9f9;
-    --card-text: #333;
-    --card-border: #ddd;
-    --separator-color: #e0e0e0;
-}
-
-body.dark-mode {
-    --background-color: #121212;
-    --text-color: #e0e0e0;
-    --card-background: #333;
-    --card-text: #e0e0e0;
-    --card-border: #555;
-    --separator-color: #444;
-}
-
-/* Weitere Styles hier... */
-
-/* Reservierungscontainer und -karten */
-.reservation-container {
+html, body {
+    height: 100%; /* Full height for both html and body */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px 0;
 }
 
-.reservation-row {
+/* Color Variables for Light Mode */
+:root {
+    --background-color: #FAFAFA;
+    --text-color: #1D1D1F;
+    --primary-color: #007aff;
+    --secondary-color: #f5f5f7;
+    --footer-background-color: #F5F5F5;
+    --link-color: #007aff;
+    --link-hover-color: #0a84ff;
+    --slider-background-color: #E5E5EA;
+    --slider-active-color: #007aff;
+    --slider-handle-color: #ffffff;
+}
+
+/* Color Variables for Dark Mode */
+.dark-theme {
+    --background-color: #1C1C1E;
+    --text-color: #F5F5F7;
+    --primary-color: #181819;
+    --secondary-color: #2C2C2E;
+    --footer-background-color: #181819;
+    --link-color: #0a84ff;
+    --link-hover-color: #66bfff;
+    --slider-background-color: #181819;
+    --slider-active-color: #0a84ff;
+    --slider-handle-color: #ffffff;
+}
+
+/* Body settings */
+body {
     display: flex;
-    gap: 20px;
-    align-items: flex-start;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow: hidden; /* Prevent scrolling */
 }
 
-.time-column {
-    width: 80px;
-    font-weight: bold;
-    margin-right: 20px;
-}
-
-.table-cards-container {
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--primary-color);
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
 }
 
-.table-card {
-    background-color: var(--card-background);
-    color: var(--card-text);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    width: 200px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s, color 0.3s;
+.header-left {
+    flex: 1;
+    text-align: left;
 }
 
-.table-card:hover {
-    transform: scale(1.05);
+.header-left h1 {
+    font-size: 20px;
+    color: var(--text-color);
 }
 
-.table-card h3 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    color: #007AFF;
+.header-center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
 }
 
-.table-card ul {
+.header-center ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    display: flex;
+    justify-content: center;
 }
 
-.table-card li {
-    padding: 5px 0;
-    border-bottom: 1px solid var(--separator-color);
+.header-center ul li {
+    margin: 0 15px;
 }
 
-.table-card li:last-child {
-    border-bottom: none;
+.header-center ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
 }
 
-.reserve-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    background-color: #007aff;
+.header-center ul li a:hover {
+    color: var(--link-hover-color);
+}
+
+.header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.subheader {
+    position: fixed;
+    top: 60px; /* Below the header */
+    left: 0;
+    width: 100%;
+    height: 40px; /* Fixed height */
+    background-color: #555;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* Ensure it's layered correctly */
+}
+
+/* Main content without scrolling */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px; /* Account for header and subheader */
+    overflow: hidden; /* Prevent scrolling */
+}
+
+/* Footer (fixed at bottom) */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: var(--footer-background-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer a {
+    color: var(--link-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color);
+}
+
+/* Slideshow Container */
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    max-width: 100%; /* Ensure full width */
+    flex-grow: 1; /* Allow it to grow and take up available space */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Slide (Each Image) */
+.slide {
+    display: none; /* Hide all slides initially */
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+}
+
+/* Show the first slide by default */
+.slide:first-child {
+    display: block;
+}
+
+/* Slide Title */
+.slide-title {
     color: #fff;
-    border: none;
-    border-radius: 6px;
+    font-size: 20px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 80px; /* Positioned above the dots */
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Next & Prev Buttons */
+.prev, .next {
     cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    padding: 16px;
+    font-size: 24px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    user-select: none;
+    z-index: 1;
 }
 
-.reserve-button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
+.prev {
+    left: 10px; /* Position left */
 }
 
-.reserve-button:hover:not([disabled]) {
-    background-color: #005bb5;
+.next {
+    right: 10px; /* Position right */
 }
 
-/* Unverfügbare Tischkarten */
-.table-card.unavailable {
-    background-color: #f8d7da; /* Leichtes Rot */
-    border-color: #f5c6cb;
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Darker on hover */
 }
 
-.table-card.unavailable h3 {
-    color: #721c24; /* Dunkleres Rot */
+/* Dots/Indicators inside the slideshow */
+.dots-container {
+    position: absolute;
+    bottom: 60px; /* Positioned at the bottom of the image */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2; /* Ensure it's on top */
 }
 
-.table-card.unavailable:hover {
-    transform: none;
-    cursor: not-allowed;
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
 }
 
-.reserve-button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
+.active, .dot:hover {
+    background-color: #717171;
 }
 
-.reserve-button:hover:not([disabled]) {
-    background-color: #005bb5;
+/* Toggle Switch (Apple-style slider) */
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 10px;
 }
 
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.theme-switch input {
+    display: none; /* Hide the checkbox */
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--slider-background-color); /* Light or dark mode background */
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--slider-handle-color); /* Slider handle color */
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--slider-active-color); /* Active color when switched on */
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px); /* Moves the handle to the right when checked */
+}
+
+/* Light Mode */
+:root {
+    --slider-background-color: #E5E5EA; /* Light grey background */
+    --slider-active-color: #007aff; /* Blue active color */
+    --slider-handle-color: #ffffff; /* White handle */
+}
+
+/* Dark Mode */
+.dark-theme {
+    --slider-background-color: #2C2C2E; /* Dark grey background */
+    --slider-active-color: #0a84ff; /* Blue active color for dark mode */
+    --slider-handle-color: #ffffff; /* White handle in dark mode */
+}

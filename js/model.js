@@ -1,55 +1,79 @@
-// js/model.js
+// model.js contains the data and logic for the application. 
+// It is responsible for fetching data from external sources, saving data to local storage, and handling the logic for the application.
 
-export class Table {
-    constructor(id, location, capacity, reservations = []) {
-        this.id = id;
-        this.location = location;
-        this.capacity = capacity;
-        this.reservations = reservations;
+// Handles saving/loading theme preferences
+export const ThemeModel = {
+    saveThemePreference: (isDarkMode) => {
+        localStorage.setItem('darkMode', isDarkMode);
+    },
+    getThemePreference: () => {
+        return localStorage.getItem('darkMode') === 'true';
     }
+};
 
-    isAvailable(time) {
-        return !this.reservations.includes(time);
-    }
-}
+// Handles fetching and logic for the header
 
-export class ReservationModel {
-    constructor() {
-        this.reservations = [];
-    }
-
-    async loadReservations(date) {
-        try {
-            const response = await fetch(`get_reservations.php?date=${date}`);
-            const data = await response.json();
-            this.reservations = data;
-        } catch (error) {
-            console.error('Fehler beim Laden der Reservierungen:', error);
-            this.reservations = [];
-        }
-    }
-
-    getReservationsByDate(date) {
-        return this.reservations.filter(reservation => reservation.date_field === date);
-    }
-
-    async saveReservation(reservation) {
-        try {
-            const response = await fetch('save_reservation.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(reservation)
+export const HeaderModel = {
+    // Fetch the header HTML from an external file
+    fetchHeader: () => {
+        return fetch('header.html')
+            .then(response => response.text())
+            .catch(error => {
+                console.error('Error fetching header:', error);
+                throw error;
             });
-            const result = await response.json();
-            if (result.error) {
-                throw new Error(result.error);
-            }
-            // Aktualisiere die lokale Liste der Reservierungen
-            this.reservations.push(reservation);
-        } catch (error) {
-            console.error('Fehler beim Speichern der Reservierung:', error);
-        }
+    },
+
+    // Get the current page URL (e.g., "reserve.html")
+    getCurrentPage: () => {
+        return window.location.pathname.split('/').pop();
     }
-}
+};
+
+// Handles fetching and logic for the slideshows
+
+export const SlideshowModel = {
+    slideIndex: 1,
+
+    // Show the current slide
+    showSlides: function(index) {
+        const slides = document.getElementsByClassName('slide');
+        const dots = document.getElementsByClassName('dot');
+
+        if (index > slides.length) {
+            this.slideIndex = 1;
+        }
+        if (index < 1) {
+            this.slideIndex = slides.length;
+        }
+
+        // Hide all slides
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = 'none';
+        }
+
+        // Remove active class from all dots
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(' active', '');
+        }
+
+        // Display the current slide and mark the dot as active
+        slides[this.slideIndex - 1].style.display = 'block';
+        dots[this.slideIndex - 1].className += ' active';
+    },
+
+    // Move to the next slide
+    nextSlide: function() {
+        this.showSlides(this.slideIndex += 1);
+    },
+
+    // Move to the previous slide
+    prevSlide: function() {
+        this.showSlides(this.slideIndex -= 1);
+    },
+
+    // Jump to a specific slide
+    currentSlide: function(index) {
+        this.showSlides(this.slideIndex = index);
+    }
+};

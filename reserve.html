@@ -2,212 +2,73 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Reservierung @ La Mediterranea</title>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>Bar/Restaurant La Mediterranea</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
-    <meta property="og:title" content="Reservierung @ La Mediterranea">
-    <meta property="og:description" content="Reservieren Sie einen Tisch in Es Pujols/Formentera">
-    <meta property="og:image" content="http://la-mediterranea.eu/images/beach_restaurant_sunset.jpg">
-    <meta property="og:url" content="http://la-mediterranea.eu/reserve.html">
-    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
+    <meta property="og:description" content="@Es Pujols/Formentera">
+    <meta property="og:image" content="images/cocktails/cocktails_banner.png">
+    <meta property="og:url" content="http://la-mediterranea.eu/index.html">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Verknüpfung mit externer CSS-Datei -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- Einbindung von jQuery UI CSS -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <!-- Einbindung von jQuery Timepicker Plugin CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.css">
 </head>
 <body>
-    <!-- Toggle für Dark/Light-Modus -->
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="theme-checkbox">
-            <input type="checkbox" id="theme-checkbox" title="Toggle Theme">
-            <span class="slider round"></span>
-        </label>
-        <span id="mode-text">Dark Mode</span>
-    </div>
+    <!-- Header with three sections: logo, navigation, theme switch -->
+    <header></header>
+        
 
-    <!-- Fixierte Navigation oben -->
-    <header class="header">
-        <div class="logo">
-            <h1><a href="index.html">La Mediterranea</a></h1>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.html">Startseite</a></li>
-                <li><a href="card.html">Speisekarte</a></li>
-                <li><a href="cocktails.html">Cocktailkarte</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="team.html">Unser Team</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hauptinhalt -->
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Fixierte Sidebar links -->
-        <aside class="sidebar">
-            <section class="category-selection">
-                <button class="category-button active" data-category="alle" aria-pressed="true">Datum</button>
-                <button class="category-button" data-category="zeit-1" aria-pressed="false">17:00</button>
-                <button class="category-button" data-category="zeit-2" aria-pressed="false">19:00</button>
-                <button class="category-button" data-category="zeit-3" aria-pressed="false">21:00</button>
-            </section>
-            <section class="empfehlung">
-                <h2>Empfehlung</h2>
-                <h3>Reservieren Sie Ihren Tisch</h3>
-                <p>Wählen Sie ein Datum aus</p>
-                <p>Wählen Sie einen freien Tisch aus, um zu reservieren</p>
-            </section>
-        </aside>
+        <!-- Slideshow Container -->
+        <div class="slideshow-container">
 
-        <!-- Scrollbarer Hauptbereich -->
-        <div class="main-area">
-            <section class="hero">
-                <h1>Reservierungen</h1>
-                <div class="reservation-container">
-                    <!-- Zeile 1 für Werktage -->
-                    <div class="reservation-row">
-                        <div class="table-card" data-table="1">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="2">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="3">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="4">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>Person 3</li>
-                                <li>Person 4</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Zeile 2 für Wochenenden -->
-                    <div class="reservation-row" data-day="weekend">
-                        <div class="table-card" data-table="1">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="2">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="3">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>Person 3</li>
-                                <li>Person 4</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="4">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>Person 3</li>
-                                <li>Person 4</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Zeile 3 für Feiertage (optional) -->
-                    <div class="reservation-row" data-day="holiday">
-                        <div class="table-card" data-table="1">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>Person 3</li>
-                                <li>Person 4</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="2">
-                            <h3>Strand</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>Person 3</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="3">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>Person 2</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                        <div class="table-card" data-table="4">
-                            <h3>Innen</h3>
-                            <ul>
-                                <li>Person 1</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                                <li>&nbsp;</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <!-- Slides -->
+            <div class="slide fade">
+                <img src="images/days/03_wednesday.png" alt="Mittwoch">
+                <div class="slide-title">Mittwoch | 17:00 | 19:00 Uhr</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/days/04_thursday.png" alt="Donnerstag">
+                <div class="slide-title">Donnerstag | 17:00 | 19:00 Uhr</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/days/05_friday.png" alt="Freitag">
+                <div class="slide-title">Freitag | 17:00 | 19:00 | 21:00 Uhr</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/days/06_saturday.png" alt="Samstag">
+                <div class="slide-title">Samstag | 17:00 | 19:00 | 21:00 Uhr </div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/days/07_sunday.png" alt="Sonntag">
+                <div class="slide-title">Sonntag | 17:00 | 19:00 Uhr</div>
+            </div>
+
+            <!-- Next/Prev Buttons -->
+            <a class="prev" onclick="prevSlide()">&#10094;</a>
+            <a class="next" onclick="nextSlide()">&#10095;</a>
+        </div>
+
+        <!-- Dots to indicate current slide -->
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+            <span class="dot" onclick="currentSlide(4)"></span> 
+            <span class="dot" onclick="currentSlide(5)"></span>
         </div>
     </main>
 
-    <!-- Fixierter Footer unten -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="legal.html">Impressum</a> |
-            <a href="transparancy.html" target="_blank">Datenschutz</a>
-        </div>
-        <p>© 2024 by Hiba, Irina Puya & <a href="https://www.fanieng.com">Heiko</a></p>
-    </footer>
+    <!-- Footer loaded dynamically -->
+    <footer></footer>
 
-    <!-- Einbindung von jQuery und jQuery UI -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-    <!-- Einbindung von jQuery Timepicker Plugin JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.13.18/jquery.timepicker.min.js"></script>
-    <!-- Einbindung der externen JavaScript-Dateien -->
-    <script src="js/script.js"></script>
-    <script src="js/datepicker.js"></script>
-    <script src="js/timepicker.js"></script>
-    <script src="js/date.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="js/controller.js"></script>
 </body>
 </html>

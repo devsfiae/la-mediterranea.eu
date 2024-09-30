@@ -1,12 +1,9 @@
 // js/main.js
 
-import { AppController } from './controller.js';
-import { initDarkMode } from './darkmode.js';
+import { AppController, DarkModeController } from './controller.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
-    const appController = new AppController();
-    await appController.init();
+const appController = new AppController();
+appController.init();
 
-    // Dark Mode initialisieren
-    initDarkMode();
-});
+const darkModeController = new DarkModeController();
+darkModeController.init();

@@ -6,8 +6,8 @@
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
     <meta property="og:title" content="Bar/Restaurant La Mediterranea">
-    <meta property="og:description" content="Speisekarte">
-    <meta property="og:image" content="http://la-mediterranea.eu/imgages/food_menu.jpg">
+    <meta property="og:description" content="Speisen">
+    <meta property="og:image" content="images/menu/food_culture.png">
     <meta property="og:url" content="http://la-mediterranea.eu/card.html">
     <meta property="og:type" content="website">
     <!-- Responsive Design -->
@@ -16,97 +16,54 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Dark/Light Mode Switch -->
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="theme-checkbox">
-            <input type="checkbox" id="theme-checkbox" title="Toggle Dark/Light Mode">
-            <span class="slider round"></span>
-        </label>
-        <span id="mode-text">Dark Mode</span>
-    </div>
+    <!-- Header with three sections: logo, navigation, theme switch -->
+    <header></header>
+        
 
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <h1><a href="index.html">La Mediterranea</a></h1>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.html">Startseite</a></li>
-                <li><a href="cocktails.html">Cocktailkarte</a></li>
-                <li><a href="reserve.html">Reservierung</a></li>
-                <li><a href="entertain.html">Entertainment</a></li>
-                <li><a href="team.html">Team</a></li>
-                <li><a href="contact.html">Kontakt</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hauptinhalt -->
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Fixierte Sidebar links -->
-        <aside class="sidebar">
-            <section class="category-selection">
-                <button class="category-button active" data-category="alle" aria-pressed="true">Alle</button>
-                <button class="category-button" data-category="fleisch" aria-pressed="false">Fleisch</button>
-                <button class="category-button" data-category="fisch" aria-pressed="false">Fisch</button>
-                <button class="category-button" data-category="vegetarisch" aria-pressed="false">Vegetarisch</button>
-                <button class="category-button" data-category="nachtisch" aria-pressed="false">Nachtisch</button>
-            </section>
-            <section class="empfehlung">
-                <h2>Empfehlung</h2>
-                <h3>Tagliatelle mit Rinderfiletspitzen</h3>
-                <p>Tagliatelle mit Rinderfiletspitzen in einer cremigen Gorgonzolasauce.</p>
-            </section>
-        </aside>
+        <!-- Slideshow Container -->
+        <div class="slideshow-container">
 
-        <!-- Scrollbarer Hauptbereich -->
-        <div class="main-area">
-            <section class="hero">
-                <h1>Unsere frisch zubereiteten Speisen:</h1>
-                    <div class="card-container">
-                    <!-- Beispielhafte Karten - Ersetzen Sie diese durch Ihren tatsächlichen Inhalt -->
-                    <div class="card" data-category="fleisch">
-                        <img src="images/menu/grilled_beef_dishes.png" alt="Fleischgerichte">
-                        <h3>Fleisch</h3>
-                        <p>Gerichte mit Huhn, Lamm-, Rind- oder Schweinefleisch. </p>
-                    </div>
-                    <div class="card" data-category="fisch">
-                        <img src="images/menu/fish_dishes.png" alt="Fischgerichte">
-                        <h3>Fisch</h3>
-                        <p>Leckere Calamari, Forelle, Garnelen, Lachs, Muscheln, Seeteufel, Scampi oder Thunfisch.</p>
-                    </div>
-                    <div class="card" data-category="vegetarisch">
-                        <img src="images/menu/vegetarian_dishes.png" alt="Vegetarisches Gericht">
-                        <h3>Vegetarisch/Gemüse</h3>
-                        <p>Saisonales, regionales Gemüse: Aubergine, Champingnons, Paprika, Tomaten und Zucchini.</p>
-                    </div>
-                    <div class="card" data-category="dessert">
-                        <img src="images/menu/dessert_dishes.png" alt="Dessert">
-                        <h3>Desserts</h3>
-                        <p>Süsse Träume aus Erdbeeren, Bananen, Mohn, Schokolade, Vanille, Zimt und Zucker.</p>
-                    </div>
-                    <!-- Weitere Karten hinzufügen nach Bedarf -->
-                </div>
-            </section>
+            <!-- Slides -->
+            <div class="slide fade">
+                <img src="images/menu/grilled_beef_dishes.png" alt="Fleisch">
+                <div class="slide-title">Fleisch</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/menu/fish_dishes.png" alt="Restaurant">
+                <div class="slide-title">Fisch</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/menu/vegetarian_dishes.png" alt="Vegan/Vegetarisch">
+                <div class="slide-title">Vegan/Vegetarisch</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/menu/dessert_dishes.png" alt="Desserts">
+                <div class="slide-title">Desserts</div>
+            </div>
+
+            <!-- Next/Prev Buttons -->
+            <a class="prev" onclick="prevSlide()">&#10094;</a>
+            <a class="next" onclick="nextSlide()">&#10095;</a>
+        </div>
+
+        <!-- Dots to indicate current slide -->
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+            <span class="dot" onclick="currentSlide(4)"></span> 
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="legal.html">Impressum</a> |
-            <a href="transparancy.html" target="_blank">Datenschutz</a> |
-            <a href="mailto:info@la-mediterranea.eu">info@la-mediterranea.eu</a>
-        </div>
-        <p>© 2024 by Hiba, Irina Puya & <a href="https://www.fanieng.com">Heiko Fanieng</a></p>
-    </footer>
+    <!-- Footer loaded dynamically -->
+    <footer></footer>
 
-
-    <!-- JavaScript-Dateien -->
-    <!-- Externe Theme-Switch-JavaScript-Datei -->
-    <script src="js/script.js"></script>
-    <!-- Externe Filter-JavaScript-Datei -->
-    <script src="js/filter.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="js/controller.js"></script>
 </body>
 </html>

@@ -15,82 +15,60 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Toggle für Dark/Light-Modus -->
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="theme-checkbox">
-            <input type="checkbox" id="theme-checkbox">
-            <span class="slider round"></span>
-        </label>
-        <span id="mode-text">Dark Mode</span>
-    </div>
+    <!-- Header with three sections: logo, navigation, theme switch -->
+    <header></header>
+        
 
-    <!-- Fixierte Navigation oben -->
-    <header class="header">
-        <div class="logo">
-            <h1>La Mediterranea</h1>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="reserve.html">Reservierung</a></li>
-                <li><a href="card.html">Speisekarte</a></li>
-                <li><a href="cocktails.html">Cocktailkarte</a></li>
-                <li><a href="events.html">Events</a></li>
-                <li><a href="team.html">Unser Team</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hauptinhalt -->
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Fixierte Sidebar links -->
-        <aside class="sidebar">
-            <section class="opening-hours">
-                <h2>Öffnungszeiten</h2>
-                <p>
-                    Mittwoch-Donnerstag<br />
-                    17:00-21:00 Uhr<br /><br />
-                    Freitag-Samstag<br />
-                    17:00-23:00 Uhr<br /><br>
-                    Sonntag<br />
-                    17:00-21:00 Uhr<br /><br>
-                    Montag-Dienstag<br />
-                    Ruhetag
-                </p>
-            </section>
-            <section class="adresse"></section>
-                <h2>Adresse</h2>
-                <p>
-                    vendes ca mari 3431 Carrer San Ferran, Km 7,8<br />
-                    07871 Sant Ferran de ses Roques<br />
-                    Balearic Islands, Spanien
-                </p>
-                <p></p>
-            </section>
-        </aside>
+        <!-- Slideshow Container -->
+        <div class="slideshow-container">
 
-        <!-- Scrollbarer Hauptbereich -->
-        <div class="main-area">
-            <section class="hero">
-                <h1>Herzlich Willkommen</h1>
-                <p><img src="images/website_background.jpg" alt="La Mediterranea"></p>
-                <p>Wir freuen uns, Sie in unserem Bar/Restaurant La Mediterranea begrüßen zu dürfen. Genießen Sie die mediterrane Küche und lassen Sie sich von unseren Cocktails verzaubern.</p>
-                <p>Unsere Speisekarte umfasst Fleisch-, Fisch- und vegetarische Gerichte. Zum Dessert können Sie sich durch unsere Süßspeisen verwöhnen lassen.</p>
-            </section>
+            <!-- Slides -->
+            <div class="slide fade">
+                <img src="images/bar/beachbar.png" alt="Bar">
+                <div class="slide-title">Willkommen im La Mediterranea</div>
+            </div>
 
+            <div class="slide fade">
+                <img src="images/bar/restaurant.png" alt="Restaurant">
+                <div class="slide-title">Restaurant</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/menu/food_culture.png" alt="Speisen">
+                <div class="slide-title">Speisen</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/cocktails_banner.png" alt="Cocktails">
+                <div class="slide-title">Cocktails</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/events/eveningwithdj.png" alt="Events">
+                <div class="slide-title">Events</div>
+            </div>
+
+            <!-- Next/Prev Buttons -->
+            <a class="prev" onclick="prevSlide()">&#10094;</a>
+            <a class="next" onclick="nextSlide()">&#10095;</a>
+        </div>
+
+        <!-- Dots to indicate current slide -->
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+            <span class="dot" onclick="currentSlide(4)"></span> 
+            <span class="dot" onclick="currentSlide(5)"></span>
         </div>
     </main>
 
-    <!-- Fixierter Footer unten -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="legal.html">Impressum</a> |
-            <a href="transparancy.html" target="_blank">Datenschutz</a> |
-            <a href="mailto:info@la-mediterranea.eu">info@la-mediterranea.eu</a>
-        </div>
-        <p>© 2024 by Hiba, Irina Puya & <a href="https://www.fanieng.com">Heiko Fanieng</a></p>
-    </footer>
+    <!-- Footer loaded dynamically -->
+    <footer></footer>
 
-    <!-- JavaScript für Theme Switching -->
-    <script src="js/script.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="js/controller.js"></script>
 </body>
 </html>

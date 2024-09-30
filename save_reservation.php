@@ -5,9 +5,9 @@ header('Content-Type: application/json');
 
 // Datenbankverbindung herstellen
 $servername = "localhost";
-$username = "DB_USERNAME";
-$password = "DB_PASSWORD";
-$dbname = "reservations_db";
+$username = "root";
+$password = "root";
+$dbname = "la_mediterranea";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -28,7 +28,7 @@ $name = $data['name'] ?? '';
 $email = $data['email'] ?? '';
 
 // Eingabedaten validieren
-if (empty($date_field) || empty($time_field) || empty($table_id)) {
+if (empty($date_field) || empty($time_field) || empty($table_id) || empty($name) || empty($email)) {
     die(json_encode(["error" => "Erforderliche Felder fehlen."]));
 }
 

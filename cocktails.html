@@ -2,124 +2,77 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Cocktailkarte - La Mediterranea</title>
+    <title>Bar/Restaurant La Mediterranea</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
     <meta property="og:title" content="Bar/Restaurant La Mediterranea">
-    <meta property="og:description" content="Cocktailkarte">
-    <meta property="og:image" content="http://la-mediterranea.eu/images/cocktails.png">
+    <meta property="og:description" content="Cocktails">
+    <meta property="og:image" content="images/cocktails/cocktails_banner.png">
     <meta property="og:url" content="http://la-mediterranea.eu/cocktails.html">
-    <meta property="og:type" content="website">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Verknüpfung mit externer CSS-Datei -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Dark/Light Mode Switch -->
-    <div class="theme-switch-wrapper">
-        <label class="theme-switch" for="theme-checkbox">
-            <input type="checkbox" id="theme-checkbox" title="Toggle Dark/Light Mode">
-            <span class="slider round"></span>
-        </label>
-        <span id="mode-text">Dark Mode</span>
-    </div>
-
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <h1><a href="index.html">La Mediterranea</a></h1>
-        </div>
-        <nav class="navigation">
-            <ul>
-                <li><a href="index.html">Startseite</a></li>
-                <li><a href="reserve.html">Reservierung</a></li>
-                <li><a href="card.html">Speisekarte</a></li>
-                <li><a href="events.html">Entertainment</a></li>
-                <li><a href="team.html">Team</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Hauptinhalt -->
+    <!-- Header with three sections: logo, navigation, theme switch -->
+    <header></header>
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Fixierte Sidebar links -->
-        <aside class="sidebar">
-            <section class="category-selection">
-                <button class="category-button active" data-category="alle" aria-pressed="true">Alle</button>
-                <button class="category-button" data-category="fruchtig-erfrischend" aria-pressed="false">Fruchtig &amp; erfrischend</button>
-                <button class="category-button" data-category="fruchtig-suess" aria-pressed="false">Fruchtig &amp; süß</button>
-                <button class="category-button" data-category="suess-cremig" aria-pressed="false">Süß &amp; cremig</button>
-                <button class="category-button" data-category="herb-trocken" aria-pressed="false">Herb &amp; trocken</button>
-                <button class="category-button" data-category="alkoholfrei" aria-pressed="false">Alkoholfrei</button>
-                <button class="category-button" data-category="heiße-getraenke" aria-pressed="false">Heiße Getränke (saisonal)</button>
-            </section>
-            <section class="empfehlung">
-                <h2>Empfehlung</h2>
-                <h3>Signature Cocktail</h3>
-                <p>Unser hauseigener Cocktail mit einer einzigartigen Mischung aus Aromen und Zutaten.</p>
-            </section>
-        </aside>
+        <!-- Slideshow Container -->
+        <div class="slideshow-container">
 
-        <!-- Scrollbarer Hauptbereich -->
-        <div class="main-area">
-            <section class="hero">
-                <h1>Unsere Cocktailkarte</h1>
-                <div class="banner">
-                    <img src="images/cocktails/cocktails_banner.png" alt="Cocktailkarte Banner">
-                </div>
-                <div class="card-container">
-                    <!-- Beispielhafte Karten - Ersetzen Sie diese durch Ihren tatsächlichen Inhalt -->
-                    <div class="card" data-category="fruchtig-erfrischend">
-                        <img src="images/cocktails/mojito.png" alt="Fruchtig & erfrischend">
-                        <h3>Fruchtiger Mojito</h3>
-                        <p>Ein klassischer Mojito mit frischer Minze und Limetten.</p>
-                    </div>
-                    <div class="card" data-category="fruchtig-suess">
-                        <img src="images/cocktails/daiquiri.png" alt="Fruchtig & süß">
-                        <h3>Süßer Daiquiri</h3>
-                        <p>Ein süßer Daiquiri mit Limette und Zucker.</p>
-                    </div>
-                    <div class="card" data-category="suess-cremig">
-                        <img src="images/cocktails/pinacolada.png" alt="Süß & cremig">
-                        <h3>Cremiger Pina Colada</h3>
-                        <p>Eine cremige Mischung aus Kokosnuss und Ananas.</p>
-                    </div>
-                    <div class="card" data-category="herb-trocken">
-                        <img src="images/cocktails/martini.png" alt="Herb & trocken">
-                        <h3>Trockener Martini</h3>
-                        <p>Ein klassischer Martini mit Gin und einem Hauch von Vermouth.</p>
-                    </div>
-                    <div class="card" data-category="alkoholfrei">
-                        <img src="images/cocktails/virginmargerita.png" alt="Alkoholfrei">
-                        <h3>Virgin Margarita</h3>
-                        <p>Eine alkoholfreie Margarita mit frischer Limette.</p>
-                    </div>
-                    <div class="card" data-category="heiße-getraenke">
-                        <img src="images/cocktails/chocolate.png" alt="Heiße Getränke">
-                        <h3>Heiße Schokolade</h3>
-                        <p>Eine reichhaltige heiße Schokolade mit Sahne.</p>
-                    </div>
-                    <!-- Weitere Karten hinzufügen nach Bedarf -->
-                </div>
-            </section>
+            <!-- Slides -->
+            <div class="slide fade">
+                <img src="images/cocktails/01_fruchtig_erfrischend.png" alt="Fruchtig/Erfrischend">
+                <div class="slide-title">Fruchtig/Erfrischend</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/02_fruchtig_suess.png" alt="Fruchtig/Süß">
+                <div class="slide-title">Fruchtig/Süß</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/03_suess_cremig.png" alt="Süß/Cremig">
+                <div class="slide-title">Süß/Cremig</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/04_herb_trocken.png" alt="Herb/Trocken">
+                <div class="slide-title">Cocktails</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/05_alkoholfrei.png" alt="Alkoholfrei">
+                <div class="slide-title">Events</div>
+            </div>
+
+            <div class="slide fade">
+                <img src="images/cocktails/06_heisse_getraenke.png" alt="Heiße Getränke/Oktober bis März (Saison)">
+                <div class="slide-title">Heiße Getränke/Oktober bis März (Saison)</div>
+            </div>
+
+            <!-- Next/Prev Buttons -->
+            <a class="prev" onclick="prevSlide()">&#10094;</a>
+            <a class="next" onclick="nextSlide()">&#10095;</a>
+        </div>
+
+        <!-- Dots to indicate current slide -->
+        <div class="dots-container">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+            <span class="dot" onclick="currentSlide(4)"></span> 
+            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot" onclick="currentSlide(6)"></span>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-links">
-            <a href="legal.html">Impressum</a> |
-            <a href="transparancy.html" target="_blank">Datenschutz</a> |
-            <a href="mailto:info@la-mediterranea.eu">info@la-mediterranea.eu</a>
-        </div>
-        <p>© 2024 by Hiba, Irina Puya & <a href="https://www.fanieng.com">Heiko Fanieng</a></p>
-    </footer>
+    <!-- Footer loaded dynamically -->
+    <footer></footer>
 
-    <!-- JavaScript-Dateien -->
-    <!-- Externe Theme-Switch-JavaScript-Datei -->
-    <script src="js/script.js"></script>
-    <!-- Externe Filter-JavaScript-Datei -->
-    <script src="js/filter.js"></script>
+    <!-- Scripts -->
+    <script type="module" src="js/controller.js"></script>
 </body>
 </html>
