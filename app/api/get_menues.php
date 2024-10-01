@@ -3,8 +3,8 @@ header('Content-Type: application/json');
 
 // Datenbankverbindung herstellen
 $servername = "localhost";
-$username = "root";
-$password = "root";
+$username = "la_mediterranea";
+$password = "theycantforceus!";
 $dbname = "la_mediterranea";
 
 // Erstellen Sie eine Verbindung
