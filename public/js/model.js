@@ -77,3 +77,44 @@ export const SlideshowModel = {
         this.showSlides(this.slideIndex = index);
     }
 };
+
+// Handles fetching and logic for the menus
+export const MenuModel = {
+    // Fetch menu data from get_menues.php
+    fetchMenus: () => {
+        return fetch('get_menues.php')
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching menus:', error);
+                throw error;
+            });
+    },
+
+    // Process and render menus in the UI
+    renderMenus: (menus) => {
+        const menuContainer = document.getElementById('menu-container'); // Assuming there's a container with this ID
+        menuContainer.innerHTML = ''; // Clear any existing content
+
+        menus.forEach(menu => {
+            const menuElement = document.createElement('div');
+            menuElement.classList.add('menu-item');
+            
+            menuElement.innerHTML = `
+                <h3>${menu.menu_name} (${menu.menu_price} €)</h3>
+                <p><strong>Zutaten:</strong> ${menu.menu_ingredients}</p>
+                <p><strong>Kategorie:</strong> ${menu.category_name}</p>
+            `;
+
+            menuContainer.appendChild(menuElement);
+        });
+    }
+};
+
+// Usage example: fetching and displaying the menus
+document.addEventListener('DOMContentLoaded', () => {
+    MenuModel.fetchMenus().then(menus => {
+        MenuModel.renderMenus(menus);
+    }).catch(error => {
+        console.error('Error rendering menus:', error);
+    });
+});
