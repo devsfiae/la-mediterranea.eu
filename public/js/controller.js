@@ -1,30 +1,41 @@
-import { ThemeModel, HeaderModel, SlideshowModel } from './model.js';  // Consolidated imports
+import { HeaderModel, SlideshowModel, MenuModel } from './model.js';  // Consolidated imports
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the slideshow by showing the first slide
-    SlideshowModel.showSlides(SlideshowModel.slideIndex = 1); // Display the first slide initially
+    // Initialize the slideshow if slideshow elements are present
+    if (document.querySelectorAll('.slide').length > 0 && document.querySelectorAll('.dot').length > 0) {
+        SlideshowModel.showSlides(SlideshowModel.slideIndex = 1);
 
-    // Attach event listeners to the slideshow controls
-    document.querySelector('.prev').addEventListener('click', () => {
-        SlideshowModel.prevSlide();
-    });
-
-    document.querySelector('.next').addEventListener('click', () => {
-        SlideshowModel.nextSlide();
-    });
-
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            SlideshowModel.currentSlide(index + 1);
+        // Attach event listeners to slideshow controls
+        document.querySelector('.prev').addEventListener('click', () => {
+            SlideshowModel.prevSlide();
         });
-    });
-    
+
+        document.querySelector('.next').addEventListener('click', () => {
+            SlideshowModel.nextSlide();
+        });
+
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                SlideshowModel.currentSlide(index + 1);
+            });
+        });
+    } else {
+        console.warn("No slideshow found on this page.");
+    }
+
     // Load footer dynamically
     loadFooter();
 
     // Load header dynamically and initialize theme-switch logic
     loadHeader();
+
+    // Load and display menu data
+    MenuModel.fetchMenus().then(menus => {
+        MenuModel.renderMenus(menus);
+    }).catch(error => {
+        console.error('Error rendering menus:', error);
+    });
 });
 
 // Function to load footer from external file

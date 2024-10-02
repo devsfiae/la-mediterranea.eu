@@ -12,7 +12,6 @@ export const ThemeModel = {
 };
 
 // Handles fetching and logic for the header
-
 export const HeaderModel = {
     // Fetch the header HTML from an external file
     fetchHeader: () => {
@@ -31,7 +30,6 @@ export const HeaderModel = {
 };
 
 // Handles fetching and logic for the slideshows
-
 export const SlideshowModel = {
     slideIndex: 1,
 
@@ -39,6 +37,11 @@ export const SlideshowModel = {
     showSlides: function(index) {
         const slides = document.getElementsByClassName('slide');
         const dots = document.getElementsByClassName('dot');
+
+        if (slides.length === 0 || dots.length === 0) {
+            console.warn("No slideshow elements found.");
+            return; // Exit if no slideshow elements are found
+        }
 
         if (index > slides.length) {
             this.slideIndex = 1;
@@ -75,5 +78,42 @@ export const SlideshowModel = {
     // Jump to a specific slide
     currentSlide: function(index) {
         this.showSlides(this.slideIndex = index);
+    }
+};
+
+// Handles fetching and logic for the menus
+export const MenuModel = {
+    // Fetch menu data from the correct path (app/api/get_menues.php)
+    fetchMenus: () => {
+        return fetch('app/api/get_menues.php') // Updated path to the correct file location
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); // Parse the response as JSON
+            })
+            .catch(error => {
+                console.error('Error fetching menus:', error);
+                throw error; // Rethrow the error so that it can be caught elsewhere
+            });
+    },
+
+    // Process and render menus in the UI
+    renderMenus: (menus) => {
+        const menuContainer = document.getElementById('menu-container'); // Assuming there's a container with this ID
+        menuContainer.innerHTML = ''; // Clear any existing content
+
+        menus.forEach(menu => {
+            const menuElement = document.createElement('div');
+            menuElement.classList.add('menu-item');
+            
+            menuElement.innerHTML = `
+                <h3>${menu.menu_name} (${menu.menu_price} €)</h3>
+                <p><strong>Zutaten:</strong> ${menu.menu_ingredients}</p>
+                <p><strong>Kategorie:</strong> ${menu.category_name}</p>
+            `;
+
+            menuContainer.appendChild(menuElement);
+        });
     }
 };

@@ -123,17 +123,17 @@ body {
     z-index: 999; /* Ensure it's layered correctly */
 }
 
-/* Main content without scrolling */
+/* Main content with scrolling */
 .main-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     margin-top: 100px; /* Account for header and subheader */
-    overflow: hidden; /* Prevent scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    width: 100%; /* Ensure full width */
+    padding: 20px; /* Optional padding to give some spacing */
+    max-height: calc(100vh - 160px); /* Adjust height to account for header and footer */
 }
-
 /* Footer (fixed at bottom) */
 .footer {
     position: fixed;
@@ -305,6 +305,55 @@ input:checked + .slider {
 
 input:checked + .slider:before {
     transform: translateX(26px); /* Moves the handle to the right when checked */
+}
+
+/* Card Container */
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid with flexible columns */
+    gap: 20px; /* Space between cards */
+    padding: 40px; /* Space around the card container */
+}
+
+/* Card Style */
+.card {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.card p {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* Hover Effects */
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 600px) {
+    .card-container {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
 }
 
 /* Light Mode */
