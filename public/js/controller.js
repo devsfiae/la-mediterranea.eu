@@ -1,4 +1,4 @@
-import { HeaderModel, SlideshowModel, MenuModel } from './model.js';  // Consolidated imports
+import { HeaderModel, SlideshowModel, ThemeModel } from './model.js';  // Import the correct models
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the slideshow if slideshow elements are present
@@ -30,12 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load header dynamically and initialize theme-switch logic
     loadHeader();
 
-    // Load and display menu data
-    MenuModel.fetchMenus().then(menus => {
-        MenuModel.renderMenus(menus);
-    }).catch(error => {
-        console.error('Error rendering menus:', error);
-    });
+    // Initialize the dark mode switch
+    initializeThemeSwitch();
 });
 
 // Function to load footer from external file
@@ -53,22 +49,11 @@ function loadHeader() {
     HeaderModel.fetchHeader().then(headerHTML => {
         document.querySelector('header').innerHTML = headerHTML;
 
-        // After the header is loaded, initialize theme switch
+        // After the header is loaded, hide the active page link
+        HeaderModel.hideActivePageLink();
+
+        // Initialize the theme switch once the header is loaded
         initializeThemeSwitch();
-
-        // Get the current page's URL
-        const currentPage = HeaderModel.getCurrentPage();
-
-        // Get all the navigation links
-        const navLinks = document.querySelectorAll('.header-center ul li a');
-
-        // Loop through links and hide the link for the current page
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === currentPage) {
-                link.parentElement.style.display = 'none';  // Hide the current page link
-            }
-        });
     }).catch(error => console.error('Error loading header:', error));
 }
 
@@ -77,28 +62,34 @@ function initializeThemeSwitch() {
     const toggleSwitch = document.getElementById('theme-checkbox');
     const modeText = document.getElementById('mode-text');
 
+    // Check if the toggle switch and mode text elements exist
+    if (!toggleSwitch || !modeText) {
+        console.error('Theme switch or mode text elements not found.');
+        return;
+    }
+
     // Load saved theme preference from localStorage
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const isDarkMode = ThemeModel.getThemePreference();
 
     if (isDarkMode) {
         document.body.classList.add('dark-theme');
         toggleSwitch.checked = true;
-        modeText.textContent = 'Light Mode';
+        modeText.textContent = 'light';
     } else {
         document.body.classList.remove('dark-theme');
-        modeText.textContent = 'Dark Mode';
+        modeText.textContent = 'dark';
     }
 
     // Toggle switch logic
     toggleSwitch.addEventListener('change', () => {
         if (toggleSwitch.checked) {
             document.body.classList.add('dark-theme');
-            modeText.textContent = 'Light Mode';
-            localStorage.setItem('darkMode', 'true');  // Save preference
+            modeText.textContent = 'light';
+            ThemeModel.saveThemePreference(true);  // Save preference
         } else {
             document.body.classList.remove('dark-theme');
-            modeText.textContent = 'Dark Mode';
-            localStorage.setItem('darkMode', 'false');  // Save preference
+            modeText.textContent = 'dark';
+            ThemeModel.saveThemePreference(false);  // Save preference
         }
     });
 }

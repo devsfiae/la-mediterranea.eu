@@ -2,66 +2,69 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Bar/Restaurant La Mediterranea</title>
+    <title>bar/restaurant la mediterranea - a virtual location</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
-    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
-    <meta property="og:description" content="@Es Pujols/Formentera">
+    <meta property="og:title" content="bar/restaurant la mediterranea">
+    <meta property="og:description" content="may be located a fantasitic balearan island @ es pujols/formentera">
     <meta property="og:image" content="http://la-mediterranea.eu/images/website_background.jpg">
     <meta property="og:url" content="http://la-mediterranea.eu/index.html">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Verknüpfung mit externer CSS-Datei -->
+    <!-- Link to external CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Header with three sections: logo, navigation, theme switch -->
     <header></header>
-        
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Slideshow Container -->
         <div class="slideshow-container">
-
             <!-- Slides -->
             <div class="slide fade">
-                <img src="images/bar/beachbar.png" alt="Bar">
-                <div class="slide-title">Willkommen im La Mediterranea</div>
+                <img src="images/bar/beachbar.png" alt="bar">
+                <div class="slide-title">la mediterranea</div>
             </div>
 
             <div class="slide fade">
-                <img src="images/bar/restaurant.png" alt="Restaurant">
-                <div class="slide-title">Restaurant</div>
+                <img src="images/bar/restaurant.png" alt="restaurant">
+                <div class="slide-title">restaurant</div>
             </div>
 
             <div class="slide fade">
-                <img src="images/menu/food_culture.png" alt="Speisen">
-                <div class="slide-title">Speisen</div>
+                <img src="images/menu/food_culture.png" alt="food">
+                <div class="slide-title">food</div>
             </div>
 
             <div class="slide fade">
                 <img src="images/cocktails/cocktails_banner.png" alt="Cocktails">
-                <div class="slide-title">Cocktails</div>
+                <div class="slide-title">drinks</div>
             </div>
 
             <div class="slide fade">
                 <img src="images/events/eveningwithdj.png" alt="Events">
-                <div class="slide-title">Events</div>
+                <div class="slide-title">events</div>
             </div>
 
             <!-- Next/Prev Buttons -->
-            <a class="prev" onclick="prevSlide()">&#10094;</a>
-            <a class="next" onclick="nextSlide()">&#10095;</a>
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
+        </div>
+
+        <!-- Subheader with opening hours -->
+        <div class="subheader">
+            <p>times | wednesday, thursday & saturday @17:00 + 19:00 🕞 | friday & sunday also @21:00 🕞| closed monday & tuesday</p>
         </div>
 
         <!-- Dots to indicate current slide -->
         <div class="dots-container">
-            <span class="dot" onclick="currentSlide(1)"></span> 
-            <span class="dot" onclick="currentSlide(2)"></span> 
-            <span class="dot" onclick="currentSlide(3)"></span> 
-            <span class="dot" onclick="currentSlide(4)"></span> 
-            <span class="dot" onclick="currentSlide(5)"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
     </main>
 
@@ -69,6 +72,6 @@
     <footer></footer>
 
     <!-- Scripts -->
-    <script type="module" src="js/controller.js"></script>
+    <script type="module" src="js/controller.js"></script> <!-- Directly using controller.js -->
 </body>
 </html>

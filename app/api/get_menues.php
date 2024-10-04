@@ -30,9 +30,9 @@ if ($result->num_rows > 0) {
         $row['menu_price'] = number_format(round($row['menu_price'], 2), 2, ',', '.'); // Preis formatieren
         $menu_items[] = $row;
     }
-    echo json_encode($menu_items);
+    echo json_encode($menu_items, JSON_UNESCAPED_UNICODE); // Use JSON_UNESCAPED_UNICODE to handle special characters
 } else {
-    echo json_encode([]);
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
 }
 
 $conn->close();

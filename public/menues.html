@@ -16,19 +16,38 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header with three sections: logo, navigation, theme switch -->
+    <!-- Header -->
     <header></header>
-        
+
+    <!-- Subheader with actions -->
+    <div class="subheader">
+        <div class="subheader-actions">
+            <a href="content.html" class="btn primary-btn">Show Content</a>
+            <!-- Example of category selection or other actions -->
+            <a href="#" class="btn category-btn">Fleisch</a>
+            <a href="#" class="btn category-btn">Fisch</a>
+            <a href="#" class="btn category-btn">Vegetarisch</a>
+            <a href="#" class="btn category-btn">Desserts</a>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
-        <div id="menu-container"></div>
+        <!-- Slideshow Container -->
+        <div class="slideshow-container">
+            <!-- Slideshow content goes here -->
+        </div>
+
+        <!-- Dynamic Section Container (e.g., menus, team members) -->
+        <div id="dynamic-content" class="card-container"></div>
     </main>
 
-    <!-- Footer loaded dynamically -->
+    <!-- Footer -->
     <footer></footer>
 
-    <!-- Scripts -->
+    <!-- JavaScript -->
     <script type="module" src="js/controller.js"></script>
 </body>
 </html>
+</html>
+
