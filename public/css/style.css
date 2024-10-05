@@ -5,12 +5,21 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    height: 100%; /* Füllt die gesamte Höhe */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
+    min-height: 100%; /* Mindestens die volle Höhe */
 }
 
 /* GLOBAL COLORS & VARIABLES */
@@ -29,6 +38,7 @@ html, body {
     --slider-handle-color: #ffffff;
 }
 
+/* DARK THEME */
 .dark-theme {
     --background-color: #1C1C1E;
     --text-color: #F5F5F7;
@@ -37,18 +47,10 @@ html, body {
     --footer-background-color: #181819;
     --link-color: #0a84ff;
     --link-hover-color: #66bfff;
-    --divider-color: rgba(255, 255, 255, 0.25); /* Lighter divider color for dark mode */
+    --divider-color: rgba(255, 255, 255, 0.25);
     --slider-background-color: #2C2C2E;
     --slider-active-color: #0a84ff;
     --slider-handle-color: #ffffff;
-}
-
-/* BODY & LAYOUT */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    overflow: hidden;
 }
 
 /* HEADER STYLES */
@@ -57,22 +59,18 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 40px;
+    height: 60px; /* Erhöhte Höhe */
     background-color: var(--primary-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px; /* Add some padding */
+    padding: 0 20px;
     z-index: 1000;
 }
 
-.header .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
-
 .header .logo a {
+    font-size: 1.5rem;
+    font-weight: bold;
     color: white;
     text-decoration: none;
 }
@@ -80,7 +78,7 @@ body {
 .header-center {
     flex: 1;
     display: flex;
-    justify-content: center; /* Center the menu */
+    justify-content: center;
     align-items: center;
 }
 
@@ -90,14 +88,10 @@ body {
     gap: 20px;
 }
 
-.header-center ul li {
-    margin: 0;
-}
-
 .header-center ul li a {
     color: var(--text-color);
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1rem;
     transition: color 0.3s ease;
 }
 
@@ -110,272 +104,9 @@ body {
     align-items: center;
 }
 
-/* Ensure the header elements are vertically aligned and spaced properly */
-.header .theme-switch-wrapper {
-    margin-left: 20px; /* Space between theme switch and header content */
-}
-
-/* Responsive Adjustments for Header */
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        height: auto;
-        padding: 10px;
-    }
-    
-    .header-center {
-        justify-content: flex-start; /* Align menu to the left on smaller screens */
-    }
-    
-    .header-center ul {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
-/* Main content with no padding */
-.main-content {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-}
-/* Subheader style */
-.subheader {
-    width: 100%;
-    height: 40px;
-    background-color: var(--primary-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 16px;
-    text-align: center;
-    z-index: 999;
-    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.1);
-    margin-top: 20px; /* Add some spacing between the slideshow and subheader */
-    padding-bottom: 70px;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-}
-
-.subheader-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Button Styles */
-.btn {
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.primary-btn {
-    background-color: var(--link-color);
-    color: white;
-}
-
-.primary-btn:hover {
-    background-color: var(--link-hover-color);
-}
-
-/* Reusable Card Styles */
-.card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive layout */
-    gap: 20px;
-    padding: 20px;
-    justify-items: center;
-}
-
-.card {
-    background-color: var(--secondary-color);
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card img {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: 8px;
-    object-fit: cover;
-    margin-bottom: 15px;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.card-footer {
-    font-size: 1.2rem;
-    font-weight: 600;
-    text-align: right;
-}
-
-/* Divider */
-.divider {
-    border: 0;
-    height: 1px;
-    background: var(--divider-color);
-    margin: 10px 0;
-}
-
-/* Hover effect */
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* SLIDESHOW STYLES */
-
-.slideshow-container {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    flex-grow: 1;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full height */
-    margin: 0;
-    padding: 0;
-}
-/* Slide (Each Image) */
-.slide {
-    display: none; /* Hide all slides initially */
-    width: 100%;
-    height: 100%;
-    position: relative;
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-}
-
-.slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensure the image covers the entire area without distortion */
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-}
-
-/* Show the first slide by default */
-.slide:first-child {
-    display: block;
-}
-
-/* Slide Title */
-.slide-title {
-    color: #fff;
-    font-size: 20px;
-    padding: 8px 12px;
-    position: absolute;
-    top: 40px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-}
-
-/* Next & Prev Buttons */
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 16px;
-    font-size: 24px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    user-select: none;
-    z-index: 1;
-}
-
-.prev {
-    left: 10px;
-}
-
-.next {
-    right: 10px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* Dots/Indicators inside the slideshow */
-.dots-container {
-    position: absolute;
-    bottom: 120px; /* Positioned closer to the bottom */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-}
-
-.dot {
-    cursor: pointer;
-    height: 15px;
-    width: 15px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    transition: background-color 0.6s ease;
-}
-
-.active, .dot:hover {
-    background-color: #717171;
-}
-/* FOOTER STYLES */
-.footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 40px;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.footer a {
-    color: var(--link-color);
-    text-decoration: none;
-    margin: 0 10px;
-}
-
-.footer a:hover {
-    text-decoration: underline;
-    color: var(--link-hover-color);
-}
-
 /* THEME SWITCHER */
 .theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin: 10px;
+    margin-left: 20px;
 }
 
 .theme-switch {
@@ -421,3 +152,311 @@ input:checked + .slider:before {
     transform: translateX(26px);
 }
 
+/* MAIN CONTENT */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Wichtig für absolute Positionierung der Kinder */
+    margin-top: 60px; /* Platz für den Header */
+    margin-bottom: 60px; /* Platz für den Footer */
+    width: 100%;
+    padding: 0; /* Entfernt jegliches Padding */
+    box-sizing: border-box;
+    overflow: hidden; /* Verhindert Scrollen */
+}
+
+
+/* SUBHEADER */
+.subheader {
+    position: fixed; /* Fixiert den Subheader am Viewport */
+    top: 60px; /* Positioniert ihn direkt unter dem Header (angenommene Höhe des Headers: 60px) */
+    left: 0;
+    width: 100%;
+    height: 60px; /* Passe an die tatsächliche Höhe deines Subheaders an */
+    line-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.0102  );
+    color: white;
+    font-size: 1rem;
+    z-index: 999; /* Sicherstellen, dass der Subheader über dem Inhalt liegt */
+}
+/* SUBFOOTER */
+.subfooter {
+    position: absolute; /* Absolut positioniert innerhalb von .main-content */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 2; /* Über der Slideshow */
+    background-color: rgba(0, 0, 0, 0.5);
+}
+/* FOOTER STYLES */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Erhöhte Höhe */
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.footer a {
+    color: var(--link-color);
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color);
+}
+
+/* BUTTON STYLES */
+.btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.primary-btn {
+    background-color: var(--link-color);
+    color: white;
+    border: none;
+}
+
+.primary-btn:hover {
+    background-color: var(--link-hover-color);
+}
+
+/* DROPDOWN */
+.dropdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background-color: transparent;
+    color: white;
+}
+
+.dropdown {
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown:hover {
+    background-color: var(--link-hover-color);
+}
+
+.dropdown::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    pointer-events: none;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 60px auto 0 auto;  /* Zentriert den Container */
+    box-sizing: border-box;
+    justify-content: center; /* Zentriert die Karten innerhalb des Containers */
+}
+
+/* CARD STYLES */
+.card {
+    background-color: var(--secondary-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+    flex: 1 1 calc(25% - 20px); /* Vier Karten pro Zeile */
+    max-width: calc(25% - 20px);
+    box-sizing: border-box; /* Berücksichtigt Padding und Border in der Gesamtbreite */
+}
+
+/* Stellt sicher, dass die Kartenbilder innerhalb der Karten korrekt dargestellt werden */
+.card-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+/* Karten-Titel */
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
+/* Info-Container innerhalb der Karte */
+.info-container {
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: right;
+    color: var(--link-color);
+    margin-top: auto; /* Schiebt den Info-Container an das Ende der Karte */
+}
+
+/* Hover-Effekt für die Karten */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* MEDIA QUERIES für Responsivität */
+@media (max-width: 1200px) {
+    .card {
+        flex: 1 1 calc(33.333% - 20px); /* Drei Karten pro Zeile */
+    }
+}
+
+@media (max-width: 768px) {
+    .card {
+        flex: 1 1 calc(50% - 20px); /* Zwei Karten pro Zeile */
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%; /* Eine Karte pro Zeile */
+    }
+}
+
+/* SLIDESHOW CONTAINER */
+.slideshow-container {
+    position: absolute; /* Absolut positioniert innerhalb von .main-content */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Füllt die gesamte Höhe von .main-content */
+    overflow: hidden;
+    z-index: 1; /* Hinter Subheader und Subfooter */
+}
+
+/* SLIDE STYLES */
+.slide {
+    display: none;
+    width: 100%;
+    height: 100%; /* Füllt die gesamte Höhe des Slideshow-Containers */
+    position: absolute; /* Übereinander liegende Slides */
+    top: 0;
+    left: 0;
+}
+
+/* SLIDE TITLE */
+.slide-title {
+    position: absolute;
+    bottom: 0px; /* Positionierung unterhalb des Subheaders */
+    left: 0;
+    width: 100%;
+    color: #fff;
+    font-size: 1.0rem;
+    text-align: center;
+    padding: 10px 20px;
+    z-index: 2; /* Über dem Slide-Bild, aber unter dem Subheader */
+    background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund für bessere Lesbarkeit */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* AKTIVE SLIDE SICHTBAR MACHEN */
+.slide.active {
+    display: block;
+}
+
+/* NAVIGATION BUTTONS */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    padding: 16px;
+    font-size: 2rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    user-select: none;
+    z-index: 3; /* Über der Slideshow und den Slides */
+    transform: translateY(-50%);
+    border: none;
+    border-radius: 50%;
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* DOTS */
+.dots-container {
+    position: absolute;
+    bottom: 60px; /* Über dem Subfooter */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    z-index: 3;
+}
+
+.dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    transition: background-color 0.6s ease;
+}
+
+.dot.active, .dot:hover {
+    background-color: #717171;
+}
+
+/* DIVIDER */
+.divider {
+    border: 0;
+    height: 1px;
+    background: var(--divider-gradient);
+    margin: 20px 0;
+}

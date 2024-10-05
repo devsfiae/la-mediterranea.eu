@@ -2,76 +2,78 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Bar/Restaurant La Mediterranea</title>
+    <title>drinks @ La Mediterranea</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
     <meta property="og:title" content="Bar/Restaurant La Mediterranea">
-    <meta property="og:description" content="Cocktails">
+    <meta property="og:description" content="drinks">
     <meta property="og:image" content="images/cocktails/cocktails_banner.png">
-    <meta property="og:url" content="http://la-mediterranea.eu/cocktails.html">
+    <meta property="og:url" content="http://la-mediterranea.eu/drinks.html">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Verknüpfung mit externer CSS-Datei -->
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Header with three sections: logo, navigation, theme switch -->
     <header></header>
-    <!-- Main Content -->
+        <!-- Main Content -->
     <main class="main-content">
         <!-- Slideshow Container -->
         <div class="slideshow-container">
-
+            <!-- subheader card button (moved below the slideshow) -->
+            <div class="subheader">
+                <p><a href="cocktails.html" class="btn primary-btn">card</a></p>
+            </div>        
             <!-- Slides -->
-            <div class="slide fade">
-                <img src="images/cocktails/01_fruchtig_erfrischend.png" alt="Fruchtig/Erfrischend">
-                <div class="slide-title">Fruchtig/Erfrischend</div>
+            <div class="slide">
+                <img src="images/cocktails/01_fruchtig_erfrischend.png" alt="fruity/refreshing">
+                <div class="slide-title">fruity/refreshing</div>
             </div>
 
-            <div class="slide fade">
-                <img src="images/cocktails/02_fruchtig_suess.png" alt="Fruchtig/Süß">
-                <div class="slide-title">Fruchtig/Süß</div>
+            <div class="slide">
+                <img src="images/cocktails/02_fruchtig_suess.png" alt="fruity/sweet">
+                <div class="slide-title">fruity/sweet</div>
             </div>
 
-            <div class="slide fade">
-                <img src="images/cocktails/03_suess_cremig.png" alt="Süß/Cremig">
-                <div class="slide-title">Süß/Cremig</div>
+            <div class="slide">
+                <img src="images/cocktails/03_suess_cremig.png" alt="sweet/creamy">
+                <div class="slide-title">sweet/creamy</div>
             </div>
 
-            <div class="slide fade">
-                <img src="images/cocktails/04_herb_trocken.png" alt="Herb/Trocken">
-                <div class="slide-title">Cocktails</div>
+            <div class="slide">
+                <img src="images/cocktails/04_herb_trocken.png" alt="tart/dry">
+                <div class="slide-title">tart/dry</div>
             </div>
 
-            <div class="slide fade">
-                <img src="images/cocktails/05_alkoholfrei.png" alt="Alkoholfrei">
-                <div class="slide-title">Events</div>
+            <div class="slide">
+                <img src="images/cocktails/05_alkoholfrei.png" alt="non-alcoholic">
+                <div class="slide-title">non-alcoholic</div>
             </div>
 
-            <div class="slide fade">
-                <img src="images/cocktails/06_heisse_getraenke.png" alt="Heiße Getränke/Oktober bis März (Saison)">
-                <div class="slide-title">Heiße Getränke/Oktober bis März (Saison)</div>
+            <div class="slide">
+                <img src="images/cocktails/06_heisse_getraenke.png" alt="hot drinks/october to march (season)">
+                <div class="slide-title">hot drinks/october to march (season)</div>
             </div>
 
             <!-- Next/Prev Buttons -->
-            <a class="prev" onclick="prevSlide()">&#10094;</a>
-            <a class="next" onclick="nextSlide()">&#10095;</a>
+            <a class="prev">&#10094;</a>
+            <a class="next">&#10095;</a>
         </div>
 
         <!-- Dots to indicate current slide -->
         <div class="dots-container">
-            <span class="dot" onclick="currentSlide(1)"></span> 
-            <span class="dot" onclick="currentSlide(2)"></span> 
-            <span class="dot" onclick="currentSlide(3)"></span> 
-            <span class="dot" onclick="currentSlide(4)"></span> 
-            <span class="dot" onclick="currentSlide(5)"></span>
-            <span class="dot" onclick="currentSlide(6)"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
         </div>
+
     </main>
 
     <!-- Footer loaded dynamically -->
-    <footer></footer>
-
     <!-- Scripts -->
     <script type="module" src="js/controller.js"></script>
 </body>

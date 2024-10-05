@@ -36,10 +36,9 @@ export const HeaderModel = {
     }
 };
 
-// Handles fetching and logic for the slideshows
+
 export const SlideshowModel = {
     slideIndex: 1,
-
     showSlides: function(index) {
         const slides = document.getElementsByClassName('slide');
         const dots = document.getElementsByClassName('dot');
@@ -67,19 +66,17 @@ export const SlideshowModel = {
         slides[this.slideIndex - 1].style.display = 'block';
         dots[this.slideIndex - 1].className += ' active';
     },
-
     nextSlide: function() {
         this.showSlides(this.slideIndex += 1);
     },
-
     prevSlide: function() {
         this.showSlides(this.slideIndex -= 1);
     },
-
     currentSlide: function(index) {
         this.showSlides(this.slideIndex = index);
     }
 };
+
 
 // General-purpose dynamic content model
 export const DynamicContentModel = {
@@ -153,3 +150,4 @@ export const DynamicContentModel = {
         });
     }
 };
+window.SlideshowModel = SlideshowModel;

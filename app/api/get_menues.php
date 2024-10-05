@@ -16,21 +16,32 @@ if ($conn->connect_error) {
     die(json_encode(["error" => "Verbindung fehlgeschlagen: " . $conn->connect_error]));
 }
 
+// Initialize empty array for menu items
 $menu_items = [];
 
-$sql = "SELECT menues.*, categories.category_name FROM menues 
-        LEFT JOIN categories ON menues.category_id = categories.category_id
-        WHERE menues.category_id BETWEEN 7 AND 10";
+// Check if a category parameter is provided
+$category = isset($_GET['category']) ? intval($_GET['category']) : null;
+
+if ($category) {
+    // Query filtered by category
+    $sql = "SELECT menues.*, categories.category_name FROM menues 
+            LEFT JOIN categories ON menues.category_id = categories.category_id
+            WHERE menues.category_id = $category";
+} else {
+    // Default query (all menus)
+    $sql = "SELECT menues.*, categories.category_name FROM menues 
+            LEFT JOIN categories ON menues.category_id = categories.category_id";
+}
 
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
-    // Daten sammeln
-    while($row = $result->fetch_assoc()) {
-        $row['menu_price'] = number_format(round($row['menu_price'], 2), 2, ',', '.'); // Preis formatieren
+    // Collect data
+    while ($row = $result->fetch_assoc()) {
+        $row['menu_price'] = number_format(round($row['menu_price'], 2), 2, ',', '.'); // Format price
         $menu_items[] = $row;
     }
-    echo json_encode($menu_items, JSON_UNESCAPED_UNICODE); // Use JSON_UNESCAPED_UNICODE to handle special characters
+    echo json_encode($menu_items, JSON_UNESCAPED_UNICODE);
 } else {
     echo json_encode([], JSON_UNESCAPED_UNICODE);
 }

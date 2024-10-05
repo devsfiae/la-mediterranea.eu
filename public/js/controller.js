@@ -1,75 +1,108 @@
-import { HeaderModel, SlideshowModel, ThemeModel } from './model.js';  // Import the correct models
+import { SlideshowModel, HeaderModel, DynamicContentModel } from './model.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the slideshow if slideshow elements are present
-    if (document.querySelectorAll('.slide').length > 0 && document.querySelectorAll('.dot').length > 0) {
-        SlideshowModel.showSlides(SlideshowModel.slideIndex = 1);
+    // Load header and footer dynamically
+    loadHeader();
+    loadFooter();
 
-        // Attach event listeners to slideshow controls
-        document.querySelector('.prev').addEventListener('click', () => {
+    // Initialize the Slideshow
+    initializeSlideshow();
+
+    // Load all menus initially (falls benötigt)
+    loadMenus('all');
+
+    // Add event listener to dropdown for category selection
+    const categoryDropdown = document.getElementById('category-dropdown');
+    if (categoryDropdown) {
+        categoryDropdown.addEventListener('change', (e) => {
+            const selectedCategory = e.target.value;
+            loadMenus(selectedCategory); // Fetch menus based on selected category
+        });
+    }
+});
+
+function initializeSlideshow() {
+    // Initialisiere die Slideshow
+    SlideshowModel.showSlides(SlideshowModel.slideIndex);
+
+    // Event Listener für die Navigationspfeile
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+
+    if (prevButton && nextButton) {
+        prevButton.addEventListener('click', () => {
             SlideshowModel.prevSlide();
         });
 
-        document.querySelector('.next').addEventListener('click', () => {
+        nextButton.addEventListener('click', () => {
             SlideshowModel.nextSlide();
         });
-
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                SlideshowModel.currentSlide(index + 1);
-            });
-        });
-    } else {
-        console.warn("No slideshow found on this page.");
     }
 
-    // Load footer dynamically
-    loadFooter();
+    // Event Listener für die Dots
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            SlideshowModel.currentSlide(index + 1);
+        });
+    });
+}
 
-    // Load header dynamically and initialize theme-switch logic
-    loadHeader();
-
-    // Initialize the dark mode switch
-    initializeThemeSwitch();
-});
+function loadMenus(category) {
+    // Build the URL based on the category
+    const url = category === 'all' ? '/app/api/get_menues.php' : `/app/api/get_menues.php?category=${category}`;
+    
+    // Fetch and render the menus
+    DynamicContentModel.fetchData(url)
+        .then(menus => {
+            DynamicContentModel.renderContent(menus, 'menu');
+        })
+        .catch(error => {
+            console.error('Error rendering menus:', error);
+        });
+}
 
 // Function to load footer from external file
 function loadFooter() {
     fetch('footer.html')
         .then(response => response.text())
         .then(data => {
-            document.querySelector('footer').innerHTML = data;
+            const footerElement = document.querySelector('footer');
+            if (footerElement) {
+                footerElement.innerHTML = data;
+            }
         })
         .catch(error => console.error('Error loading footer:', error));
 }
 
-// Function to load header from external file and initialize theme switch
+// Function to load header from external file
 function loadHeader() {
-    HeaderModel.fetchHeader().then(headerHTML => {
-        document.querySelector('header').innerHTML = headerHTML;
+    HeaderModel.fetchHeader()
+        .then(headerHTML => {
+            const headerElement = document.querySelector('header');
+            if (headerElement) {
+                headerElement.innerHTML = headerHTML;
 
-        // After the header is loaded, hide the active page link
-        HeaderModel.hideActivePageLink();
-
-        // Initialize the theme switch once the header is loaded
-        initializeThemeSwitch();
-    }).catch(error => console.error('Error loading header:', error));
+                // After loading the header, initialize theme switch and hide active page link
+                initializeThemeSwitch();
+                HeaderModel.hideActivePageLink();
+            }
+        })
+        .catch(error => console.error('Error loading header:', error));
 }
 
-// Function to initialize the theme switch after the header is loaded
+// Function to initialize the theme switch
 function initializeThemeSwitch() {
     const toggleSwitch = document.getElementById('theme-checkbox');
     const modeText = document.getElementById('mode-text');
 
-    // Check if the toggle switch and mode text elements exist
     if (!toggleSwitch || !modeText) {
-        console.error('Theme switch or mode text elements not found.');
+        console.warn('Theme switch elements not found.');
         return;
     }
 
     // Load saved theme preference from localStorage
-    const isDarkMode = ThemeModel.getThemePreference();
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
 
     if (isDarkMode) {
         document.body.classList.add('dark-theme');
@@ -80,16 +113,16 @@ function initializeThemeSwitch() {
         modeText.textContent = 'dark';
     }
 
-    // Toggle switch logic
+    // Add event listener to toggle switch
     toggleSwitch.addEventListener('change', () => {
         if (toggleSwitch.checked) {
             document.body.classList.add('dark-theme');
             modeText.textContent = 'light';
-            ThemeModel.saveThemePreference(true);  // Save preference
+            localStorage.setItem('darkMode', 'true');
         } else {
             document.body.classList.remove('dark-theme');
             modeText.textContent = 'dark';
-            ThemeModel.saveThemePreference(false);  // Save preference
+            localStorage.setItem('darkMode', 'false');
         }
     });
 }
