@@ -186,17 +186,17 @@ function loadReservations(date) {
         });
 }
 
-// Funktion zum Darstellen der Reservierungen
+// Function for displaying reservations
 function renderReservations(reservations) {
     const container = document.getElementById('reservation-container');
-    container.innerHTML = ''; // Vorhandenen Inhalt löschen
+    container.innerHTML = ''; // Delete existing content
 
     if (reservations.length === 0) {
-        container.innerHTML = '<p>Keine Reservierungen für dieses Datum verfügbar.</p>';
+        container.innerHTML = '<p>No reservations available for this date.</p>';
         return;
     }
 
-    // Reservierungen nach Zeitfenster gruppieren
+    // Group reservations by time slot
     const reservationsByTime = {};
     reservations.forEach(reservation => {
         const time = reservation.time;
@@ -206,39 +206,39 @@ function renderReservations(reservations) {
         reservationsByTime[time].push(reservation);
     });
 
-    // Für jedes Zeitfenster die Reservierungen rendern
+    // Render the reservations for each time slot
     Object.keys(reservationsByTime).forEach(time => {
         const timeSlotReservations = reservationsByTime[time];
 
-        // Container für dieses Zeitfenster erstellen
+        // Create container for this time window
         const timeSlotContainer = document.createElement('div');
         timeSlotContainer.classList.add('time-slot-container');
 
-        // Überschrift für das Zeitfenster hinzufügen
+        // Add heading for the time window
         const timeHeader = document.createElement('h2');
-        timeHeader.textContent = `Zeit: ${time}`;
+        timeHeader.textContent = `${time}`;
         timeSlotContainer.appendChild(timeHeader);
 
-        // Container für die Karten erstellen
+        // Create containers for the cards
         const cardsContainer = document.createElement('div');
         cardsContainer.classList.add('card-container');
 
-        // Karten für jede Reservierung in diesem Zeitfenster erstellen
+        // Create tickets for each reservation in this time slot
         timeSlotReservations.forEach(reservation => {
             const card = document.createElement('div');
             card.classList.add('card');
 
-            // Reservierungsdetails in die Karte einfügen
+            // Add reservation details to the card
             card.innerHTML = `
                 <div class="card-header">
-                    <h3 class="card-title">Tisch ${reservation.table}</h3>
+                    <h3 class="card-title">table ${reservation.table}</h3>
                 </div>
                 <hr class="divider">
                 <p class="card-description">
-                    Personen: ${reservation.persons}<br>
-                    Status: ${reservation.state}
+                    people: ${reservation.persons}<br>
+                    ${reservation.state}
                 </p>
-                ${reservation.available ? `<button class="reserve-btn" data-table="${reservation.table}" data-time="${reservation.time}">Reservieren</button>` : ''}
+                ${reservation.available ? `<button class="primary-btn" data-table="${reservation.table}" data-time="${reservation.time}">reserve</button>` : ''}
             `;
 
             cardsContainer.appendChild(card);
@@ -249,7 +249,7 @@ function renderReservations(reservations) {
     });
 
     // Event Listener für die Reservierungsbuttons hinzufügen
-    const reserveButtons = document.querySelectorAll('.reserve-btn');
+    const reserveButtons = document.querySelectorAll('.primary-btn');
     reserveButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const table = e.target.getAttribute('data-table');
@@ -280,10 +280,11 @@ function makeReservation(table, time) {
         table: table,
         persons: persons
     };
+    console.log('Reservation Data:', reservationData);
 
     // Save reservation
     ReservationModel.setReservation(reservationData)
-        .then(response => {
+            .then(response => {
             if (response.success) {
                 alert('Reservation successful!');
                 // Reload reservations
