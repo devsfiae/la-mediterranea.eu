@@ -2,59 +2,68 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>contact @ La Mediterranea</title>
+    <title>Contact @ La Mediterranea</title>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
     <meta property="og:title" content="Bar/Restaurant La Mediterranea">
-    <meta property="og:description" content="contakt">
-    <meta property="og:image" content="http://la-mediterranea.eu/images/website_background.jpg">
-    <meta property="og:url" content="http://la-mediterranea.eu/index.html">
+    <meta property="og:description" content="contact">
+    <meta property="og:image" content="images/website_background.jpg">
+    <meta property="og:url" content="http://la-mediterranea.eu/contact.html">
+    <meta property="og:type" content="website">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header with three sections: logo, navigation, theme switch -->
+    <!-- Header -->
     <header></header>
+
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Subheader with Contact Button -->
+        <div class="subheader">
+            <p><a href="contact.html" class="btn primary-btn">contact</a></p>
+        </div>
         <!-- Cards Container -->
         <div class="card-container">
             <!-- Card for Address -->
             <div class="card">
-                <img src="images/bar/bar.png" alt="Beach Bar">
-                <h3>Anschrift</h3>
-                <hr />
-                <p>La Mediterranea<br>
-                Es Pujols, Formentera<br>
-                Balearische Inseln, Spanien<br>
-                Tel: +34 123 456 789<br>
-                Email: info@la-mediterranea.eu</p>
+                <img class="card-image" src="images/bar/bar.png" alt="Beach Bar">
+                <div class="card-header">
+                    <h3 class="card-title">Anschrift</h3>
+                </div>
+                <hr class="divider" />
+                <p class="card-description">
+                    La Mediterranea<br>
+                    Es Pujols, Formentera<br>
+                    Balearische Inseln, Spanien<br>
+                    Tel: +34 123 456 789<br>
+                    Email: info@la-mediterranea.eu
+                </p>
             </div>
 
             <!-- Card for Google Map -->
             <div class="card">
-                <h3>our location</h3>
-                    <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3136.392394245623!2d1.487999751256519!3d38.67755337951382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1299b77fd7fb92bb%3A0x53ef1a1ae4b8b13a!2s38%C2%B040&#39;39.2%22N%201%C2%B029&#39;16.0%22E!5e0!3m2!1sen!2sus!4v1696000000000!5m2!1sen!2sus" 
-                    width="300px" 
-                    height="300px" 
+                <div class="card-header">
+                    <h3 class="card-title">Our Location</h3>
+                </div>
+                <hr class="divider" />
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3136.392394245623!2d1.487999751256519!3d38.67755337951382!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1299b77fd7fb92bb%3A0x53ef1a1ae4b8b13a!2s38%C2%B040'39.2%22N%201%C2%B029'16.0%22E!5e0!3m2!1sen!2sus!4v1696000000000!5m2!1sen!2sus" 
+                    width="300" 
+                    height="300" 
                     style="border:0;" 
                     allowfullscreen="" 
                     loading="lazy" 
                     referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
+                </iframe>
             </div>
         </div>
-        <!-- subfooter card button (moved below the slideshow) -->
-        <div class="subfooter">
-            <p><a href="" class="btn primary-btn">contact</a></p>
-        </div>        
     </main>
-    <!-- Footer loaded dynamically -->
-    <footer></footer>
 
+    <!-- Footer -->
+    <footer class="footer">&copy; 2024 with ♥️ and ⚡️ by our fantastic international team</footer>
     <!-- Scripts -->
     <script type="module" src="js/controller.js"></script>
 </body>

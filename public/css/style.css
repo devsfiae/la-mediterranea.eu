@@ -317,9 +317,10 @@ input:checked + .slider:before {
 .card-title {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--link-color);
     margin-bottom: 5px;
 }
+
 
 /* Info-Container innerhalb der Karte */
 .info-container {

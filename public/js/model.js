@@ -80,6 +80,8 @@ export const SlideshowModel = {
 
 // General-purpose dynamic content model
 export const DynamicContentModel = {
+
+    
     // Helper function to slugify names for URL-safe image filenames
     slugify: (text) => {
         return text
@@ -112,6 +114,7 @@ export const DynamicContentModel = {
     // Render dynamic content (can be used for menus, teams, etc.)
     renderContent: (data, type) => {
         const container = document.getElementById('dynamic-content');
+                
         container.innerHTML = ''; // Clear existing content
 
         data.forEach(item => {

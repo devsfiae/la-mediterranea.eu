@@ -1,26 +1,59 @@
+// cotroller.js
 import { SlideshowModel, HeaderModel, DynamicContentModel } from './model.js';
 
+// Wait for the DOM to be fully loaded
+// In controller.js
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Load header and footer dynamically
-    loadHeader();
-    loadFooter();
-
-    // Initialize the Slideshow
-    initializeSlideshow();
-
-    // Load all menus initially (falls benötigt)
-    loadMenus('all');
-
-    // Add event listener to dropdown for category selection
-    const categoryDropdown = document.getElementById('category-dropdown');
-    if (categoryDropdown) {
-        categoryDropdown.addEventListener('change', (e) => {
-            const selectedCategory = e.target.value;
-            loadMenus(selectedCategory); // Fetch menus based on selected category
-        });
+    // Header-Element abrufen
+    const headerElement = document.querySelector('header');
+    if (headerElement && headerElement.innerHTML.trim() === '') {
+        // Header ist leer, lade ihn dynamisch
+        loadHeader();
+    } else {
+        // Header ist bereits vorhanden, initialisiere abhängige Funktionen
+        initializeThemeSwitch();
+        HeaderModel.hideActivePageLink();
     }
+
+    // Footer-Element abrufen
+    const footerElement = document.querySelector('footer');
+    if (footerElement && footerElement.innerHTML.trim() === '') {
+        // Footer ist leer, lade ihn dynamisch
+        loadFooter();
+    }
+
+    // Aktuelle Seite ermitteln
+    const currentPage = window.location.pathname.split('/').pop();
+
+    // Wenn wir auf der Menüseite sind
+    if (currentPage === 'card.html' || currentPage === 'menus.html' || currentPage === 'food.html' || currentPage === 'drinks.html') {
+        // Funktion `loadMenus` beim Laden der Seite aufrufen
+        if (typeof loadMenus === 'function') {
+            loadMenus('all');
+        }
+
+        // Füge Event Listener für das Kategorie-Dropdown hinzu
+        const categoryDropdown = document.getElementById('category-dropdown');
+        if (categoryDropdown) {
+            categoryDropdown.addEventListener('change', (e) => {
+                const selectedCategory = e.target.value;
+                loadMenus(selectedCategory);
+            });
+        }
+    } else {
+        // Für andere Seiten prüfen, ob dynamischer Inhalt geladen werden muss
+        const dynamicContentElement = document.getElementById('dynamic-content');
+        if (dynamicContentElement && dynamicContentElement.children.length === 0) {
+            // Dynamischen Inhalt laden (falls erforderlich)
+        }
+    }
+
+    // Initialisiere die Slideshow, falls vorhanden
+    initializeSlideshow();
 });
 
+// Function to initialize the slideshow
 function initializeSlideshow() {
     // Initialisiere die Slideshow
     SlideshowModel.showSlides(SlideshowModel.slideIndex);
