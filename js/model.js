@@ -127,7 +127,7 @@ export const DynamicContentModel = {
             });
     },
 
-// Render dynamic content (can be used for menus, team members, etc.)
+    // Render dynamic content (can be used for menus, team members, etc.)
 renderContent: (data, type) => {
     const container = document.getElementById('dynamic-content');
     container.innerHTML = ''; // Clear existing content
@@ -161,6 +161,7 @@ renderContent: (data, type) => {
             description = item.position;
         }
 
+        // Create the card HTML and handle image load error
         card.innerHTML = `
             <img class="card-image" src="${imageUrl}" alt="${title}">
             <div class="card-header">
@@ -171,9 +172,16 @@ renderContent: (data, type) => {
             ${price ? `<hr class="divider"><div class="info-container"><span class="card-info">${price} €</span></div>` : ''}
         `;
 
+        // Add image error handling
+        const imgElement = card.querySelector('.card-image');
+        imgElement.addEventListener('error', () => {
+            imgElement.src = 'images/icons/no_picture.png'; // Fallback image
+        });
+
         container.appendChild(card);
     });
 }
+
 };
 
 window.SlideshowModel = SlideshowModel;
