@@ -1,3 +1,5 @@
+// model.js
+
 // Handles saving/loading theme preferences
 export const ThemeModel = {
     saveThemePreference: (isDarkMode) => {
@@ -77,6 +79,20 @@ export const SlideshowModel = {
         this.showSlides(this.slideIndex = index);
     }
 };
+
+// DateModel: Handles date selection and storage
+export const DateModel = {
+    selectedDate: new Date(), // Initialize with current date
+
+    setDate: function(date) {
+        this.selectedDate = date;
+    },
+
+    getDate: function() {
+        return this.selectedDate;
+    }
+};
+
 
 // CocktailsModel: Handles fetching and rendering cocktails data
 export const CocktailsModel = {
@@ -181,8 +197,39 @@ renderContent: (data, type) => {
         container.appendChild(card);
     });
 }
-
 };
-
+// ReservationModel: Processes the retrieval and storage of reservations
+export const ReservationModel = {
+    fetchReservations: (date) => {
+        const formattedDate = date.toISOString().split('T')[0]; // Date in format 'YYYY-MM-DD'
+        const url = `app/api/get_reservations.php?date=${formattedDate}`;
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Fehler beim Abrufen der Reservierungen:', error);
+                throw error;
+            });
+    },
+    setReservation: (reservationData) => {
+        const url = 'app/api/set_reservations.php';
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reservationData)
+        })
+        .then(response => response.json())
+        .catch(error => {
+            console.error('Fehler beim Speichern der Reservierung:', error);
+            throw error;
+        });
+    }
+};
 window.SlideshowModel = SlideshowModel;
 window.CocktailsModel = CocktailsModel;

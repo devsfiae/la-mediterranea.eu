@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>reservations @ La Mediterranea</title>
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <!-- Open Graph Meta-Tags -->
+    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
+    <meta property="og:description" content="reservations">
+    <meta property="og:image" content="images/bar/bar.png">
+    <meta property="og:url" content="http://la-mediterranea.eu/index.html">
+    <!-- Responsive Design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+    <!-- Header with three sections: logo, navigation, theme switch -->
+    <header></header>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- subheader date button -->
+        <div class="subheader">
+            <button id="dateButton" class="btn primary-btn">date</button>
+        </div>
+        
+        <!-- Reservation container -->
+            <div id="reservation-container" class="reservation-container">
+                <!-- Reservations are inserted here dynamically -->
+            </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">&copy; 2024 with ♥️ and ⚡️ by our fantastic international team</footer>
+    <!-- Scripts -->
+    <script type="module" src="js/controller.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</body>
+</html>

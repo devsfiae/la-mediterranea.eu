@@ -344,6 +344,16 @@ input:checked + .slider:before {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+/* CSS für die Reservierungskarten-Anordnung */
+
+.time-slot-container {
+    margin-bottom: 20px;
+}
+
+.time-slot-container h2 {
+    margin-bottom: 10px;
+}
+
 /* MEDIA QUERIES für Responsivität */
 @media (max-width: 1200px) {
     .card {

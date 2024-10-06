@@ -46,6 +46,9 @@ $result = $stmt->get_result();
 // Collect data
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        // Determine whether the reservation is available
+        $available = ($row['state_id'] == 1); // Assuming state_id == 1 means available
+
         // Format the reservation data
         $reservation = [
             'name' => $row['name'],
@@ -54,7 +57,9 @@ if ($result->num_rows > 0) {
             'table' => $row['table_id'],
             'state' => $row['state_name'],
             'persons' => $row['persons'],
-            'email' => $row['email']
+            'email' => $row['email'],
+            'available' => $available,
+            'rows_per_day' => $row['rows_per_day'] ?? 2 // Default value 2, if not set
         ];
 
         $reservations[] = $reservation;
@@ -64,7 +69,6 @@ if ($result->num_rows > 0) {
 } else {
     echo json_encode([], JSON_UNESCAPED_UNICODE);
 }
-
 // Close statement and connection
 $stmt->close();
 $conn->close();
