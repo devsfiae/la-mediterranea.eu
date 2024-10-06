@@ -3,30 +3,69 @@
 
 header('Content-Type: application/json');
 
-// Die Datenbankverbindung aus der config/database.php-Datei laden
-$conn = require_once __DIR__ . '/../config/database.php';
+// Establish database connection
+$servername = "localhost";
+$username = "la_mediterranea";
+$password = "theycantforceus!";
+$dbname = "la_mediterranea";
 
-// Datum aus der Anfrage abrufen
-$date = $_GET['date'] ?? '';
+// Create a connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+$conn->query("SET NAMES 'utf8'");
 
-if (empty($date)) {
-    die(json_encode(["error" => "Kein Datum angegeben."]));
+// Check the connection
+if ($conn->connect_error) {
+    die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
 }
 
-// SQL-Abfrage vorbereiten
-$stmt = $conn->prepare("SELECT * FROM reservations WHERE date_field = ?");
-$stmt->bind_param("s", $date);
+// Initialize an array for reservations
+$reservations = [];
+
+// Prepare the SQL query with an optional date parameter
+if (isset($_GET['date']) && !empty($_GET['date'])) {
+    $date = $_GET['date'];
+    // Query with a specific date
+    $sql = "SELECT reservations.*, states.state_name
+            FROM reservations 
+            INNER JOIN states ON reservations.state_id = states.state_id 
+            WHERE reservations.date_field = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $date);
+} else {
+    // Query for all reservations (no specific date)
+    $sql = "SELECT reservations.*, states.state_name
+            FROM reservations 
+            INNER JOIN states ON reservations.state_id = states.state_id 
+            ORDER BY reservations.date_field, reservations.time_field";
+    $stmt = $conn->prepare($sql);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Ergebnisse abrufen
-$reservations = [];
-while ($row = $result->fetch_assoc()) {
-    $reservations[] = $row;
+// Collect data
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Format the reservation data
+        $reservation = [
+            'name' => $row['name'],
+            'date' => $row['date_field'],
+            'time' => $row['time_field'],
+            'table' => $row['table_id'],
+            'state' => $row['state_name'],
+            'persons' => $row['persons'],
+            'email' => $row['email']
+        ];
+
+        $reservations[] = $reservation;
+    }
+
+    echo json_encode($reservations, JSON_UNESCAPED_UNICODE);
+} else {
+    echo json_encode([], JSON_UNESCAPED_UNICODE);
 }
 
+// Close statement and connection
 $stmt->close();
 $conn->close();
-
-echo json_encode($reservations);
 ?>

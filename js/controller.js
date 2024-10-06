@@ -1,64 +1,68 @@
-// cotroller.js
-import { SlideshowModel, HeaderModel, DynamicContentModel } from './model.js';
+import { SlideshowModel, HeaderModel, DynamicContentModel, CocktailsModel } from './model.js';
 
 // Wait for the DOM to be fully loaded
-// In controller.js
-
 document.addEventListener('DOMContentLoaded', () => {
     // Header-Element abrufen
     const headerElement = document.querySelector('header');
     if (headerElement && headerElement.innerHTML.trim() === '') {
-        // Header ist leer, lade ihn dynamisch
+        // Header is empty, load it dynamically
         loadHeader();
     } else {
-        // Header ist bereits vorhanden, initialisiere abhängige Funktionen
+        // Header already exists, initialize dependent functions
         initializeThemeSwitch();
         HeaderModel.hideActivePageLink();
     }
 
-    // Footer-Element abrufen
+    // Retrieve footer element
     const footerElement = document.querySelector('footer');
     if (footerElement && footerElement.innerHTML.trim() === '') {
-        // Footer ist leer, lade ihn dynamisch
+        // Footer is empty, load it dynamically
         loadFooter();
     }
 
-    // Aktuelle Seite ermitteln
+    // Determine current page
     const currentPage = window.location.pathname.split('/').pop();
 
-    // Wenn wir auf der Menüseite sind
-    if (currentPage === 'card.html' || currentPage === 'menus.html' || currentPage === 'food.html' || currentPage === 'drinks.html') {
-        // Funktion `loadMenus` beim Laden der Seite aufrufen
-        if (typeof loadMenus === 'function') {
+    // When we are on the menu or cocktails page
+    if (currentPage === 'card.html' || currentPage === 'menus.html' || currentPage === 'food.html' || currentPage === 'cocktails.html') {
+        if (currentPage === 'cocktails.html') {
+            // Load cocktails data when on the cocktails page
+            loadCocktails('all');
+        } else {
+            // Load menu data when on menu-related pages
             loadMenus('all');
         }
 
-        // Füge Event Listener für das Kategorie-Dropdown hinzu
+        // Add event listeners for the category dropdown
         const categoryDropdown = document.getElementById('category-dropdown');
         if (categoryDropdown) {
             categoryDropdown.addEventListener('change', (e) => {
                 const selectedCategory = e.target.value;
-                loadMenus(selectedCategory);
+                if (currentPage === 'cocktails.html') {
+                    loadCocktails(selectedCategory);
+                } else {
+                    loadMenus(selectedCategory);
+                }
             });
         }
     } else {
-        // Für andere Seiten prüfen, ob dynamischer Inhalt geladen werden muss
+        // Check for other pages whether dynamic content needs to be loaded
         const dynamicContentElement = document.getElementById('dynamic-content');
         if (dynamicContentElement && dynamicContentElement.children.length === 0) {
-            // Dynamischen Inhalt laden (falls erforderlich)
+            // Load dynamic content (if required)
         }
     }
 
-    // Initialisiere die Slideshow, falls vorhanden
+    // Initialize the slideshow, if available
     initializeSlideshow();
 });
 
 // Function to initialize the slideshow
 function initializeSlideshow() {
-    // Initialisiere die Slideshow
+    // Initialize the slideshow
     SlideshowModel.showSlides(SlideshowModel.slideIndex);
 
-    // Event Listener für die Navigationspfeile
+    // Event listener for the navigation arrows
     const prevButton = document.querySelector('.prev');
     const nextButton = document.querySelector('.next');
 
@@ -72,7 +76,7 @@ function initializeSlideshow() {
         });
     }
 
-    // Event Listener für die Dots
+    // Event listener for the dots
     const dots = document.querySelectorAll('.dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
@@ -81,17 +85,27 @@ function initializeSlideshow() {
     });
 }
 
+// Function to load menus based on category
 function loadMenus(category) {
-    // Build the URL based on the category
-    const url = category === 'all' ? '/app/api/get_menues.php' : `/app/api/get_menues.php?category=${category}`;
-    
-    // Fetch and render the menus
+    const url = category === 'all' ? 'app/api/get_menues.php' : `app/api/get_menues.php?category=${category}`;
     DynamicContentModel.fetchData(url)
         .then(menus => {
             DynamicContentModel.renderContent(menus, 'menu');
         })
         .catch(error => {
             console.error('Error rendering menus:', error);
+        });
+}
+
+// Function to load cocktails based on category
+function loadCocktails(category) {
+    const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
+    CocktailsModel.fetchCocktails(category)
+        .then(cocktails => {
+            DynamicContentModel.renderContent(cocktails, 'cocktail');
+        })
+        .catch(error => {
+            console.error('Error rendering cocktails:', error);
         });
 }
 

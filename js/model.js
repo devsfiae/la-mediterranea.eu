@@ -7,6 +7,7 @@ export const ThemeModel = {
         return localStorage.getItem('darkMode') === 'true';  // Convert to boolean
     }
 };
+
 // Handles fetching and logic for the header
 export const HeaderModel = {
     fetchHeader: () => {
@@ -36,7 +37,7 @@ export const HeaderModel = {
     }
 };
 
-
+// Handles slideshow functionality
 export const SlideshowModel = {
     slideIndex: 1,
     showSlides: function(index) {
@@ -77,11 +78,26 @@ export const SlideshowModel = {
     }
 };
 
+// CocktailsModel: Handles fetching and rendering cocktails data
+export const CocktailsModel = {
+    fetchCocktails: (category) => {
+        const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error fetching cocktails:', error);
+                throw error;
+            });
+    }
+};
 
 // General-purpose dynamic content model
 export const DynamicContentModel = {
-
-    
     // Helper function to slugify names for URL-safe image filenames
     slugify: (text) => {
         return text
@@ -111,46 +127,54 @@ export const DynamicContentModel = {
             });
     },
 
-    // Render dynamic content (can be used for menus, teams, etc.)
-    renderContent: (data, type) => {
-        const container = document.getElementById('dynamic-content');
-                
-        container.innerHTML = ''; // Clear existing content
+// Render dynamic content (can be used for menus, team members, etc.)
+renderContent: (data, type) => {
+    const container = document.getElementById('dynamic-content');
+    container.innerHTML = ''; // Clear existing content
 
-        data.forEach(item => {
-            const card = document.createElement('div');
-            card.classList.add('card');
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('card');
 
-            let slugifiedName = DynamicContentModel.slugify(item.name || item.menu_name);
+        let itemName = '';
+        let imageUrl = '';
+        let title = '';
+        let description = '';
+        let price = '';
 
-            let imageUrl = '';
-            let title = '';
-            let description = '';
-            let price = '';
+        if (type === 'menu') {
+            itemName = item.menu_name;
+            imageUrl = `images/menu/${item.menu_id}_${item.category_id}_${DynamicContentModel.slugify(itemName)}.png`;
+            title = itemName;
+            description = item.menu_ingredients;
+            price = item.menu_price;
+        } else if (type === 'cocktail') {
+            itemName = item.cocktail_name;
+            imageUrl = `images/cocktails/${item.cocktail_id}_${item.category_id}_${DynamicContentModel.slugify(itemName)}.png`;
+            title = itemName;
+            description = item.cocktail_description;
+            price = item.price;
+        } else if (type === 'team') {
+            itemName = item.name;
+            imageUrl = `images/team/${DynamicContentModel.slugify(itemName)}.png`;
+            title = itemName;
+            description = item.position;
+        }
 
-            if (type === 'menu') {
-                imageUrl = `images/menu/${item.menu_id}_${item.category_id}_${slugifiedName}.png`;
-                title = item.menu_name;
-                description = item.menu_ingredients;
-                price = item.menu_price;
-            } else if (type === 'team') {
-                imageUrl = `images/team/${slugifiedName}.png`;
-                title = item.name;
-                description = item.position;
-            }
+        card.innerHTML = `
+            <img class="card-image" src="${imageUrl}" alt="${title}">
+            <div class="card-header">
+                <h3 class="card-title">${title}</h3>
+            </div>
+            <hr class="divider">
+            <p class="card-description">${description}</p>
+            ${price ? `<hr class="divider"><div class="info-container"><span class="card-info">${price} €</span></div>` : ''}
+        `;
 
-            card.innerHTML = `
-                <img class="card-image" src="${imageUrl}" alt="${title}">
-                <div class="card-header">
-                    <h3 class="card-title">${title}</h3>
-                </div>
-                <hr class="divider">
-                <p class="card-description">${description}</p>
-                ${price ? `<hr class="divider"><div class="info-container"><span class="card-info">${price} €</span></div>` : ''}
-            `;
-
-            container.appendChild(card);
-        });
-    }
+        container.appendChild(card);
+    });
+}
 };
+
 window.SlideshowModel = SlideshowModel;
+window.CocktailsModel = CocktailsModel;
