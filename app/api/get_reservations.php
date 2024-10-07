@@ -58,8 +58,7 @@ if ($result->num_rows > 0) {
             'state' => $row['state_name'],
             'persons' => $row['persons'],
             'email' => $row['email'],
-            'available' => $available,
-            'rows_per_day' => $row['rows_per_day'] ?? 2 // Default value 2, if not set
+            'available' => $available
         ];
 
         $reservations[] = $reservation;
