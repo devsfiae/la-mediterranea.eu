@@ -4,7 +4,7 @@
 header('Content-Type: application/json');
 
 // Datenbankverbindung herstellen
-$servername = "localhost";
+$servername = "81.169.190.112";
 $username = "la_mediterranea";
 $password = "theycantforceus!";
 $dbname = "la_mediterranea";
