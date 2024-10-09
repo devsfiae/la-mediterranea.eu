@@ -3,23 +3,15 @@ import { SlideshowModel, HeaderModel, DynamicContentModel, CocktailsModel, DateM
 
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Header-Element abrufen
-    const headerElement = document.querySelector('header');
-    if (headerElement && headerElement.innerHTML.trim() === '') {
-        // Header is empty, load it dynamically
-        loadHeader();
-    } else {
-        // Header already exists, initialize dependent functions
-        initializeThemeSwitch();
-        HeaderModel.hideActivePageLink();
-    }
+    // Load header and footer for all pages
+    loadHeader();
+    loadFooter();
 
-    // Retrieve footer element
-    const footerElement = document.querySelector('footer');
-    if (footerElement && footerElement.innerHTML.trim() === '') {
-        // Footer is empty, load it dynamically
-        loadFooter();
-    }
+    // Initialize the theme switch after the header is loaded
+    initializeThemeSwitch();
+
+    // Hide the active page link after the header is loaded
+    HeaderModel.hideActivePageLink();
 
     // Determine current page
     const currentPage = window.location.pathname.split('/').pop();
@@ -46,12 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-    } else {
-        // Check for other pages whether dynamic content needs to be loaded
-        const dynamicContentElement = document.getElementById('dynamic-content');
-        if (dynamicContentElement && dynamicContentElement.children.length === 0) {
-            // Load dynamic content (if required)
-        }
     }
 
     // Initialize the slideshow, if available
@@ -62,6 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load the reservations for the initial date
     loadReservations(DateModel.getDate());
+
+    // Initialize form event listener for reservations
+    const form = document.getElementById('reservationForm');
+    if (form) {
+        form.addEventListener('submit', handleFormSubmit);
+    }
 });
 
 // Function to initialize the slideshow
@@ -145,8 +137,7 @@ function loadHeader() {
         .catch(error => console.error('Error loading header:', error));
 }
 
-
-// Aktualisieren der Funktion `initializeDatePicker`
+// Updating the function `initializeDatePicker`
 function initializeDatePicker() {
     const dateButton = document.getElementById('dateButton');
 
@@ -155,20 +146,20 @@ function initializeDatePicker() {
         return;
     }
 
-    // Initiales Datum auf dem Button anzeigen
+    // Show initial date on the button
     updateDateButton(DateModel.getDate());
 
-    // Flatpickr auf dem Button initialisieren
+    // Initialise flatpickr on the button
     flatpickr(dateButton, {
         enableTime: false,
         dateFormat: "Y-m-d",
         defaultDate: DateModel.getDate(),
         onChange: function(selectedDates, dateStr, instance) {
-            // Modell mit dem ausgewählten Datum aktualisieren
+            // Update model with the selected date
             DateModel.setDate(selectedDates[0]);
-            // Button-Text aktualisieren
+            // Update button text
             updateDateButton(selectedDates[0]);
-            // Reservierungen für das ausgewählte Datum laden
+            // Load reservations for the selected date
             loadReservations(selectedDates[0]);
         },
         clickOpens: true
@@ -189,7 +180,7 @@ function loadReservations(date) {
 // Function for displaying reservations
 function renderReservations(reservations) {
     const container = document.getElementById('reservation-container');
-    container.innerHTML = ''; // Delete existing content
+    container.innerHTML = ''; // Clear existing content
 
     if (reservations.length === 0) {
         container.innerHTML = '<p>No reservations available for this date.</p>';
@@ -231,14 +222,14 @@ function renderReservations(reservations) {
             // Add reservation details to the card
             card.innerHTML = `
                 <div class="card-header">
-                    <h3 class="card-title">table ${reservation.table}</h3>
+                    <h3 class="card-title">Table ${reservation.table}</h3>
                 </div>
                 <hr class="divider">
                 <p class="card-description">
-                    people: ${reservation.persons}<br>
+                    People: ${reservation.persons}<br>
                     ${reservation.state}
                 </p>
-                ${reservation.available ? `<button class="primary-btn" data-table="${reservation.table}" data-time="${reservation.time}">reserve</button>` : ''}
+                ${reservation.available ? `<button class="primary-btn" data-table="${reservation.table}" data-time="${reservation.time}">Reserve</button>` : ''}
             `;
 
             cardsContainer.appendChild(card);
@@ -248,27 +239,62 @@ function renderReservations(reservations) {
         container.appendChild(timeSlotContainer);
     });
 
-    // Event Listener für die Reservierungsbuttons hinzufügen
+    // Add event listeners for the reservation buttons
     const reserveButtons = document.querySelectorAll('.primary-btn');
     reserveButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const table = e.target.getAttribute('data-table');
             const time = e.target.getAttribute('data-time');
-            // Reservierungsprozess starten
-            makeReservation(table, time);
+            showReservationForm(table, time);
         });
     });
 }
 
-// Funktion zum Erstellen einer Reservierung
-function makeReservation(table, time) {
-    // Notwendige Daten sammeln, z.B. Name, E-Mail, etc.
-    const name = prompt('Bitte geben Sie Ihren Namen ein:');
-    const email = prompt('Bitte geben Sie Ihre E-Mail-Adresse ein:');
-    const persons = prompt('Anzahl der Personen:');
+// Function to show the selected card and the reservation form
+function showReservationForm(table, time) {
+    const container = document.getElementById('reservation-container');
+    
+    // Clear the reservation container and show only the selected card
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Table ${table}</h3>
+            </div>
+            <hr class="divider">
+            <p class="card-description">
+                Time: ${time}
+            </p>
+        </div>
+        <form id="reservationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="persons">Persons:</label>
+            <input type="number" id="persons" name="persons" min="1" required>
+
+            <button type="submit" class="btn primary-btn">Submit Reservation</button>
+        </form>
+    `;
+
+    // Add event listener to the form submission
+    const form = document.getElementById('reservationForm');
+    form.addEventListener('submit', (event) => {
+        handleFormSubmit(event, table, time);
+    });
+}
+
+// Function to handle form submission with table and time
+function handleFormSubmit(event, table, time) {
+    event.preventDefault(); // Prevent the default form submission
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const persons = document.getElementById('persons').value;
 
     if (!name || !email || !persons) {
-        alert('Alle Informationen sind erforderlich.');
+        alert('All information is required.');
         return;
     }
 
@@ -280,14 +306,12 @@ function makeReservation(table, time) {
         table: table,
         persons: persons
     };
-    console.log('Reservation Data:', reservationData);
 
     // Save reservation
     ReservationModel.setReservation(reservationData)
-            .then(response => {
+        .then(response => {
             if (response.success) {
                 alert('Reservation successful!');
-                // Reload reservations
                 loadReservations(DateModel.getDate());
             } else {
                 alert('Error in the reservation: ' + response.message);
