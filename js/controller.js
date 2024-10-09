@@ -301,7 +301,7 @@ function handleFormSubmit(event, table, time) {
     const reservationData = {
         name: name,
         email: email,
-        date: DateModel.getDate().toISOString().split('T')[0],
+        date: DateModel.getDate().toISOString().split('T')[0], // Ensure the date is formatted as 'YYYY-MM-DD'
         time: time,
         table: table,
         persons: persons

@@ -1,7 +1,12 @@
 <?php
 // set_reservations.php
 
-header('Content-Type: application/json');
+// Add this at the top of your PHP script to enable error logging
+ini_set('display_errors', 0); // Disable error display
+ini_set('log_errors', 1); // Enable error logging
+error_log("data"); // Set your error log path
+
+header('Content-Type: application/json'); // Set correct content type
 
 // Establish database connection
 $servername = "81.169.190.112";
@@ -15,15 +20,17 @@ $conn->query("SET NAMES 'utf8'");
 
 // Check connection
 if ($conn->connect_error) {
-    die(json_encode(["success" => false, "message" => "Connection failed: " . $conn->connect_error]));
+    error_log("Database connection failed: " . $conn->connect_error);
+    echo json_encode(["success" => false, "message" => "Database connection failed"]);
+    exit;
 }
 
 // Receive JSON data from the POST request
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Validation of data
+// Validate input
 if (!isset($data['name'], $data['email'], $data['date'], $data['time'], $data['table'], $data['persons'])) {
-    echo json_encode(["success" => false, "message" => "Invalid data provided."]);
+    echo json_encode(["success" => false, "message" => "Invalid input data."]);
     exit;
 }
 
@@ -36,23 +43,28 @@ $table = intval($data['table']);
 $persons = intval($data['persons']);
 
 if (!$name || !$email || !$date || !$time || !$table || !$persons) {
-    echo json_encode(["success" => false, "message" => "Invalid data."]);
+    echo json_encode(["success" => false, "message" => "Invalid reservation data."]);
     exit;
 }
 
-// Preparation and binding
-$stmt = $conn->prepare("INSERT INTO reservations (name, email, date_field, time_field, table_id, persons, state_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$state_id = 2; // Assuming 2 means 'Reserved' or similar
-$stmt->bind_param("ssssiii", $name, $email, $date, $time, $table, $persons, $state_id);
+// Prepare the update query
+$stmt = $conn->prepare("
+    UPDATE reservations 
+    SET name = ?, email = ?, persons = ?, state_id = 2 
+    WHERE date_field = ? AND time_field = ? AND table_id = ? AND state_id = 1
+");
 
-// Executing the instruction
-if ($stmt->execute()) {
-    echo json_encode(["success" => true, "message" => "Reservation saved."]);
+// Bind parameters
+$stmt->bind_param("ssiissi", $name, $email, $persons, $date, $time, $table);
+
+// Execute the query
+if ($stmt->execute() && $stmt->affected_rows > 0) {
+    echo json_encode(["success" => true, "message" => "Reservation successfully updated."]);
 } else {
-    echo json_encode(["success" => false, "message" => "Error: " . $stmt->error]);
+    echo json_encode(["success" => false, "message" => "Failed to update reservation."]);
 }
 
-// Closing statement and connection
+// Close statement and connection
 $stmt->close();
 $conn->close();
 ?>

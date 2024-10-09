@@ -220,16 +220,29 @@ export const ReservationModel = {
         return fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(reservationData)
+            body: JSON.stringify(reservationData),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error saving reservation: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                throw new Error(data.message || 'Unknown error saving reservation');
+            }
+            return data;
+        })
         .catch(error => {
-            console.error('Fehler beim Speichern der Reservierung:', error);
-            throw error;
+            console.error('Error saving the reservation:', error);
+            throw error; // Rethrow so the calling code knows about the error
         });
     }
+    
+    
 };
 window.SlideshowModel = SlideshowModel;
 window.CocktailsModel = CocktailsModel;
