@@ -1,67 +1,88 @@
-// controller.js
 import { SlideshowModel, HeaderModel, DynamicContentModel, CocktailsModel, DateModel, ReservationModel } from './model.js';
 
 // Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Load header and footer for all pages
+function initializePage() {
     loadHeader();
     loadFooter();
 
-    // Initialize the theme switch after the header is loaded
-    initializeThemeSwitch();
+    if (getElement('.slideshow-container')) {
+        initializeSlideshow();
+    }
 
-    // Hide the active page link after the header is loaded
-    HeaderModel.hideActivePageLink();
-
-    // Determine current page
     const currentPage = window.location.pathname.split('/').pop();
-
-    // When we are on the menu or cocktails page
-    if (currentPage === 'card.html' || currentPage === 'menus.html' || currentPage === 'food.html' || currentPage === 'cocktails.html') {
-        if (currentPage === 'cocktails.html') {
-            // Load cocktails data when on the cocktails page
-            loadCocktails('all');
-        } else {
-            // Load menu data when on menu-related pages
-            loadMenus('all');
-        }
-
-        // Add event listeners for the category dropdown
-        const categoryDropdown = document.getElementById('category-dropdown');
-        if (categoryDropdown) {
-            categoryDropdown.addEventListener('change', (e) => {
-                const selectedCategory = e.target.value;
-                if (currentPage === 'cocktails.html') {
-                    loadCocktails(selectedCategory);
-                } else {
-                    loadMenus(selectedCategory);
-                }
-            });
-        }
+    if (['card.html', 'menus.html', 'food.html', 'cocktails.html'].includes(currentPage)) {
+        loadPageContent(currentPage);
     }
 
-    // Initialize the slideshow, if available
-    initializeSlideshow();
-
-    // Initialize the date picker on the date button
-    initializeDatePicker();
-
-    // Load the reservations for the initial date
-    loadReservations(DateModel.getDate());
-
-    // Initialize form event listener for reservations
-    const form = document.getElementById('reservationForm');
-    if (form) {
-        form.addEventListener('submit', handleFormSubmit);
+    if (getElement('#dateButton')) {
+        initializeDatePicker();
+        loadReservations(DateModel.getDate());
     }
-});
+}
 
+// Call the initializer on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', initializePage);
+
+// Utility function to get an element and log a warning if not found
+function getElement(selector) {
+    const element = document.querySelector(selector);
+    if (!element) {
+        console.warn(`${selector} not found.`);
+    }
+    return element;
+}
+
+// Utility function to load external HTML
+function loadExternalHTML(url, elementSelector) {
+    return fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            const element = getElement(elementSelector);
+            if (element) {
+                element.innerHTML = data;
+            }
+        })
+        .catch(error => console.error(`Error loading ${url}:`, error));
+}
+
+
+
+// Function to load header from external file
+function loadHeader() {
+    loadExternalHTML('html/header.html', 'header')
+        .then(() => {
+            initializeThemeSwitch();
+            HeaderModel.hideActivePageLink();
+        });
+}
+
+// Function to load footer from external file
+function loadFooter() {
+    loadExternalHTML('html/footer.html', 'footer');
+}
+
+function initializeThemeSwitch() {
+    const toggleSwitch = getElement('#theme-checkbox');
+    const modeText = getElement('#mode-text');
+    if (!toggleSwitch || !modeText) return;
+
+    const updateTheme = (isDarkMode) => {
+        document.body.classList.toggle('dark-theme', isDarkMode);
+        modeText.textContent = isDarkMode ? 'light' : 'dark';
+        localStorage.setItem('darkMode', isDarkMode.toString());
+    };
+
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    updateTheme(isDarkMode);
+
+    toggleSwitch.addEventListener('change', () => {
+        updateTheme(toggleSwitch.checked);
+    });
+}
 // Function to initialize the slideshow
 function initializeSlideshow() {
-    // Initialize the slideshow
     SlideshowModel.showSlides(SlideshowModel.slideIndex);
 
-    // Event listener for the navigation arrows
     const prevButton = document.querySelector('.prev');
     const nextButton = document.querySelector('.next');
 
@@ -82,6 +103,28 @@ function initializeSlideshow() {
             SlideshowModel.currentSlide(index + 1);
         });
     });
+}
+
+// Function to load content based on the current page
+function loadPageContent(currentPage) {
+    if (currentPage === 'cocktails.html') {
+        loadCocktails('all');
+    } else {
+        loadMenus('all');
+    }
+
+    // Add event listeners for the category dropdown
+    const categoryDropdown = document.getElementById('category-dropdown');
+    if (categoryDropdown) {
+        categoryDropdown.addEventListener('change', (e) => {
+            const selectedCategory = e.target.value;
+            if (currentPage === 'cocktails.html') {
+                loadCocktails(selectedCategory);
+            } else {
+                loadMenus(selectedCategory);
+            }
+        });
+    }
 }
 
 // Function to load menus based on category
@@ -108,184 +151,177 @@ function loadCocktails(category) {
         });
 }
 
-// Function to load footer from external file
-function loadFooter() {
-    fetch('footer.html')
-        .then(response => response.text())
-        .then(data => {
-            const footerElement = document.querySelector('footer');
-            if (footerElement) {
-                footerElement.innerHTML = data;
-            }
-        })
-        .catch(error => console.error('Error loading footer:', error));
+// Function to debounce a function
+function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+    };
 }
 
-// Function to load header from external file
-function loadHeader() {
-    HeaderModel.fetchHeader()
-        .then(headerHTML => {
-            const headerElement = document.querySelector('header');
-            if (headerElement) {
-                headerElement.innerHTML = headerHTML;
-
-                // After loading the header, initialize theme switch and hide active page link
-                initializeThemeSwitch();
-                HeaderModel.hideActivePageLink();
-            }
-        })
-        .catch(error => console.error('Error loading header:', error));
-}
-
-// Updating the function `initializeDatePicker`
+// Function to initialize the date picker on the date button
 function initializeDatePicker() {
     const dateButton = document.getElementById('dateButton');
 
     if (!dateButton) {
-        console.warn('Datum-Button nicht gefunden.');
+        console.warn('Date button not found.');
         return;
     }
 
-    // Show initial date on the button
-    updateDateButton(DateModel.getDate());
+    // Ensure flatpickr is initialized only once
+    if (!dateButton._flatpickr) {
+        flatpickr(dateButton, {
+            enableTime: false,
+            dateFormat: "Y-m-d",
+            defaultDate: DateModel.getDate(),
+            onChange: function (selectedDates, dateStr, instance) {
+                // Update model with the selected date
+                DateModel.setDate(selectedDates[0]);
+                // Update button text
+                updateDateButton(selectedDates[0]);
+                // Load reservations for the selected date
+                loadReservations(selectedDates[0]);
+            },
+            clickOpens: true
+        });
+    }
 
-    // Initialise flatpickr on the button
-    flatpickr(dateButton, {
-        enableTime: false,
-        dateFormat: "Y-m-d",
-        defaultDate: DateModel.getDate(),
-        onChange: function(selectedDates, dateStr, instance) {
-            // Update model with the selected date
-            DateModel.setDate(selectedDates[0]);
-            // Update button text
-            updateDateButton(selectedDates[0]);
-            // Load reservations for the selected date
-            loadReservations(selectedDates[0]);
-        },
-        clickOpens: true
-    });
+    // Explicitly update the date button with the current date on page load
+    updateDateButton(DateModel.getDate());
 }
 
-// Function for loading the reservations for a specific date
+// Function to update the date button with the selected date
+function updateDateButton(date) {
+    const dateButton = document.getElementById('dateButton');
+    if (dateButton) {
+        // Format the date as desired
+        const options = {
+            year: 'numeric', month: 'long', day: 'numeric'
+        };
+        const dateString = date.toLocaleDateString('de-DE', options);
+        dateButton.textContent = dateString;
+    }
+}
+
+// Function to load reservations for a specific date
 function loadReservations(date) {
+    // Check if the reservation container exists
+    const container = document.getElementById('reservation-container');
+    if (!container) {
+        console.warn('Reservation container not found.');
+        return;
+    }
+
     ReservationModel.fetchReservations(date)
         .then(reservations => {
             renderReservations(reservations);
         })
         .catch(error => {
             console.error('Error loading the reservations:', error);
+            container.innerHTML = '<p>Error loading the reservations.</p>';
         });
 }
 
-// Function for displaying reservations
-function renderReservations(reservations) {
-    const container = document.getElementById('reservation-container');
-    container.innerHTML = ''; // Clear existing content
+// Function to create a reservation card from a template and reservation data
+function createReservationCard(template, reservation) {
+    return template
+        .replace(/{{table}}/g, reservation.table)
+        .replace(/{{persons}}/g, reservation.persons)
+        .replace(/{{state}}/g, reservation.state)
+        .replace(/{{time}}/g, reservation.time) // Ensure {{time}} is replaced correctly
+        .replace(/<button.*<\/button>/, reservation.available ? '$&' : ''); // Keep button if available
+}
 
-    if (reservations.length === 0) {
+// Function to render reservations
+function renderReservations(reservations) {
+    const container = getElement('#reservation-container');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear content
+
+    if (!reservations || reservations.length === 0) {
         container.innerHTML = '<p>No reservations available for this date.</p>';
         return;
     }
 
-    // Group reservations by time slot
-    const reservationsByTime = {};
-    reservations.forEach(reservation => {
-        const time = reservation.time;
-        if (!reservationsByTime[time]) {
-            reservationsByTime[time] = [];
-        }
-        reservationsByTime[time].push(reservation);
-    });
+    fetch('html/reservation_card.html')
+        .then(response => response.text())
+        .then(template => {
+            const reservationsByTime = reservations.reduce((acc, reservation) => {
+                (acc[reservation.time] = acc[reservation.time] || []).push(reservation);
+                return acc;
+            }, {});
 
-    // Render the reservations for each time slot
-    Object.keys(reservationsByTime).forEach(time => {
-        const timeSlotReservations = reservationsByTime[time];
+            Object.keys(reservationsByTime).sort().forEach(time => {
+                const timeSlotContainer = document.createElement('div');
+                timeSlotContainer.classList.add('time-slot-container');
+                timeSlotContainer.innerHTML = `<h2>${time}</h2>`;
 
-        // Create container for this time window
-        const timeSlotContainer = document.createElement('div');
-        timeSlotContainer.classList.add('time-slot-container');
+                const cardsContainer = document.createElement('div');
+                cardsContainer.classList.add('card-container');
 
-        // Add heading for the time window
-        const timeHeader = document.createElement('h2');
-        timeHeader.textContent = `${time}`;
-        timeSlotContainer.appendChild(timeHeader);
+                reservationsByTime[time].forEach(reservation => {
+                    const cardHtml = createReservationCard(template, reservation);
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = cardHtml;
+                    cardsContainer.appendChild(card);
 
-        // Create containers for the cards
-        const cardsContainer = document.createElement('div');
-        cardsContainer.classList.add('card-container');
+                    // Attach event listener to the reserve button after rendering
+                    const reserveButton = card.querySelector('.primary-btn');
+                    if (reserveButton) {
+                        reserveButton.addEventListener('click', () => {
+                            showReservationForm(reservation.table, reservation.time);
+                        });
+                    }
+                });
 
-        // Create tickets for each reservation in this time slot
-        timeSlotReservations.forEach(reservation => {
-            const card = document.createElement('div');
-            card.classList.add('card');
-
-            // Add reservation details to the card
-            card.innerHTML = `
-                <div class="card-header">
-                    <h3 class="card-title">Table ${reservation.table}</h3>
-                </div>
-                <hr class="divider">
-                <p class="card-description">
-                    People: ${reservation.persons}<br>
-                    ${reservation.state}
-                </p>
-                ${reservation.available ? `<button class="primary-btn" data-table="${reservation.table}" data-time="${reservation.time}">Reserve</button>` : ''}
-            `;
-
-            cardsContainer.appendChild(card);
-        });
-
-        timeSlotContainer.appendChild(cardsContainer);
-        container.appendChild(timeSlotContainer);
-    });
-
-    // Add event listeners for the reservation buttons
-    const reserveButtons = document.querySelectorAll('.primary-btn');
-    reserveButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const table = e.target.getAttribute('data-table');
-            const time = e.target.getAttribute('data-time');
-            showReservationForm(table, time);
-        });
-    });
+                timeSlotContainer.appendChild(cardsContainer);
+                container.appendChild(timeSlotContainer);
+            });
+        })
+        .catch(error => console.error('Error loading reservation card template:', error));
 }
-
 // Function to show the selected card and the reservation form
 function showReservationForm(table, time) {
     const container = document.getElementById('reservation-container');
-    
-    // Clear the reservation container and show only the selected card
-    container.innerHTML = `
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Table ${table}</h3>
-            </div>
-            <hr class="divider">
-            <p class="card-description">
-                Time: ${time}
-            </p>
-        </div>
-        <form id="reservationForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+    // Ensure the container exists
+    if (!container) {
+        console.warn('Reservation container not found.');
+        return;
+    }
 
-            <label for="persons">Persons:</label>
-            <input type="number" id="persons" name="persons" min="1" required>
+    // Fetch the reservation form HTML and insert it into the container
+    fetch('html/reservation_form.html')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load reservation form.');
+            }
+            return response.text();
+        })
+        .then(html => {
+            // Replace placeholders with actual values
+            html = html.replace('{{table}}', table)
+            .replace('{{time}}', time);
 
-            <button type="submit" class="btn primary-btn">Submit Reservation</button>
-        </form>
-    `;
+            container.innerHTML = html;
 
-    // Add event listener to the form submission
-    const form = document.getElementById('reservationForm');
-    form.addEventListener('submit', (event) => {
-        handleFormSubmit(event, table, time);
-    });
+            // Now that the HTML is loaded, add the event listener to the form
+            const form = document.getElementById('reservationForm');
+            if (form) {
+                form.addEventListener('submit', (event) => {
+                    handleFormSubmit(event, table, time);
+                });
+            } else {
+                console.warn('Reservation form not found.');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading reservation form:', error);
+        });
 }
-
 // Function to handle form submission with table and time
 function handleFormSubmit(event, table, time) {
     event.preventDefault(); // Prevent the default form submission
@@ -321,53 +357,4 @@ function handleFormSubmit(event, table, time) {
             console.error('Error saving the reservation:', error);
             alert('Error in the reservation.');
         });
-}
-
-// Function to update the date button with the selected date
-function updateDateButton(date) {
-    const dateButton = document.getElementById('dateButton');
-    if (dateButton) {
-        // Format the date as desired
-        const options = { 
-            year: 'numeric', month: 'long', day: 'numeric'
-        };
-        const dateString = date.toLocaleDateString('de-DE', options);
-        dateButton.textContent = dateString;
-    }
-}
-
-// Function to initialize the theme switch
-function initializeThemeSwitch() {
-    const toggleSwitch = document.getElementById('theme-checkbox');
-    const modeText = document.getElementById('mode-text');
-
-    if (!toggleSwitch || !modeText) {
-        console.warn('Theme switch elements not found.');
-        return;
-    }
-
-    // Load saved theme preference from localStorage
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-    if (isDarkMode) {
-        document.body.classList.add('dark-theme');
-        toggleSwitch.checked = true;
-        modeText.textContent = 'light';
-    } else {
-        document.body.classList.remove('dark-theme');
-        modeText.textContent = 'dark';
-    }
-
-    // Add event listener to toggle switch
-    toggleSwitch.addEventListener('change', () => {
-        if (toggleSwitch.checked) {
-            document.body.classList.add('dark-theme');
-            modeText.textContent = 'light';
-            localStorage.setItem('darkMode', 'true');
-        } else {
-            document.body.classList.remove('dark-theme');
-            modeText.textContent = 'dark';
-            localStorage.setItem('darkMode', 'false');
-        }
-    });
 }

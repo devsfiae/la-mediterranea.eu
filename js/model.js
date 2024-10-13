@@ -201,17 +201,17 @@ renderContent: (data, type) => {
 // ReservationModel: Processes the retrieval and storage of reservations
 export const ReservationModel = {
     fetchReservations: (date) => {
-        const formattedDate = date.toISOString().split('T')[0]; // Date in format 'YYYY-MM-DD'
+        const formattedDate = date.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
         const url = `app/api/get_reservations.php?date=${formattedDate}`;
         return fetch(url)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 return response.json();
             })
             .catch(error => {
-                console.error('Fehler beim Abrufen der Reservierungen:', error);
+                console.error('Error fetching reservations:', error);
                 throw error;
             });
     },

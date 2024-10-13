@@ -1,15 +1,14 @@
 <?php
 // set_reservations.php
 
-// Add this at the top of your PHP script to enable error logging
-ini_set('display_errors', 0); // Disable error display
-ini_set('log_errors', 1); // Enable error logging
-error_log("data"); // Set your error log path
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
 
 header('Content-Type: application/json'); // Set correct content type
 
 // Establish database connection
-$servername = "81.169.190.112";
+// $servername = "81.169.190.112";
+$servername = "localhost";
 $username = "la_mediterranea";
 $password = "theycantforceus!";
 $dbname = "la_mediterranea";
@@ -55,7 +54,7 @@ $stmt = $conn->prepare("
 ");
 
 // Bind parameters
-$stmt->bind_param("ssiissi", $name, $email, $persons, $date, $time, $table);
+$stmt->bind_param("ssissi", $name, $email, $persons, $date, $time, $table);
 
 // Execute the query
 if ($stmt->execute() && $stmt->affected_rows > 0) {

@@ -1,0 +1,8 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://ssh-remote+81.169.190.112/var/www/vhosts/la-mediterranea.eu/httpdocs"
+		}
+	],
+	"remoteAuthority": "ssh-remote+81.169.190.112"
+}
