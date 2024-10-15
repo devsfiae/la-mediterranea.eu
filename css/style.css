@@ -280,28 +280,36 @@ input:checked + .slider:before {
     right: 15px;
     pointer-events: none;
 }
+
+/* CARD STYLES */
+
+/* Styles for the time slot container */
+.time-slot-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%; /* Ensure the time slot container takes full width */
+}
+
+/* Styles for the time slot buttons */
 .card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    max-width: 1200px;
-    margin: 60px auto 0 auto;  /* Centers the container */
-    box-sizing: border-box;
-    justify-content: center; /* Centers the cards within the container */
+    width: 100%; /* Ensure full width */
+    justify-content: space-between; /* Add space between cards */
 }
 
-/* CARD STYLES */
+/* Styles for each card */
 .card {
     background-color: var(--secondary-color);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    display: flex;
-    flex-direction: column;
+    flex: 1 1 25%; /* Four cards per row */
     transition: transform 0.3s, box-shadow 0.3s;
-    flex: 1 1 calc(25% - 20px); /* Four cards per row */
-    max-width: calc(25% - 20px);
-    box-sizing: border-box; /* Takes padding and borders into account in the overall width */
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Add space between rows */
 }
 
 /* Ensures that the map images are displayed correctly within the maps */

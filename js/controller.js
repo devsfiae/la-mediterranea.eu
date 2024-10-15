@@ -233,56 +233,6 @@ function createReservationCard(template, reservation) {
         .replace(/<button.*<\/button>/, reservation.available ? '$&' : ''); // Keep button if available
 }
 
-// Function to render reservations
-function renderReservations(reservations) {
-    const container = getElement('#reservation-container');
-    if (!container) return;
-
-    container.innerHTML = ''; // Clear content
-
-    if (!reservations || reservations.length === 0) {
-        container.innerHTML = '<p>No reservations available for this date.</p>';
-        return;
-    }
-
-    fetch('html/reservation_card.html')
-        .then(response => response.text())
-        .then(template => {
-            const reservationsByTime = reservations.reduce((acc, reservation) => {
-                (acc[reservation.time] = acc[reservation.time] || []).push(reservation);
-                return acc;
-            }, {});
-
-            Object.keys(reservationsByTime).sort().forEach(time => {
-                const timeSlotContainer = document.createElement('div');
-                timeSlotContainer.classList.add('time-slot-container');
-                timeSlotContainer.innerHTML = `<h2>${time}</h2>`;
-
-                const cardsContainer = document.createElement('div');
-                cardsContainer.classList.add('card-container');
-
-                reservationsByTime[time].forEach(reservation => {
-                    const cardHtml = createReservationCard(template, reservation);
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-                    card.innerHTML = cardHtml;
-                    cardsContainer.appendChild(card);
-
-                    // Attach event listener to the reserve button after rendering
-                    const reserveButton = card.querySelector('.primary-btn');
-                    if (reserveButton) {
-                        reserveButton.addEventListener('click', () => {
-                            showReservationForm(reservation.table, reservation.time);
-                        });
-                    }
-                });
-
-                timeSlotContainer.appendChild(cardsContainer);
-                container.appendChild(timeSlotContainer);
-            });
-        })
-        .catch(error => console.error('Error loading reservation card template:', error));
-}
 // Function to show the selected card and the reservation form
 function showReservationForm(table, time) {
     const container = document.getElementById('reservation-container');
@@ -322,6 +272,58 @@ function showReservationForm(table, time) {
             console.error('Error loading reservation form:', error);
         });
 }
+
+// Then define renderReservations
+function renderReservations(reservations) {
+    const container = getElement('#reservation-container');
+    if (!container) return;
+
+    container.innerHTML = ''; // Clear content
+
+    if (!reservations || reservations.length === 0) {
+        container.innerHTML = '<p>No reservations available for this date.</p>';
+        return;
+    }
+
+    fetch('html/reservation_card.html')
+        .then(response => response.text())
+        .then(template => {
+            const reservationsByTime = reservations.reduce((acc, reservation) => {
+                (acc[reservation.time] = acc[reservation.time] || []).push(reservation);
+                return acc;
+            }, {});
+
+            Object.keys(reservationsByTime).sort().forEach(time => {
+                const timeSlotContainer = document.createElement('div');
+                timeSlotContainer.classList.add('time-slot-container');
+                timeSlotContainer.innerHTML = `<h2>${time}</h2>`;
+
+                const cardsContainer = document.createElement('div');
+                cardsContainer.classList.add('card-container');
+
+                reservationsByTime[time].forEach(reservation => {
+                    const cardHtml = createReservationCard(template, reservation);
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.innerHTML = cardHtml;  // Set the inner HTML to the updated cardHtml
+                    cardsContainer.appendChild(card);
+
+                    // Attach the click event to the reservation button
+                    const reserveButton = card.querySelector('.primary-btn');
+                    if (reserveButton) {
+                        reserveButton.addEventListener('click', () => {
+                            showReservationForm(reservation.table, reservation.time);
+                        });
+                    }
+                });
+
+                timeSlotContainer.appendChild(cardsContainer);
+                container.appendChild(timeSlotContainer);
+            });
+        })
+        .catch(error => console.error('Error loading reservation card template:', error));
+}
+
 // Function to handle form submission with table and time
 function handleFormSubmit(event, table, time) {
     event.preventDefault(); // Prevent the default form submission
