@@ -1,3 +1,5 @@
+// controller.js
+
 import { SlideshowModel, HeaderModel, DynamicContentModel, CocktailsModel, DateModel, ReservationModel } from './model.js';
 
 // Wait for the DOM to be fully loaded
@@ -225,12 +227,18 @@ function loadReservations(date) {
 
 // Function to create a reservation card from a template and reservation data
 function createReservationCard(template, reservation) {
-    return template
+    let cardHtml = template
         .replace(/{{table}}/g, reservation.table)
         .replace(/{{persons}}/g, reservation.persons)
         .replace(/{{state}}/g, reservation.state)
-        .replace(/{{time}}/g, reservation.time) // Ensure {{time}} is replaced correctly
-        .replace(/<button.*<\/button>/, reservation.available ? '$&' : ''); // Keep button if available
+        .replace(/{{time}}/g, reservation.time);
+
+    // If the reservation is not available, remove the reservation button
+    if (!reservation.available) {
+        cardHtml = cardHtml.replace(/<button.*<\/button>/, '');
+    }
+
+    return cardHtml;
 }
 
 // Function to show the selected card and the reservation form
@@ -278,13 +286,14 @@ function renderReservations(reservations) {
     const container = getElement('#reservation-container');
     if (!container) return;
 
-    container.innerHTML = ''; // Clear content
+    container.innerHTML = ''; // Inhalt leeren
 
     if (!reservations || reservations.length === 0) {
-        container.innerHTML = '<p>No reservations available for this date.</p>';
+        container.innerHTML = '<p>Keine Reservierungen für dieses Datum verfügbar.</p>';
         return;
     }
 
+    // Laden des reservation_card.html Templates
     fetch('html/reservation_card.html')
         .then(response => response.text())
         .then(template => {
@@ -294,6 +303,7 @@ function renderReservations(reservations) {
             }, {});
 
             Object.keys(reservationsByTime).sort().forEach(time => {
+                // Erstellen des Time Slot Containers
                 const timeSlotContainer = document.createElement('div');
                 timeSlotContainer.classList.add('time-slot-container');
                 timeSlotContainer.innerHTML = `<h2>${time}</h2>`;
@@ -302,13 +312,25 @@ function renderReservations(reservations) {
                 cardsContainer.classList.add('card-container');
 
                 reservationsByTime[time].forEach(reservation => {
-                    const cardHtml = createReservationCard(template, reservation);
+                    // Erstellen der Reservierungskarte aus dem Template
+                    let cardHtml = template
+                        .replace(/{{table}}/g, reservation.table)
+                        .replace(/{{persons}}/g, reservation.persons)
+                        .replace(/{{state}}/g, reservation.state);
+
+                    // Bedingtes Rendern des Reservierungsbuttons
+                    if (reservation.available) {
+                        cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '$1');
+                    } else {
+                        cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '');
+                    }
+
                     const card = document.createElement('div');
                     card.classList.add('card');
-                    card.innerHTML = cardHtml;  // Set the inner HTML to the updated cardHtml
+                    card.innerHTML = cardHtml;
                     cardsContainer.appendChild(card);
 
-                    // Attach the click event to the reservation button
+                    // Fügen Sie das Klick-Event zum Reservierungsbutton hinzu
                     const reserveButton = card.querySelector('.primary-btn');
                     if (reserveButton) {
                         reserveButton.addEventListener('click', () => {
@@ -321,9 +343,8 @@ function renderReservations(reservations) {
                 container.appendChild(timeSlotContainer);
             });
         })
-        .catch(error => console.error('Error loading reservation card template:', error));
+        .catch(error => console.error('Fehler beim Laden der Reservierungskarten:', error));
 }
-
 // Function to handle form submission with table and time
 function handleFormSubmit(event, table, time) {
     event.preventDefault(); // Prevent the default form submission

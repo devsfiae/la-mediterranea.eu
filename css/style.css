@@ -144,11 +144,11 @@ body {
     border-radius: 50%;
 }
 
-input:checked + .slider {
+.input:checked + .slider {
     background-color: var(--slider-active-color);
 }
 
-input:checked + .slider:before {
+.input:checked + .slider:before {
     transform: translateX(26px);
 }
 
@@ -306,10 +306,10 @@ input:checked + .slider:before {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    flex: 1 1 25%; /* Four cards per row */
+    flex: 1 1 calc(25% - 20px); /* Vier Karten pro Reihe */
     transition: transform 0.3s, box-shadow 0.3s;
     box-sizing: border-box;
-    margin-bottom: 20px; /* Add space between rows */
+    margin-bottom: 20px;
 }
 
 /* Ensures that the map images are displayed correctly within the maps */
@@ -355,8 +355,10 @@ input:checked + .slider:before {
 /* CSS for the reservation card arrangement */
 
 .time-slot-container {
-    display: block;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .time-slot-container h2 {
@@ -365,18 +367,19 @@ input:checked + .slider:before {
 
 /* CSS for the reservation form */
 
-#reservation-container {
+.reservation-container {
     display: flex;
+    flex: column;
     justify-content: space-between;
     gap: 20px;
 }
 
-#reservation-container .card {
+.reservation-container .card {
     flex: 1; /* Both elements take up the same amount of space */
     max-width: 45%; /* Prevents them from getting too big */
 }
 
-#reservationForm {
+.reservationForm {
     background-color: var(--secondary-color);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -390,14 +393,14 @@ input:checked + .slider:before {
     margin-top: 20px;
 }
 
-#reservationForm label {
+.reservationForm label {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 5px;
 }
 
-#reservationForm input {
+.reservationForm input {
     width: 100%;
     padding: 10px 15px;
     border-radius: 12px;
@@ -410,7 +413,7 @@ input:checked + .slider:before {
 }
 
 /* Focus Styles */
-#reservationForm input:focus {
+.reservationForm input:focus {
     border-color: var(--link-color);
     outline: none;
     box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);

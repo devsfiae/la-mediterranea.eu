@@ -1,12 +1,11 @@
 <!-- reservation_card.html -->
 <div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Table {{table}}</h3>
+    <div class="card-title">Tisch {{table}}</div>
+    <div class="card-text">Personen: {{persons}}</div>
+    <div class="card-text">Status: {{state}}</div>
+    <div class="info-container">
+        {{#if available}}
+        <button class="primary-btn">Reservieren</button>
+        {{/if}}
     </div>
-    <hr class="divider">
-    <p class="card-description">
-        People: {{persons}}<br>
-        {{state}}
-    </p>
-    <button class="btn primary-btn" data-table="{{table}}" data-time="{{time}}">Reserve</button>
 </div>

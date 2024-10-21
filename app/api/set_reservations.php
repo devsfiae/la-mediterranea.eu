@@ -7,8 +7,8 @@ error_reporting(E_ALL);
 header('Content-Type: application/json'); // Set correct content type
 
 // Establish database connection
-// $servername = "81.169.190.112";
-$servername = "localhost";
+$servername = "81.169.190.112";
+// $servername = "localhost";
 $username = "la_mediterranea";
 $password = "theycantforceus!";
 $dbname = "la_mediterranea";
