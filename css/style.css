@@ -295,6 +295,7 @@ body {
 .card-container {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 60px; /* Add space between the subheader and the cards */
     gap: 20px;
     width: 100%; /* Ensure full width */
     justify-content: space-between; /* Add space between cards */
