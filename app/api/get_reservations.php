@@ -10,7 +10,8 @@ error_reporting(E_ALL);
 ob_start();
 
 // Datenbankverbindung herstellen
-$servername = "localhost";
+// $servername = "localhost";
+$servername = "81.169.190.112";
 $username = "la_mediterranea";
 $password = "theycantforceus!"; // Ersetzen Sie durch Ihr tatsächliches Passwort
 $dbname = "la_mediterranea";

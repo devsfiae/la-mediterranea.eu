@@ -166,23 +166,23 @@ body {
     overflow: hidden; /* Verhindert Scrollen */
 }
 
-
 /* SUBHEADER */
 .subheader {
     position: fixed; /* Fixiert den Subheader am Viewport */
-    top: 60px; /* Positioniert ihn direkt unter dem Header (angenommene Höhe des Headers: 60px) */
+    top: 60px; /* Positioniert ihn direkt unter dem Header */
     left: 0;
     width: 100%;
-    height: 60px; /* Passe an die tatsächliche Höhe deines Subheaders an */
+    height: 60px;
     line-height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.0102  );
+    background-color: rgba(0, 0, 0, 0.1);
     color: white;
     font-size: 1rem;
     z-index: 999; /* Sicherstellen, dass der Subheader über dem Inhalt liegt */
 }
+
 /* SUBFOOTER */
 .subfooter {
     position: absolute; /* Absolut positioniert innerhalb von .main-content */
@@ -200,6 +200,7 @@ body {
     z-index: 2; /* Über der Slideshow */
     background-color: rgba(0, 0, 0, 0.5);
 }
+
 /* FOOTER STYLES */
 .footer {
     position: fixed;
@@ -282,23 +283,13 @@ body {
 }
 
 /* CARD STYLES */
-
-/* Styles for the time slot container */
-.time-slot-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    width: 100%; /* Ensure the time slot container takes full width */
-}
-
-/* Styles for the time slot buttons */
 .card-container {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 60px; /* Add space between the subheader and the cards */
+    margin-top: 70px; /* Abstand zwischen Subheader und Karten */
     gap: 20px;
-    width: 100%; /* Ensure full width */
-    justify-content: space-between; /* Add space between cards */
+    width: 100%;
+    justify-content: flex-start;
 }
 
 /* Styles for each card */
@@ -307,13 +298,13 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    flex: 1 1 calc(25% - 20px); /* Vier Karten pro Reihe */
+    flex: 1 0 calc(25% - 20px); /* Vier Karten pro Reihe */
     transition: transform 0.3s, box-shadow 0.3s;
     box-sizing: border-box;
     margin-bottom: 20px;
 }
 
-/* Ensures that the map images are displayed correctly within the maps */
+/* Ensures that the images are displayed correctly within the cards */
 .card-image {
     width: 100%;
     height: auto;
@@ -344,7 +335,7 @@ body {
     font-weight: 400;
     text-align: right;
     color: var(--link-color);
-    margin-top: auto; /* Move the info container to the end of the map */
+    margin-top: auto; /* Move the info container to the end of the card */
 }
 
 /* Hover effect for the cards */
@@ -353,34 +344,21 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* CSS for the reservation card arrangement */
-
-.time-slot-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    width: 100%;
-}
-
-.time-slot-container h2 {
-    margin-bottom: 10px;
-}
-
 /* CSS for the reservation form */
-
 .reservation-container {
     display: flex;
-    flex: column;
+    margin-top: 70px; /* Abstand zwischen Subheader und Formular */
+    flex-direction: column;
     justify-content: space-between;
     gap: 20px;
 }
 
 .reservation-container .card {
-    flex: 1; /* Both elements take up the same amount of space */
-    max-width: 45%; /* Prevents them from getting too big */
+    flex: 1; /* Beide Elemente nehmen gleich viel Platz ein */
+    max-width: 45%; /* Verhindert, dass sie zu groß werden */
 }
 
-.reservationForm {
+.reservation-form {
     background-color: var(--secondary-color);
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -394,14 +372,14 @@ body {
     margin-top: 20px;
 }
 
-.reservationForm label {
+.reservation-form label {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: 5px;
 }
 
-.reservationForm input {
+.reservation-form .input {
     width: 100%;
     padding: 10px 15px;
     border-radius: 12px;
@@ -414,7 +392,7 @@ body {
 }
 
 /* Focus Styles */
-.reservationForm input:focus {
+.reservation-form .input:focus {
     border-color: var(--link-color);
     outline: none;
     box-shadow: 0 0 8px rgba(0, 122, 255, 0.5);
@@ -423,39 +401,39 @@ body {
 /* MEDIA QUERIES for responsiveness */
 @media (max-width: 1200px) {
     .card {
-        flex: 1 1 calc(33.333% - 20px); /* Three cards per row */
+        flex: 1 1 calc(33.333% - 20px); /* Drei Karten pro Reihe */
     }
 }
 
 @media (max-width: 768px) {
     .card {
-        flex: 1 1 calc(50% - 20px); /* Two cards per row */
+        flex: 1 1 calc(50% - 20px); /* Zwei Karten pro Reihe */
     }
 }
 
 @media (max-width: 480px) {
     .card {
-        flex: 1 1 100%; /* One card per line */
+        flex: 1 1 100%; /* Eine Karte pro Zeile */
     }
 }
 
 /* SLIDESHOW CONTAINER */
 .slideshow-container {
-    position: absolute; /* Absolutely positioned within .main-content */
+    position: absolute; /* Absolut positioniert innerhalb von .main-content */
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%; /* Fills the entire height of .main-content */
+    height: 100%; /* Füllt die gesamte Höhe von .main-content */
     overflow: hidden;
-    z-index: 1; /* Behind subheader and subfooter */
+    z-index: 1; /* Hinter Subheader und Subfooter */
 }
 
 /* SLIDE STYLES */
 .slide {
     display: none;
     width: 100%;
-    height: 100%; /* Fills the entire height of the slideshow container */
-    position: absolute; /* Overlapping slides */
+    height: 100%; /* Füllt die gesamte Höhe des Slideshow Containers */
+    position: absolute; /* Überlappende Slides */
     top: 0;
     left: 0;
 }
@@ -463,15 +441,15 @@ body {
 /* SLIDE TITLE */
 .slide-title {
     position: absolute;
-    bottom: 0px; /* Positioning below the subheader */
+    bottom: 0px;
     left: 0;
     width: 100%;
     color: #fff;
     font-size: 1.0rem;
     text-align: center;
     padding: 10px 20px;
-    z-index: 2; /* Above the slide image, but below the subheader */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for better readability */
+    z-index: 2; /* Über dem Slide-Bild, aber unter dem Subheader */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .slide img {
@@ -495,7 +473,7 @@ body {
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     user-select: none;
-    z-index: 3; /* Above the slideshow and the slides */
+    z-index: 3; /* Über der Slideshow und den Slides */
     transform: translateY(-50%);
     border: none;
     border-radius: 50%;
@@ -516,7 +494,7 @@ body {
 /* DOTS */
 .dots-container {
     position: absolute;
-    bottom: 60px; /* Above the subfooter */
+    bottom: 60px; /* Über dem Subfooter */
     left: 50%;
     transform: translateX(-50%);
     display: flex;

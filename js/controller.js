@@ -267,7 +267,8 @@ function showReservationForm(table, time) {
             container.innerHTML = html;
 
             // Now that the HTML is loaded, add the event listener to the form
-            const form = document.getElementById('reservationForm');
+            const form = document.querySelector('.reservation-form');
+
             if (form) {
                 form.addEventListener('submit', (event) => {
                     handleFormSubmit(event, table, time);
@@ -293,57 +294,61 @@ function renderReservations(reservations) {
         return;
     }
 
-    // Laden des reservation_card.html Templates
-    fetch('html/reservation_card.html')
-        .then(response => response.text())
-        .then(template => {
-            const reservationsByTime = reservations.reduce((acc, reservation) => {
-                (acc[reservation.time] = acc[reservation.time] || []).push(reservation);
-                return acc;
-            }, {});
+    
+// Laden des reservation_card.html Templates
+fetch('html/reservation_card.html')
+.then(response => response.text())
+.then(template => {
+    const container = getElement('#reservation-container');
+    if (!container) return;
 
-            Object.keys(reservationsByTime).sort().forEach(time => {
-                // Erstellen des Time Slot Containers
-                const timeSlotContainer = document.createElement('div');
-                timeSlotContainer.classList.add('time-slot-container');
-                timeSlotContainer.innerHTML = `<h2>${time}</h2>`;
+    container.innerHTML = ''; // Inhalt leeren
 
-                const cardsContainer = document.createElement('div');
-                cardsContainer.classList.add('card-container');
+    const cardsContainer = document.createElement('div');
+    cardsContainer.classList.add('card-container');
 
-                reservationsByTime[time].forEach(reservation => {
-                    // Erstellen der Reservierungskarte aus dem Template
-                    let cardHtml = template
-                        .replace(/{{table}}/g, reservation.table)
-                        .replace(/{{persons}}/g, reservation.persons)
-                        .replace(/{{state}}/g, reservation.state);
+    // Sortieren der Reservierungen nach Zeit und Tisch
+    const sortedReservations = reservations.sort((a, b) => {
+        if (a.time < b.time) return -1;
+        if (a.time > b.time) return 1;
+        if (a.table < b.table) return -1;
+        if (a.table > b.table) return 1;
+        return 0;
+    });
 
-                    // Bedingtes Rendern des Reservierungsbuttons
-                    if (reservation.available) {
-                        cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '$1');
-                    } else {
-                        cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '');
-                    }
+    sortedReservations.forEach(reservation => {
+        // Erstellen der Reservierungskarte aus dem Template
+        let cardHtml = template
+            .replace(/{{table}}/g, reservation.table)
+            .replace(/{{persons}}/g, reservation.persons)
+            .replace(/{{state}}/g, reservation.state)
+            .replace(/{{time}}/g, reservation.time); // Zeit hinzufügen
 
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-                    card.innerHTML = cardHtml;
-                    cardsContainer.appendChild(card);
+        // Bedingtes Rendern des Reservierungsbuttons
+        if (reservation.available) {
+            cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '$1');
+        } else {
+            cardHtml = cardHtml.replace(/{{#if available}}([\s\S]*?){{\/if}}/g, '');
+        }
 
-                    // Fügen Sie das Klick-Event zum Reservierungsbutton hinzu
-                    const reserveButton = card.querySelector('.primary-btn');
-                    if (reserveButton) {
-                        reserveButton.addEventListener('click', () => {
-                            showReservationForm(reservation.table, reservation.time);
-                        });
-                    }
-                });
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = cardHtml;
+        cardsContainer.appendChild(card);
 
-                timeSlotContainer.appendChild(cardsContainer);
-                container.appendChild(timeSlotContainer);
+        // Fügen Sie das Klick-Event zum Reservierungsbutton hinzu
+        const reserveButton = card.querySelector('.primary-btn');
+        if (reserveButton) {
+            reserveButton.addEventListener('click', () => {
+                showReservationForm(reservation.table, reservation.time);
             });
-        })
-        .catch(error => console.error('Fehler beim Laden der Reservierungskarten:', error));
+        }
+    });
+
+    container.appendChild(cardsContainer);
+})
+.catch(error => console.error('Fehler beim Laden der Reservierungskarten:', error));
+
 }
 // Function to handle form submission with table and time
 function handleFormSubmit(event, table, time) {
@@ -367,17 +372,17 @@ function handleFormSubmit(event, table, time) {
     };
 
     // Save reservation
-    ReservationModel.setReservation(reservationData)
-        .then(response => {
-            if (response.success) {
-                alert('Reservation successful!');
-                loadReservations(DateModel.getDate());
-            } else {
-                alert('Error in the reservation: ' + response.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error saving the reservation:', error);
-            alert('Error in the reservation.');
-        });
+ReservationModel.setReservation(reservationData)
+.then(response => {
+    if (response.success) {
+        alert(`Reservation successful for ${reservationData.name}, ${reservationData.persons} person(s) on ${reservationData.date} at ${reservationData.time}!\nEmail sent to ${reservationData.email}`);
+        loadReservations(DateModel.getDate());
+    } else {
+        alert('Error in the reservation: ' + response.message);
+    }
+})
+.catch(error => {
+    console.error('Error saving the reservation:', error);
+    alert('Error in the reservation.');
+});
 }

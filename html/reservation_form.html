@@ -1,22 +1,22 @@
 <!-- reservation_form.html -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Table {{table}}</h3>
+        <h3 class="card-title">table: {{table}}</h3>
     </div>
     <hr class="divider">
-    <p class="card-description">Time: {{time}}</p>
+    <p class="card-description">time: {{time}}</p>
 </div>
 <div class="card">
-    <form id="reservationForm">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <hr class="divider">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <hr class="divider">
-        <label for="persons">Persons:</label>
-        <input type="number" id="persons" name="persons" min="1" max="16" required>
-        <hr class="divider">
-        <button type="submit" class="btn primary-btn">Submit</button>
+    <form class="reservation-form">
+        <label for="name">name:</label>
+        <input type="text" id="name" name="name" class="input" required>
+
+        <label for="email">eMail:</label>
+        <input type="email" id="email" name="email" class="input" required>
+
+        <label for="persons">persons:</label>
+        <input type="number" id="persons" name="persons" class="input" min="1" max="16" required>
+
+        <button type="submit" class="btn primary-btn">reserve</button>
     </form>
 </div>
