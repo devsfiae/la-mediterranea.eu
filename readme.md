@@ -15,9 +15,17 @@ project/
 ├── app/
 │   └── api/
 │       ├── get_drinks.php
-│       ├── get_menues.php
+│       ├── get_menus.php
 │       ├── get_reservations.php
 │       └── set_reservations.php
-└── images/
-    └── ...
+├── images/
+│    └── 
+├── /tests              # Ordner für Test-Skripte
+│   ├── test-index.ts   # Test für index.html
+│   ├── test-controller.ts # Test für Controller-Logik
+│   └── test-api.ts     # API-Tests
+│
+├── package.json        # NPM Konfigurationsdatei
+├── tsconfig.json       # TypeScript Konfigurationsdatei
+└── README.md
 ```
