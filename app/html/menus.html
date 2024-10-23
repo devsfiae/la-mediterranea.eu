@@ -1,0 +1,44 @@
+<!-- menus.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>menus @ La Mediterranea</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../images/favicon.ico">
+    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
+    <meta property="og:description" content="menus">
+    <meta property="og:image" content="images/menu/food_culture.png">
+    <meta property="og:url" content="http://la-mediterranea.eu/app/html/menus.html">
+    <meta property="og:type" content="website">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header></header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Subheader with actions -->
+    <div class="subheader">
+        <div class="dropdown-container">
+            <label for="category-dropdown"></label>
+            <select id="category-dropdown" class="dropdown">
+                <option value="all">all</option>
+                <option value="7">meat</option>
+                <option value="8">seafood</option>
+                <option value="9">vegetarian</option>
+                <option value="10">desserts</option>
+            </select>
+        </div>
+    </div>
+        <div id="dynamic-content" class="card-container"></div>
+    </main>
+
+    <!-- Footer -->
+    
+
+    <!-- JavaScript -->
+    <script type="module" src="../../dist/controller.js"></script>
+</body>
+</html>
