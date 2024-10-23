@@ -1,46 +1,44 @@
 <!-- index.html -->
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>reserve restaurant la mediterranea - a virtual location</title>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <title>Reserve Restaurant La Mediterranea</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
     <!-- Open Graph Meta-Tags -->
-    <meta property="og:title" content="bar/restaurant la mediterranea">
-    <meta property="og:description" content="may be located a fantasitic balearan island @ es pujols/formentera">
-    <meta property="og:image" content="http://la-mediterranea.eu/images/website_background.jpg">
-    <meta property="og:url" content="http://la-mediterranea.eu/index.html">
+    <meta property="og:title" content="Bar/Restaurant La Mediterranea">
+    <meta property="og:description" content="virtual location on the fantastic balearic island@Es Pujols/Formentera">
+    <meta property="og:image" content="images/website_background.jpg">
+    <meta property="og:url" content="index.html">
     <!-- Responsive Design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to external CSS -->
+    <!-- External CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header with three sections: logo, navigation, theme switch -->
+    <!-- Header -->
     <header></header>
 
-    <!-- Main Content -->
+    <!-- Main content -->
     <main class="main-content">
-        <!-- subheader with opening hours -->
+        <!-- Subheader with opening hours -->
         <div class="subheader">
-        <p>
-            <img src="images/icons/open.png" alt="Open Sign Icon">
-            <span>wednesday, thursday &amp; saturday @17:00 + 19:00</span>
-            |
-            <span>friday &amp; sunday also @21:00</span>
-            |
-            <img src="images/icons/closed.png" alt="Closed Sign Icon">
-            <span>closed monday &amp; tuesday</span>
-        </p>
+            <p>
+                <img src="images/icons/open.png" alt="Open icon">
+                <span>Mittwoch, Donnerstag &amp; Samstag @17:00 + 19:00</span> |
+                <span>Freitag &amp; Sonntag auch @21:00</span> |
+                <img src="images/icons/closed.png" alt="Closed icon">
+                <span>Geschlossen Montag &amp; Dienstag</span>
+            </p>
         </div>
+
         <!-- Slideshow Container -->
         <div class="slideshow-container">
             <!-- Slides -->
             <div class="slide">
-                <img src="images/bar/beachbar.png" alt="bar">
-                <div class="slide-title">la mediterranea</div>
+                <img src="images/bar/beachbar.png" alt="Bar">
+                <div class="slide-title">La Mediterranea</div>
             </div>
-
             <div class="slide">
                 <img src="images/bar/restaurant.png" alt="restaurant">
                 <div class="slide-title">restaurant</div>
@@ -61,12 +59,11 @@
                 <div class="slide-title">events</div>
             </div>
 
-            <!-- Next/Prev Buttons -->
+            <!-- Dots to indicate current slide -->
             <a class="prev">&#10094;</a>
             <a class="next">&#10095;</a>
             
-
-            <!-- Dots to indicate current slide -->
+            <!-- Dots -->
             <div class="dots-container">
                 <span class="dot"></span>
                 <span class="dot"></span>
@@ -75,14 +72,13 @@
                 <span class="dot"></span>
             </div>
         </div>
-
-        
     </main>
 
-    <!-- Footer loaded dynamically -->
+    <!-- Footer -->
     <footer></footer>
 
     <!-- Scripts -->
-    <script type="module" src="js/controller.js"></script> <!-- Directly using controller.js -->
+    <script type="module" src="dist/controller.js"></script>
+    <script type="module" src="dist/model.js"></script>
 </body>
 </html>
