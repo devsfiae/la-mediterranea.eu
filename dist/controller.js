@@ -216,7 +216,7 @@ function createReservationCard(reservation) {
       <p>table: ${reservation.table}</p>
       <p>persons: ${reservation.persons}</p>
       <p>time: ${reservation.time}</p>
-      <p>state: ${reservation.state}</p>
+      <p>state0,0,: ${reservation.state}</p>
     </div>
   `;
 }
