@@ -10,12 +10,14 @@ function initializePage() {
     if (getElement('.slideshow-container')) {
         initializeSlideshow();
     }
-    if (currentPage === 'cocktails.html') {
+    // Load content based on the page
+    if (currentPage === 'drink_card.html') {
         loadContent('drink', 'all');
     }
     else if (currentPage === 'menus.html') {
         loadContent('menu', 'all');
     }
+    // Initialize date picker if present
     if (getElement('#dateButton')) {
         initializeDatePicker();
         loadReservations(DateModel.getDate());
@@ -27,7 +29,6 @@ function getElement(selector) {
     if (!element) {
         console.warn(`${selector} not found.`);
     }
-    // Cast the returned element to HTMLElement
     return element;
 }
 // Load external HTML components (e.g., header, footer)
@@ -35,8 +36,7 @@ function loadComponent(component, selector) {
     loadExternalHTML(`/app/html/${component}.html`, selector)
         .then(() => {
         if (component === 'header') {
-            console.log('Header loaded and initializing theme switch.');
-            initializeThemeSwitch(); // Make sure that the switch is initialized after loading the header
+            initializeThemeSwitch(); // Initialize the theme switch after header is loaded
         }
     });
 }
@@ -54,13 +54,8 @@ function loadExternalHTML(url, elementSelector) {
         if (element) {
             element.innerHTML = data;
         }
-        else {
-            console.warn(`Element with selector ${elementSelector} not found.`);
-        }
     })
-        .catch(error => {
-        console.error(`Failed to load ${url}: ${error.message}`);
-    });
+        .catch(error => console.error(error));
 }
 // Theme switch initialization
 function initializeThemeSwitch() {
@@ -70,18 +65,14 @@ function initializeThemeSwitch() {
         console.warn('Theme switch elements not found!');
         return;
     }
-    // Load the current theme from the LocalStorage
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    console.log(`Current dark mode setting: ${isDarkMode}`);
     // Function for updating the theme
     const updateTheme = (isDarkMode) => {
         document.body.classList.toggle('dark-theme', isDarkMode);
         modeText.textContent = isDarkMode ? 'light' : 'dark';
         localStorage.setItem('darkMode', isDarkMode.toString());
-        console.log(`Dark mode set to: ${isDarkMode}`);
     };
     updateTheme(isDarkMode);
-    // Set checkbox accordingly
     toggleSwitch.checked = isDarkMode;
     // Event Listener for Theme-Switch
     toggleSwitch.addEventListener('change', () => {
@@ -105,16 +96,73 @@ function setupSlideNavigation(selector, callback) {
         button.addEventListener('click', callback);
     }
 }
-// Load and render dynamic content (e.g., menus, drinks)
+// Load and render dynamic content (menus, cocktails)
 function loadContent(type, category) {
     const url = category === 'all'
-        ? `/app/api/get_${type}s.php`
-        : `/app/api/get_${type}s.php?category=${category}`;
+        ? `app/api/get_${type}s.php`
+        : `app/api/get_${type}s.php?category=${category}`;
     DynamicContentModel.fetchData(url)
-        .then(data => {
-        DynamicContentModel.renderContent(data, type);
+        .then((data) => {
+        renderContent(data, type);
     })
-        .catch(error => console.error(`Error loading ${type}s:`, error));
+        .catch((error) => console.error(`Error loading ${type}s:`, error.message));
+}
+// Function to render content (menus, drinks) based on loaded data
+function renderContent(data, type) {
+    const container = getElement('#dynamic-content');
+    if (!container) {
+        console.warn('Container for dynamic content not found.');
+        return;
+    }
+    container.innerHTML = ''; // Clear the container before rendering
+    data.forEach(item => {
+        const card = renderCard(item, type);
+        container.appendChild(card);
+    });
+}
+// Function to render individual cards from the HTML template
+function renderCard(item, type) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+    let templateUrl = '';
+    if (type === 'menu') {
+        templateUrl = 'app/html/menu_card.html';
+    }
+    else if (type === 'drink') {
+        templateUrl = 'app/html/drink_card.html';
+    }
+    // Load template and populate card with item data
+    loadTemplate(templateUrl).then(template => {
+        let title = '';
+        let description = '';
+        let price = '';
+        if (type === 'menu') {
+            title = item.menu_name;
+            description = item.menu_ingredients;
+            price = item.menu_price;
+        }
+        else if (type === 'drink') {
+            title = item.cocktail_name;
+            description = item.cocktail_description;
+            price = item.price;
+        }
+        const renderedHtml = template
+            .replace('{{title}}', title)
+            .replace('{{description}}', description)
+            .replace('{{price}}', price ? `${price} €` : '');
+        card.innerHTML = renderedHtml;
+    });
+    return card;
+}
+// Function to load HTML templates
+function loadTemplate(templateUrl) {
+    return fetch(templateUrl)
+        .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error loading template from ${templateUrl}`);
+        }
+        return response.text();
+    });
 }
 // Initialize date picker and handle date changes
 function initializeDatePicker() {
@@ -152,7 +200,7 @@ function loadReservations(date) {
     })
         .catch(error => console.error('Error loading reservations:', error));
 }
-// Render reservations (placeholder function for actual rendering logic)
+// Render reservations
 function renderReservations(reservations) {
     const container = getElement('#reservation-container');
     if (container) {
@@ -165,10 +213,10 @@ function renderReservations(reservations) {
 function createReservationCard(reservation) {
     return `
     <div class="card">
-      <p>Tisch: ${reservation.table}</p>
-      <p>Personen: ${reservation.persons}</p>
-      <p>Zeit: ${reservation.time}</p>
-      <p>Status: ${reservation.state}</p>
+      <p>table: ${reservation.table}</p>
+      <p>persons: ${reservation.persons}</p>
+      <p>time: ${reservation.time}</p>
+      <p>state: ${reservation.state}</p>
     </div>
   `;
 }

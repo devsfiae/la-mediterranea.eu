@@ -39,7 +39,7 @@ export class HeaderModel {
     }
 }
 
-// Modell für Diashow
+// Model for slide show
 export class SlideshowModel {
     static slideIndex: number = 1;
 
@@ -112,51 +112,16 @@ export class DrinksModel {
 }
 
 // Dynamic content model for menus, drinks, etc.
+// Model should only return the data, not generate HTML
 export class DynamicContentModel {
-    static async fetchData(url: string): Promise<any[]> {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Error loading data from ${url}`);
-        return response.json();
-    }
-
-    static renderContent(data: any[], type: 'menu' | 'drink'): void {
-        const container = document.getElementById('dynamic-content');
-        if (!container) return;
-
-        container.innerHTML = ''; // Clear existing content
-
-        data.forEach(item => {
-            const card = this.createCard(item, type);
-            container.appendChild(card);
-        });
-    }
-
-    private static createCard(item: any, type: 'menu' | 'drink'): HTMLElement {
-        const card = document.createElement('div');
-        card.classList.add('card');
-
-        let title = '';
-        let description = '';
-        let price = '';
-
-        if (type === 'menu') {
-            title = item.menu_name;
-            description = item.menu_ingredients;
-            price = item.menu_price;
-        } else if (type === 'drink') {
-            title = item.cocktail_name;
-            description = item.cocktail_description;
-            price = item.price;
-        }
-
-        card.innerHTML = `
-            <div class="card-header">
-                <h3>${title}</h3>
-            </div>
-            <p>${description}</p>
-            ${price ? `<p>price: ${price} €</p>` : ''}
-        `;
-        return card;
+    static fetchData(url: string): Promise<any> {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Fehler beim Laden der Daten von ${url}`);
+                }
+                return response.json();
+            });
     }
 }
 
