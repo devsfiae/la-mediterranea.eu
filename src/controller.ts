@@ -1,6 +1,6 @@
 // controller.ts is the main entry point for the application. It initializes the page by loading external components (header, footer), setting up the slideshow, and handling dynamic content (menus, cocktails). It also initializes the date picker and loads reservations for the selected date.
 
-import { SlideshowModel, HeaderModel, DynamicContentModel, CocktailsModel, DateModel, ReservationModel } from '../dist/model.js';
+import { SlideshowModel, HeaderModel, DynamicContentModel, DrinksModel, DateModel, ReservationModel } from '../dist/model.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initializePage();
@@ -16,7 +16,7 @@ function initializePage(): void {
     initializeSlideshow();
   }
 
-  if (currentPage === 'cocktails.html') {
+  if (currentPage === 'drink_card.html') {
     loadContent('drink', 'all');
   } else if (currentPage === 'menus.html') {
     loadContent('menu', 'all');
