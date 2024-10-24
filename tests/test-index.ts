@@ -25,6 +25,25 @@ const { chromium } = require('playwright');
   const hasSpecificText = await page.$('text=Mittwoch') !== null;
   console.log('Spezifischer Text "Mittwoch" vorhanden:', hasSpecificText);
 
+  // Überprüft, ob ein spezifischer Text (Team-Member 1) vorhanden ist
+  const hasTeamMember1 = await page.$('text=Hiba') !== null;
+  console.log('Spezifischer Text "Hiba" vorhanden:', hasSpecificText);
+
+  // Überprüft, ob ein spezifischer Text (Team-Member 2) vorhanden ist
+  const hasTeamMember2 = await page.$('text=Irina') !== null;
+  console.log('Spezifischer Text "Irina" vorhanden:', hasSpecificText);
+
+  // Überprüft, ob ein Link zum Impressum vorhanden ist
+  const hasImpressum = await page.$('text=Impressum') !== null;
+  console.log('Spezifischer Text "Impressum" vorhanden:', hasSpecificText);
+  
+  // Überprüfung, ob der Link zum Impressum korrekt funktioniert
+  await page.click('text=Impressum');
+  await page.waitForNavigation();
+  console.log('Aktuelle URL:', page.url());
+
+  // Weitere Tests hinzufügen zu Team-Member 3 und 4 hinzufügen ...
+
   // Screenshot erstellen (optional)
   await page.screenshot({ path: 'screenshot.png' });
 
