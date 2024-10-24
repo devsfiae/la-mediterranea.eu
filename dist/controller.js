@@ -1,4 +1,4 @@
-// controller.ts is the main entry point for the application. It initializes the page by loading external components (header, footer), setting up the slideshow, and handling dynamic content (menus, cocktails). It also initializes the date picker and loads reservations for the selected date.
+// controller.ts is the main entry point for the application. It initializes the page and loads external components, such as the header and footer. It also initializes the theme switch, slideshow, and dynamic content loading.
 import { SlideshowModel, DynamicContentModel, DateModel, ReservationModel } from '../dist/model.js';
 document.addEventListener('DOMContentLoaded', () => {
     initializePage();
@@ -10,18 +10,46 @@ function initializePage() {
     if (getElement('.slideshow-container')) {
         initializeSlideshow();
     }
-    // Load content based on the page
-    if (currentPage === 'drink_card.html') {
-        loadContent('drink', 'all');
+    // Mapping of pages to content types
+    const pageContentMap = {
+        'food.html': 'menu',
+        'drinks.html': 'drink',
+        // Add more pages and content types here
+    };
+    if (pageContentMap[currentPage]) {
+        const contentType = pageContentMap[currentPage];
+        initializeContentButton(contentType);
     }
-    else if (currentPage === 'menus.html') {
-        loadContent('menu', 'all');
-    }
-    // Initialize date picker if present
+    // Initialise the date picker, if available
     if (getElement('#dateButton')) {
         initializeDatePicker();
         loadReservations(DateModel.getDate());
     }
+}
+// Initialize the content button to load dynamic content
+function initializeContentButton(contentType) {
+    const contentButton = getElement('#content-button');
+    if (!contentButton) {
+        console.warn('Content button not found.');
+        return;
+    }
+    contentButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        // Hide slideshow elements
+        const slideshowContainer = getElement('.slideshow-container');
+        const dotsContainer = getElement('.dots-container');
+        if (slideshowContainer)
+            slideshowContainer.style.display = 'none';
+        if (dotsContainer)
+            dotsContainer.style.display = 'none';
+        // Display dynamic content container
+        const dynamicContent = getElement('#dynamic-content');
+        if (dynamicContent) {
+            dynamicContent.style.display = 'flex';
+        }
+        // Load and display dynamic content
+        loadContent(contentType, 'all');
+    });
 }
 // Utility function to get an element and log a warning if not found
 function getElement(selector) {
@@ -97,27 +125,62 @@ function setupSlideNavigation(selector, callback) {
     }
 }
 // Load and render dynamic content (menus, cocktails)
-function loadContent(type, category) {
+function loadContent(contentType, category) {
     const url = category === 'all'
-        ? `app/api/get_${type}s.php`
-        : `app/api/get_${type}s.php?category=${category}`;
+        ? `app/api/get_${contentType}s.php`
+        : `app/api/get_${contentType}s.php?category=${category}`;
     DynamicContentModel.fetchData(url)
         .then((data) => {
-        renderContent(data, type);
+        renderContent(data, contentType);
     })
-        .catch((error) => console.error(`Error loading ${type}s:`, error.message));
+        .catch((error) => console.error(`Error when loading ${contentType}s:`, error.message));
 }
 // Function to render content (menus, drinks) based on loaded data
-function renderContent(data, type) {
+function renderContent(data, contentType) {
     const container = getElement('#dynamic-content');
     if (!container) {
         console.warn('Container for dynamic content not found.');
         return;
     }
-    container.innerHTML = ''; // Clear the container before rendering
+    container.innerHTML = ''; // Empty container
     data.forEach(item => {
-        const card = renderCard(item, type);
-        container.appendChild(card);
+        let id = '';
+        let title = '';
+        let description = '';
+        let price = '';
+        // Mapping the fields based on the content type
+        if (contentType === 'menu') {
+            id = item.menu_id;
+            title = item.menu_name;
+            description = item.menu_ingredients;
+            price = item.menu_price;
+        }
+        else if (contentType === 'drink') {
+            id = item.cocktail_id;
+            title = item.cocktail_name;
+            description = item.cocktail_description;
+            price = item.price;
+        }
+        else if (contentType === 'event') {
+            // Example of another content type
+            id = item.event_id;
+            title = item.event_name;
+            description = item.event_description;
+            price = ''; // Price may not be relevant
+        }
+        // Create map content
+        const cardContent = `
+          <div class="card">
+              <h3>${title}</h3>
+              <p>${description}</p>
+              ${price ? `<p>Preis: ${price} €</p>` : ''}
+          </div>
+      `;
+        // Create a link around the map if detailed pages are available
+        const link = document.createElement('a');
+        link.href = `${contentType}_card.html?id=${id}`;
+        link.innerHTML = cardContent;
+        container.appendChild(link);
     });
 }
 // Function to render individual cards from the HTML template

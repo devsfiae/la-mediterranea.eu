@@ -118,7 +118,7 @@ export class DynamicContentModel {
         return fetch(url)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Fehler beim Laden der Daten von ${url}`);
+                    throw new Error(`Error loading data from ${url}`);
                 }
                 return response.json();
             });
@@ -131,7 +131,7 @@ export class ReservationModel {
         const formattedDate = DateModel.formatDate(date);
         const url = `app/api/get_reservations.php?date=${formattedDate}`;
         const response = await fetch(url);
-        if (!response.ok) throw new Error('Fehler beim Laden der Reservierungen');
+        if (!response.ok) throw new Error('Error loading the reservations');
         return response.json();
     }
 
@@ -145,7 +145,7 @@ export class ReservationModel {
             body: JSON.stringify(data),
         });
 
-        if (!response.ok) throw new Error('Fehler beim Speichern der Reservierung');
+        if (!response.ok) throw new Error('Error when saving the reservation');
         return response.json();
     }
 }
