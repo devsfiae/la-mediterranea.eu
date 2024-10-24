@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// Modell für Theme
+// Model for theme
 export class ThemeModel {
     static saveThemePreference(isDarkMode) {
         localStorage.setItem('darkMode', isDarkMode.toString());
@@ -21,13 +21,13 @@ export class ThemeModel {
         document.body.classList.toggle('dark-theme', isDarkMode);
     }
 }
-// Modell für Header
+// Model for headers
 export class HeaderModel {
     static fetchHeader() {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield fetch('html/header.html');
             if (!response.ok)
-                throw new Error('Fehler beim Laden des Headers');
+                throw new Error('Error loading the header');
             return response.text();
         });
     }
@@ -45,17 +45,17 @@ export class HeaderModel {
         });
     }
 }
-// Model for slideshow
+// Model for slide show
 export class SlideshowModel {
     static showSlides(index) {
         const slides = document.getElementsByClassName('slide');
         const dots = document.getElementsByClassName('dot');
-        // Überprüfe, ob es Slides und Dots gibt
+        // Check whether there are slides and dots
         if (slides.length === 0 || dots.length === 0) {
-            console.warn("Keine Slides oder Dots gefunden.");
+            console.warn("No slides or dots found.");
             return;
         }
-        // Sicherstellen, dass der Index im gültigen Bereich liegt
+        // Ensure that the index is within the valid range
         if (index > slides.length) {
             this.slideIndex = 1;
         }
@@ -65,10 +65,10 @@ export class SlideshowModel {
         else {
             this.slideIndex = index;
         }
-        // Alle Slides ausblenden und Dots deaktivieren
+        // Hide all slides and deactivate dots
         Array.from(slides).forEach(slide => (slide.style.display = 'none'));
         Array.from(dots).forEach(dot => dot.classList.remove('active'));
-        // Aktuelle Slide und Dot aktivieren
+        // Activate current slide and dot
         slides[this.slideIndex - 1].style.display = 'block';
         dots[this.slideIndex - 1].classList.add('active');
     }
@@ -96,65 +96,32 @@ export class DateModel {
     }
 }
 DateModel.selectedDate = new Date();
-// Modell für Cocktails
-export class CocktailsModel {
-    static fetchCocktails() {
+// Model for drinks
+export class DrinksModel {
+    static fetchDrinks() {
         return __awaiter(this, arguments, void 0, function* (category = 'all') {
             const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
             const response = yield fetch(url);
             if (!response.ok)
-                throw new Error('Fehler beim Laden der Cocktails');
+                throw new Error('Error when loading the drinks');
             return response.json();
         });
     }
 }
-// Dynamisches Inhaltsmodell für Menüs, Cocktails, etc.
+// Dynamic content model for menus, drinks, etc.
+// Model should only return the data, not generate HTML
 export class DynamicContentModel {
     static fetchData(url) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(url);
-            if (!response.ok)
+        return fetch(url)
+            .then(response => {
+            if (!response.ok) {
                 throw new Error(`Fehler beim Laden der Daten von ${url}`);
+            }
             return response.json();
         });
     }
-    static renderContent(data, type) {
-        const container = document.getElementById('dynamic-content');
-        if (!container)
-            return;
-        container.innerHTML = ''; // Clear existing content
-        data.forEach(item => {
-            const card = this.createCard(item, type);
-            container.appendChild(card);
-        });
-    }
-    static createCard(item, type) {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        let title = '';
-        let description = '';
-        let price = '';
-        if (type === 'menu') {
-            title = item.menu_name;
-            description = item.menu_ingredients;
-            price = item.menu_price;
-        }
-        else if (type === 'cocktail') {
-            title = item.cocktail_name;
-            description = item.cocktail_description;
-            price = item.price;
-        }
-        card.innerHTML = `
-            <div class="card-header">
-                <h3>${title}</h3>
-            </div>
-            <p>${description}</p>
-            ${price ? `<p>Preis: ${price} €</p>` : ''}
-        `;
-        return card;
-    }
 }
-// Modell für Reservierungen
+// Model for reservations
 export class ReservationModel {
     static fetchReservations(date) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -182,7 +149,7 @@ export class ReservationModel {
         });
     }
 }
-// Utility Funktionen
+// Utility functions
 export class Utils {
     static slugify(text) {
         return text
