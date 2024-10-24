@@ -33,6 +33,11 @@ const { chromium } = require('playwright');
   const hasTeamMember2 = await page.$('text=Irina') !== null;
   console.log('Spezifischer Text "Irina" vorhanden:', hasSpecificText);
 
+  // Überprüft, ob ein spezifischer Text (Team-Member 2) vorhanden ist
+  const hasTeamMember3 = await page.$('text=Puya') !== null;
+  console.log('Spezifischer Text "Puya" vorhanden:', hasSpecificText);
+
+
   // Überprüft, ob ein Link zum Impressum vorhanden ist
   const hasImpressum = await page.$('text=Impressum') !== null;
   console.log('Spezifischer Text "Impressum" vorhanden:', hasSpecificText);
