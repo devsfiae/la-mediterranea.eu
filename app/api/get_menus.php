@@ -1,18 +1,18 @@
 <?php
 header('Content-Type: application/json');
 
-// Datenbankverbindung herstellen
+// Establish database connection
 $servername = "81.169.190.112";
-// $servername = "localhost";
+// $servername = “localhost”;
 $username = "la_mediterranea";
 $password = "theycantforceus!";
 $dbname = "la_mediterranea";
 
-// Erstellen Sie eine Verbindung
+// Create a connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 $conn->query("SET NAMES 'utf8'");
 
-// Überprüfen Sie die Verbindung
+// Check the connection
 if ($conn->connect_error) {
     die(json_encode(["error" => "Verbindung fehlgeschlagen: " . $conn->connect_error]));
 }
@@ -39,7 +39,33 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Collect data
     while ($row = $result->fetch_assoc()) {
-        $row['menu_price'] = number_format(round($row['menu_price'], 2), 2, ',', '.'); // Format price
+        // Format price
+        $row['menu_price'] = number_format(round($row['menu_price'], 2), 2, ',', '.');
+
+        // Generieren des Musters für den Bilddateinamen
+        $category_id_padded = str_pad($row['category_id'], 2, '0', STR_PAD_LEFT); // 2-stellig
+        $menu_id_padded = str_pad($row['menu_id'], 3, '0', STR_PAD_LEFT); // 3-stellig
+
+        // Pfad zum Bildverzeichnis
+        $image_directory = '../../images/food/'; // Passen Sie den Pfad entsprechend an
+
+        // Muster für die Bildsuche
+        $image_pattern = $image_directory . "{$category_id_padded}_{$menu_id_padded}_*";
+
+        // Verwenden von glob(), um Dateien zu finden, die dem Muster entsprechen
+        $images = glob($image_pattern);
+
+        if (!empty($images)) {
+            // Nehmen Sie das erste gefundene Bild
+            $image_filename = basename($images[0]);
+        } else {
+            // Verwenden Sie ein Platzhalterbild, falls kein Bild gefunden wurde
+            $image_filename = 'placeholder.jpg';
+        }
+
+        // Fügen Sie den Bilddateinamen zur API-Antwort hinzu
+        $row['image_filename'] = $image_filename;
+
         $menu_items[] = $row;
     }
     echo json_encode($menu_items, JSON_UNESCAPED_UNICODE);

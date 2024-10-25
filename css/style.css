@@ -6,6 +6,12 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 html {
     font-size: 16px;
     scroll-behavior: smooth;
@@ -158,26 +164,27 @@ body {
     transform: translateX(26px);
 }
 
+/* Hide all slides by default */
 .slide {
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    display: none;
 }
+
+/* Display the current slide */
 .slide.active {
-    opacity: 1;
+    display: block;
 }
 
 /* MAIN CONTENT */
 .main-content {
     flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    position: relative; /* Wichtig für absolute Positionierung der Kinder */
-    margin-top: 60px; /* Platz für den Header */
-    margin-bottom: 60px; /* Platz für den Footer */
+    position: relative;
+    margin-top: 60px;
+    margin-bottom: 60px;
     width: 100%;
-    padding: 0; /* Entfernt jegliches Padding */
+    padding: 0;
     box-sizing: border-box;
-    overflow: hidden; /* Verhindert Scrollen */
+    overflow: hidden;
+    height: calc(100% - 120px); /* Subtract header and footer heights */
 }
 
 /* SUBHEADER */
@@ -432,22 +439,11 @@ body {
 }
 
 /* SLIDESHOW CONTAINER */
-.slideshow-container {
-    position: absolute; /* Absolut positioniert innerhalb von .main-content */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; /* Füllt die gesamte Höhe von .main-content */
-    overflow: hidden;
-    z-index: 1; /* Hinter Subheader und Subfooter */
-}
-
-/* SLIDE STYLES */
 .slide {
     display: none;
     width: 100%;
-    height: 100%; /* Füllt die gesamte Höhe des Slideshow Containers */
-    position: absolute; /* Überlappende Slides */
+    height: 100%;
+    position: absolute; /* Overlapping slides */
     top: 0;
     left: 0;
 }
@@ -487,16 +483,18 @@ body {
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
     user-select: none;
-    z-index: 3; /* Über der Slideshow und den Slides */
+    z-index: 3; /* Above the slideshow and the slides */
     transform: translateY(-50%);
     border: none;
     border-radius: 50%;
 }
 
+/* Positioning of the previous button */
 .prev {
     left: 20px;
 }
 
+/* Positioning of the next button */
 .next {
     right: 20px;
 }

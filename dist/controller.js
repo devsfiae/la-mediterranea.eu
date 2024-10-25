@@ -8,12 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { DateModel, DynamicContentModel, HeaderModel, ReservationModel, SlideshowModel, ThemeModel } from 'model.js';
+// controller.ts
+import { DateModel, DynamicContentModel, HeaderModel, ReservationModel, SlideshowModel, ThemeModel } from './model.js';
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
-    yield initializePage();
-    const headerContent = yield HeaderModel.fetchHeader();
-    document.querySelector('header').innerHTML = headerContent;
-    HeaderModel.hideActivePageLink();
+    try {
+        yield initializePage();
+        const headerContent = yield HeaderModel.fetchHeader();
+        document.querySelector('header').innerHTML = headerContent;
+        HeaderModel.hideActivePageLink();
+        initializeThemeSwitch(); // Initialize theme switch after the final header load
+    }
+    catch (error) {
+        console.error('Error during initial page setup:', error);
+    }
 }));
 // Main initialization function to set up the page components
 function initializePage() {
@@ -24,18 +31,22 @@ function initializePage() {
         yield loadComponent('footer', 'footer');
         const currentPage = getCurrentPage();
         // Check for slideshow container before initializing
-        if (getElement('.slideshow-container')) {
+        const slideshowContainer = getElement('.slideshow-container');
+        if (slideshowContainer) {
             initializeSlideshow();
+        }
+        else {
+            console.warn('Slideshow container not found.');
         }
         // Map pages to specific content types (for dynamic loading)
         const pageContentMap = {
-            'food.html': 'menu',
-            'drinks.html': 'drink',
+            'food.html': { contentType: 'menu', buttonId: 'foodcard_button' },
+            'drinks.html': { contentType: 'drink', buttonId: 'drinkcard_button' },
             // Add more pages and content types here as needed
         };
         if (pageContentMap[currentPage]) {
-            const contentType = pageContentMap[currentPage];
-            initializeContentButton(contentType);
+            const { contentType, buttonId } = pageContentMap[currentPage];
+            initializeContentButton(contentType, buttonId);
         }
         // Initialize the date picker if available
         if (getElement('#dateButton')) {
@@ -45,8 +56,8 @@ function initializePage() {
     });
 }
 // Sets up the content button to dynamically load specific content
-function initializeContentButton(contentType) {
-    const contentButton = getElement('#content-button');
+function initializeContentButton(contentType, buttonId) {
+    const contentButton = getElement(`#${buttonId}`);
     if (!contentButton) {
         console.warn('Content button not found.');
         return;
@@ -139,7 +150,6 @@ function initializeSlideshow() {
         dot.addEventListener('click', () => SlideshowModel.currentSlide(index + 1));
     });
 }
-// Sets up event listeners for slideshow navigation
 function setupSlideNavigation(selector, callback) {
     const button = getElement(selector);
     if (button) {
@@ -149,8 +159,8 @@ function setupSlideNavigation(selector, callback) {
 // Loads and renders dynamic content based on the specified type and category
 function loadContent(contentType, category) {
     const url = category === 'all'
-        ? `app/api/get_${contentType}s.php`
-        : `app/api/get_${contentType}s.php?category=${category}`;
+        ? `/app/api/get_${contentType}s.php`
+        : `/app/api/get_${contentType}s.php?category=${category}`;
     DynamicContentModel.fetchData(url)
         .then((data) => {
         renderContent(data, contentType);
@@ -161,44 +171,26 @@ function loadContent(contentType, category) {
 function renderContent(data, contentType) {
     const container = getElement('#dynamic-content');
     if (!container) {
-        console.warn('Container for dynamic content not found.');
+        console.warn('Container für dynamischen Inhalt nicht gefunden.');
         return;
     }
-    container.innerHTML = ''; // Clear container
+    container.innerHTML = ''; // Container leeren
     data.forEach(item => {
-        let id = '';
-        let title = '';
-        let description = '';
-        let price = '';
-        if (contentType === 'menu') {
-            id = item.menu_id;
-            title = item.menu_name;
-            description = item.menu_ingredients;
-            price = item.menu_price;
-        }
-        else if (contentType === 'drink') {
-            id = item.cocktail_id;
-            title = item.cocktail_name;
-            description = item.cocktail_description;
-            price = item.price;
-        }
-        else if (contentType === 'event') {
-            id = item.event_id;
-            title = item.event_name;
-            description = item.event_description;
-            price = '';
-        }
+        let title = item.menu_name;
+        let description = item.menu_ingredients;
+        let price = item.menu_price;
+        let imageUrl = `../../images/food/${item.image_filename}`;
         const cardContent = `
             <div class="card">
-                <h3>${title}</h3>
-                <p>${description}</p>
+                <img src="${imageUrl}" alt="${title}" class="card-image" onerror="this.onerror=null;this.src='../../images/icons/no_picture.png';">
+                <h3 class="card-title">${title}</h3>
+                <p class="card-text">${description}</p>
                 ${price ? `<p>Preis: ${price} €</p>` : ''}
             </div>
         `;
-        const link = document.createElement('a');
-        link.href = `${contentType}_card.html?id=${id}`;
-        link.innerHTML = cardContent;
-        container.appendChild(link);
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = cardContent;
+        container.appendChild(cardElement.firstElementChild);
     });
 }
 // Loads and initializes the date picker
@@ -261,4 +253,3 @@ function createReservationCard(reservation) {
 function getCurrentPage() {
     return window.location.pathname.split('/').pop() || '';
 }
-//# sourceMappingURL=controller.js.map

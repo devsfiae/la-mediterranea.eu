@@ -40,6 +40,8 @@ export class HeaderModel {
 }
 
 // Model for slide show
+// model.ts
+
 export class SlideshowModel {
     static slideIndex: number = 1;
 
@@ -63,11 +65,11 @@ export class SlideshowModel {
         }
 
         // Hide all slides and deactivate dots
-        Array.from(slides).forEach(slide => (slide.style.display = 'none'));
+        Array.from(slides).forEach(slide => slide.classList.remove('active'));
         Array.from(dots).forEach(dot => dot.classList.remove('active'));
 
         // Activate current slide and dot
-        slides[this.slideIndex - 1].style.display = 'block';
+        slides[this.slideIndex - 1].classList.add('active');
         dots[this.slideIndex - 1].classList.add('active');
     }
 
@@ -150,18 +152,3 @@ export class ReservationModel {
     }
 }
 
-// Utility functions
-export class Utils {
-    static slugify(text: string): string {
-        return text
-            .toString()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '') // Remove accents
-            .replace(/Ä/g, 'Ae').replace(/Ö/g, 'Oe').replace(/Ü/g, 'Ue')
-            .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-            .replace(/\s+/g, '_')
-            .replace(/[^\w_]+/g, '')
-            .replace(/\_\_+/g, '_')
-            .toLowerCase();
-    }
-}

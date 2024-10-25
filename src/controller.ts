@@ -1,12 +1,25 @@
 // controller.ts initializes the main page components, loading external HTML (header and footer), initializing the theme switch, slideshow, and dynamic content.
 
-import { DateModel, DynamicContentModel, HeaderModel, ReservationModel, SlideshowModel, ThemeModel } from 'model.js';
+// controller.ts
+import {
+    DateModel,
+    DynamicContentModel,
+    HeaderModel,
+    ReservationModel,
+    SlideshowModel,
+    ThemeModel
+} from './model.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await initializePage();
-    const headerContent = await HeaderModel.fetchHeader();
-    document.querySelector('header')!.innerHTML = headerContent;
-    HeaderModel.hideActivePageLink();
+    try {
+        await initializePage();
+        const headerContent = await HeaderModel.fetchHeader();
+        document.querySelector('header')!.innerHTML = headerContent;
+        HeaderModel.hideActivePageLink();
+        initializeThemeSwitch(); // Initialize theme switch after the final header load
+    } catch (error) {
+        console.error('Error during initial page setup:', error);
+    }
 });
 
 // Main initialization function to set up the page components
@@ -20,20 +33,23 @@ async function initializePage(): Promise<void> {
     const currentPage = getCurrentPage();
 
     // Check for slideshow container before initializing
-    if (getElement('.slideshow-container')) {
+    const slideshowContainer = getElement('.slideshow-container');
+    if (slideshowContainer) {
         initializeSlideshow();
+    } else {
+        console.warn('Slideshow container not found.');
     }
 
     // Map pages to specific content types (for dynamic loading)
-    const pageContentMap: { [key: string]: string } = {
-        'food.html': 'menu',
-        'drinks.html': 'drink',
+    const pageContentMap: { [key: string]: { contentType: string; buttonId: string } } = {
+        'food.html': { contentType: 'menu', buttonId: 'foodcard_button' },
+        'drinks.html': { contentType: 'drink', buttonId: 'drinkcard_button' },
         // Add more pages and content types here as needed
     };
 
     if (pageContentMap[currentPage]) {
-        const contentType = pageContentMap[currentPage];
-        initializeContentButton(contentType);
+        const { contentType, buttonId } = pageContentMap[currentPage];
+        initializeContentButton(contentType, buttonId);
     }
 
     // Initialize the date picker if available
@@ -44,8 +60,8 @@ async function initializePage(): Promise<void> {
 }
 
 // Sets up the content button to dynamically load specific content
-function initializeContentButton(contentType: string): void {
-    const contentButton = getElement('#content-button');
+function initializeContentButton(contentType: string, buttonId: string): void {
+    const contentButton = getElement(`#${buttonId}`);
     if (!contentButton) {
         console.warn('Content button not found.');
         return;
@@ -133,6 +149,7 @@ function initializeThemeSwitch(): void {
 }
 
 // Initializes slideshow if elements exist
+
 function initializeSlideshow(): void {
     SlideshowModel.showSlides(SlideshowModel.slideIndex);
 
@@ -145,7 +162,6 @@ function initializeSlideshow(): void {
     });
 }
 
-// Sets up event listeners for slideshow navigation
 function setupSlideNavigation(selector: string, callback: () => void): void {
     const button = getElement(selector);
     if (button) {
@@ -156,8 +172,8 @@ function setupSlideNavigation(selector: string, callback: () => void): void {
 // Loads and renders dynamic content based on the specified type and category
 function loadContent(contentType: string, category: string): void {
     const url = category === 'all'
-        ? `app/api/get_${contentType}s.php`
-        : `app/api/get_${contentType}s.php?category=${category}`;
+        ? `/app/api/get_${contentType}s.php`
+        : `/app/api/get_${contentType}s.php?category=${category}`;
 
     DynamicContentModel.fetchData(url)
         .then((data: any[]) => {
@@ -170,48 +186,31 @@ function loadContent(contentType: string, category: string): void {
 function renderContent(data: any[], contentType: string): void {
     const container = getElement('#dynamic-content');
     if (!container) {
-        console.warn('Container for dynamic content not found.');
+        console.warn('Container für dynamischen Inhalt nicht gefunden.');
         return;
     }
 
-    container.innerHTML = ''; // Clear container
+    container.innerHTML = ''; // Container leeren
 
     data.forEach(item => {
-        let id = '';
-        let title = '';
-        let description = '';
-        let price = '';
-
-        if (contentType === 'menu') {
-            id = item.menu_id;
-            title = item.menu_name;
-            description = item.menu_ingredients;
-            price = item.menu_price;
-        } else if (contentType === 'drink') {
-            id = item.cocktail_id;
-            title = item.cocktail_name;
-            description = item.cocktail_description;
-            price = item.price;
-        } else if (contentType === 'event') {
-            id = item.event_id;
-            title = item.event_name;
-            description = item.event_description;
-            price = '';
-        }
+        let title = item.menu_name;
+        let description = item.menu_ingredients;
+        let price = item.menu_price;
+        let imageUrl = `../../images/food/${item.image_filename}`;
 
         const cardContent = `
             <div class="card">
-                <h3>${title}</h3>
-                <p>${description}</p>
+                <img src="${imageUrl}" alt="${title}" class="card-image" onerror="this.onerror=null;this.src='../../images/icons/no_picture.png';">
+                <h3 class="card-title">${title}</h3>
+                <p class="card-text">${description}</p>
                 ${price ? `<p>Preis: ${price} €</p>` : ''}
             </div>
         `;
 
-        const link = document.createElement('a');
-        link.href = `${contentType}_card.html?id=${id}`;
-        link.innerHTML = cardContent;
+        const cardElement = document.createElement('div');
+        cardElement.innerHTML = cardContent;
 
-        container.appendChild(link);
+        container.appendChild(cardElement.firstElementChild!);
     });
 }
 

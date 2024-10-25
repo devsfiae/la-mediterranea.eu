@@ -1,26 +1,13 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "ES6",                                     /* Specify what module code is generated. */
-    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    "baseUrl": "./",                                     /* Specify the base directory to resolve non-relative module names. */
-    "paths": {
-      "@model" :["./dist/model.js"]                   
-    },                                                   /* Specify a set of entries that re-map imports to additional lookup locations. */
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src"
-    ],                                                   /* Specify multiple folders that act like './node_modules/@types'. */
-    "sourceMap": true,                                   /* Create source map files for emitted JavaScript files. */
-    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-
-    /* Type Checking */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    /* Completeness */
-    // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "module": "ES6",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "moduleResolution": "Node"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
