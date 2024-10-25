@@ -1,30 +1,46 @@
 // controller.ts is the main entry point for the application. It initializes the page and loads external components, such as the header and footer. It also initializes the theme switch, slideshow, and dynamic content loading.
-import { SlideshowModel, DynamicContentModel, DateModel, ReservationModel } from '../dist/model.js';
-document.addEventListener('DOMContentLoaded', () => {
-    initializePage();
-});
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { DateModel, DynamicContentModel, HeaderModel, ReservationModel, SlideshowModel, ThemeModel } from 'model.js';
+// Initialize the page
+document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
+    yield initializePage();
+    const headerContent = yield HeaderModel.fetchHeader();
+    document.querySelector('header').innerHTML = headerContent;
+    HeaderModel.hideActivePageLink();
+}));
 function initializePage() {
-    loadComponent('header', 'header');
-    loadComponent('footer', 'footer');
-    const currentPage = getCurrentPage();
-    if (getElement('.slideshow-container')) {
-        initializeSlideshow();
-    }
-    // Mapping of pages to content types
-    const pageContentMap = {
-        'food.html': 'menu',
-        'drinks.html': 'drink',
-        // Add more pages and content types here
-    };
-    if (pageContentMap[currentPage]) {
-        const contentType = pageContentMap[currentPage];
-        initializeContentButton(contentType);
-    }
-    // Initialise the date picker, if available
-    if (getElement('#dateButton')) {
-        initializeDatePicker();
-        loadReservations(DateModel.getDate());
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        ThemeModel.applyTheme();
+        yield loadComponent('header', 'header');
+        yield loadComponent('footer', 'footer');
+        const currentPage = getCurrentPage();
+        if (getElement('.slideshow-container')) {
+            initializeSlideshow();
+        }
+        // Mapping of pages to content types
+        const pageContentMap = {
+            'food.html': 'menu',
+            'drinks.html': 'drink',
+            // Add more pages and content types here
+        };
+        if (pageContentMap[currentPage]) {
+            const contentType = pageContentMap[currentPage];
+            initializeContentButton(contentType);
+        }
+        // Initialise the date picker, if available
+        if (getElement('#dateButton')) {
+            initializeDatePicker();
+            loadReservations(DateModel.getDate());
+        }
+    });
 }
 // Initialize the content button to load dynamic content
 function initializeContentButton(contentType) {
@@ -61,7 +77,7 @@ function getElement(selector) {
 }
 // Load external HTML components (e.g., header, footer)
 function loadComponent(component, selector) {
-    loadExternalHTML(`/app/html/${component}.html`, selector)
+    loadExternalHTML(`./app/html/${component}.html`, selector)
         .then(() => {
         if (component === 'header') {
             initializeThemeSwitch(); // Initialize the theme switch after header is loaded
@@ -110,8 +126,8 @@ function initializeThemeSwitch() {
 // Slideshow initialization
 function initializeSlideshow() {
     SlideshowModel.showSlides(SlideshowModel.slideIndex);
-    setupSlideNavigation('.prev', SlideshowModel.prevSlide.bind(SlideshowModel));
-    setupSlideNavigation('.next', SlideshowModel.nextSlide.bind(SlideshowModel));
+    setupSlideNavigation('.prev', () => SlideshowModel.prevSlide());
+    setupSlideNavigation('.next', () => SlideshowModel.nextSlide());
     const dots = document.querySelectorAll('.dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => SlideshowModel.currentSlide(index + 1));
@@ -230,7 +246,7 @@ function loadTemplate(templateUrl) {
 // Initialize date picker and handle date changes
 function initializeDatePicker() {
     const dateButton = getElement('#dateButton');
-    if (dateButton && !dateButton._flatpickr) {
+    if (dateButton && !dateButton._flatpickrInstance) {
         flatpickr(dateButton, {
             enableTime: false,
             dateFormat: 'Y-m-d',

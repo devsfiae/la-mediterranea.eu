@@ -25,7 +25,7 @@ export class ThemeModel {
 export class HeaderModel {
     static fetchHeader() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch('html/header.html');
+            const response = yield fetch('/app/html/header.html');
             if (!response.ok)
                 throw new Error('Error loading the header');
             return response.text();
@@ -97,7 +97,7 @@ export class DateModel {
 }
 DateModel.selectedDate = new Date();
 // Model for drinks
-export class DrinksModel {
+export class DrinkModel {
     static fetchDrinks() {
         return __awaiter(this, arguments, void 0, function* (category = 'all') {
             const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;

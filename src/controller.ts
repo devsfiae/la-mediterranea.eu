@@ -1,21 +1,33 @@
 // controller.ts is the main entry point for the application. It initializes the page and loads external components, such as the header and footer. It also initializes the theme switch, slideshow, and dynamic content loading.
 
-import { SlideshowModel, HeaderModel, DynamicContentModel, DrinksModel, DateModel, ReservationModel } from '../dist/model.js';
+import {
+  DateModel, 
+  DynamicContentModel,
+  DrinkModel,
+  HeaderModel,
+  ReservationModel, 
+  SlideshowModel, 
+  ThemeModel
+  } from 'model.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  initializePage();
+// Initialize the page
+document.addEventListener('DOMContentLoaded', async () => {
+  await initializePage();
+  const headerContent = await HeaderModel.fetchHeader();
+  document.querySelector('header')!.innerHTML = headerContent;
+  HeaderModel.hideActivePageLink();
 });
 
-function initializePage(): void {
-  loadComponent('header', 'header');
-  loadComponent('footer', 'footer');
+async function initializePage(): Promise<void> {
+  ThemeModel.applyTheme();
+  await loadComponent('header', 'header');
+  await loadComponent('footer', 'footer');
 
   const currentPage = getCurrentPage();
 
   if (getElement('.slideshow-container')) {
       initializeSlideshow();
   }
-
   // Mapping of pages to content types
   const pageContentMap: { [key: string]: string } = {
       'food.html': 'menu',
@@ -132,8 +144,8 @@ function initializeThemeSwitch(): void {
 function initializeSlideshow(): void {
   SlideshowModel.showSlides(SlideshowModel.slideIndex);
 
-  setupSlideNavigation('.prev', SlideshowModel.prevSlide.bind(SlideshowModel));
-  setupSlideNavigation('.next', SlideshowModel.nextSlide.bind(SlideshowModel));
+  setupSlideNavigation('.prev', () => SlideshowModel.prevSlide());
+  setupSlideNavigation('.next', () => SlideshowModel.nextSlide());
 
   const dots = document.querySelectorAll('.dot');
   dots.forEach((dot, index) => {
@@ -269,7 +281,7 @@ function loadTemplate(templateUrl: string): Promise<string> {
 // Initialize date picker and handle date changes
 function initializeDatePicker(): void {
   const dateButton = getElement('#dateButton');
-  if (dateButton && !dateButton._flatpickr) {
+  if (dateButton && !dateButton._flatpickrInstance) {
     flatpickr(dateButton, {
       enableTime: false,
       dateFormat: 'Y-m-d',

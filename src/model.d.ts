@@ -1,5 +1,27 @@
-// Example of declaration of types that exist in model.js
-declare module 'dist/model.js' {
+// src/model.d.ts
+declare module 'model' {
+    
+    export class DateModel {
+        static getDate(): Date;
+        static setDate(date: Date): void;
+    }
+
+    export class DrinkModel {
+        static fetchDrinks(category: string): Promise<any[]>;
+    }
+    export class DynamicContentModel {
+        static fetchData(url: string): Promise<any>;
+        static renderContent(data: any, type: string): void;
+    }
+    export class HeaderModel {
+        static fetchHeader(): Promise<string>;
+        static getCurrentPage(): string;
+        static hideActivePageLink(): void;
+    }
+    export class ReservationModel {
+        static fetchReservations(date: Date): Promise<any>;
+        static setReservation(reservationData: any): Promise<any>;
+    }
     export class SlideshowModel {
         static slideIndex: number;
         static showSlides(index: number): void;
@@ -7,31 +29,10 @@ declare module 'dist/model.js' {
         static prevSlide(): void;
         static currentSlide(index: number): void;
     }
-
-    export class HeaderModel {
-        static fetchHeader(): Promise<string>;
-        static getCurrentPage(): string;
-        static hideActivePageLink(): void;
+    export class ThemeModel {
+        static saveThemePreference(isDarkMode: boolean): void;
+        static getThemePreference(): boolean;
+        static applyTheme(): void;
     }
-
-    export class DynamicContentModel {
-        static fetchData(url: string): Promise<any>;
-        static renderContent(data: any, type: string): void;
-    }
-
-    export class CocktailsModel {
-        static fetchCocktails(category: string): Promise<any>;
-    }
-    
-    export class DateModel {
-        static getDate(): Date;
-        static setDate(date: Date): void;
-    }
-    
-    export class ReservationModel {
-        static fetchReservations(date: Date): Promise<any>;
-        static setReservation(reservationData: any): Promise<any>;
-    }
-
     // Declare further classes and types here...
 }

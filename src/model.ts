@@ -19,7 +19,7 @@ export class ThemeModel {
 // Model for headers
 export class HeaderModel {
     static async fetchHeader(): Promise<string> {
-        const response = await fetch('html/header.html');
+        const response = await fetch('/app/html/header.html');
         if (!response.ok) throw new Error('Error loading the header');
         return response.text();
     }
@@ -102,7 +102,7 @@ export class DateModel {
 }
 
 // Model for drinks
-export class DrinksModel {
+export class DrinkModel {
     static async fetchDrinks(category: string = 'all'): Promise<any[]> {
         const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
         const response = await fetch(url);
