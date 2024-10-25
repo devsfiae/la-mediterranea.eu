@@ -52,6 +52,21 @@ if (isset($_GET['date']) && !empty($_GET['date'])) {
     $stmt = $conn->prepare($sql);
 }
 
+while ($row = $result->fetch_assoc()) {
+    $available = ($row['state_id'] == 1);
+
+    $reservation = [
+        'table' => $row['table_id'] ?? '',
+        'time' => $row['time_field'] ?? '',
+        'persons' => $row['persons'] ?? 0,
+        'state' => $row['state_name'] ?? '',
+        'available' => $available
+    ];
+
+    $reservations[] = $reservation;
+}
+
+
 // Überprüfen Sie, ob die Abfrage vorbereitet wurde
 if (!$stmt) {
     $error = ["error" => "Failed to prepare SQL statement: " . $conn->error];
