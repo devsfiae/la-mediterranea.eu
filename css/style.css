@@ -6,10 +6,11 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     margin: 0;
-    padding: 0;
 }
 
 html {
@@ -185,6 +186,11 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     height: calc(100% - 120px); /* Subtract header and footer heights */
+}
+
+/* CSS class for scrollable main content */
+.scrollable {
+    overflow-y: auto;
 }
 
 /* SUBHEADER */

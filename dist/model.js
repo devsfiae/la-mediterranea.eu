@@ -127,7 +127,7 @@ export class ReservationModel {
     static fetchReservations(date) {
         return __awaiter(this, void 0, void 0, function* () {
             const formattedDate = DateModel.formatDate(date);
-            const url = `app/api/get_reservations.php?date=${formattedDate}`;
+            const url = `/app/api/get_reservations.php?date=${formattedDate}`;
             const response = yield fetch(url);
             if (!response.ok)
                 throw new Error('Error loading the reservations');
@@ -136,7 +136,7 @@ export class ReservationModel {
     }
     static saveReservation(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const url = 'app/api/set_reservations.php';
+            const url = '/app/api/set_reservations.php';
             const response = yield fetch(url, {
                 method: 'POST',
                 headers: {

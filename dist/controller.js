@@ -56,27 +56,37 @@ function initializePage() {
     });
 }
 // Sets up the content button to dynamically load specific content
-function initializeContentButton(contentType, buttonId) {
-    const contentButton = getElement(`#${buttonId}`);
+function initializeContentButton(contentType) {
+    const contentButton = getElement('#content-button');
     if (!contentButton) {
         console.warn('Content button not found.');
         return;
     }
     contentButton.addEventListener('click', (event) => {
         event.preventDefault();
-        // Hide slideshow elements if present
+        // Hauptinhalt scrollbar machen
+        const mainContent = document.querySelector('main');
+        if (mainContent) {
+            mainContent.classList.add('scrollable-content');
+        }
+        // Footer ausblenden
+        const footer = document.querySelector('footer');
+        if (footer) {
+            footer.style.display = 'none';
+        }
+        // Slideshow ausblenden
         const slideshowContainer = getElement('.slideshow-container');
         const dotsContainer = getElement('.dots-container');
         if (slideshowContainer)
             slideshowContainer.style.display = 'none';
         if (dotsContainer)
             dotsContainer.style.display = 'none';
-        // Show dynamic content container
+        // Dynamischen Inhalt einblenden
         const dynamicContent = getElement('#dynamic-content');
         if (dynamicContent) {
             dynamicContent.style.display = 'flex';
         }
-        // Load and display dynamic content based on content type
+        // Inhalt laden
         loadContent(contentType, 'all');
     });
 }

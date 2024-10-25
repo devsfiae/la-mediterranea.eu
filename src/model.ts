@@ -131,14 +131,14 @@ export class DynamicContentModel {
 export class ReservationModel {
     static async fetchReservations(date: Date): Promise<any[]> {
         const formattedDate = DateModel.formatDate(date);
-        const url = `app/api/get_reservations.php?date=${formattedDate}`;
+        const url = `/app/api/get_reservations.php?date=${formattedDate}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Error loading the reservations');
         return response.json();
     }
 
     static async saveReservation(data: any): Promise<any> {
-        const url = 'app/api/set_reservations.php';
+        const url = '/app/api/set_reservations.php';
         const response = await fetch(url, {
             method: 'POST',
             headers: {
