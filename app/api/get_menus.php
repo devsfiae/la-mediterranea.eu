@@ -1,4 +1,5 @@
 <?php
+// get_menus.php
 header('Content-Type: application/json');
 
 // Establish database connection
@@ -14,7 +15,7 @@ $conn->query("SET NAMES 'utf8'");
 
 // Check the connection
 if ($conn->connect_error) {
-    die(json_encode(["error" => "Verbindung fehlgeschlagen: " . $conn->connect_error]));
+    die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
 }
 
 // Initialize empty array for menu items
@@ -60,7 +61,7 @@ if ($result->num_rows > 0) {
             $image_filename = basename($images[0]);
         } else {
             // Verwenden Sie ein Platzhalterbild, falls kein Bild gefunden wurde
-            $image_filename = 'placeholder.jpg';
+            $image_filename = '../../images/icons/no_picture.png';
         }
 
         // Fügen Sie den Bilddateinamen zur API-Antwort hinzu

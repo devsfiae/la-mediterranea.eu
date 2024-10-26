@@ -2,9 +2,8 @@
 // get_drinks.php
 header('Content-Type: application/json');
 
-// Establish database connection
+// Database connection details
 $servername = "81.169.190.112";
-// $servername = "localhost";
 $username = "la_mediterranea";
 $password = "theycantforceus!";
 $dbname = "la_mediterranea";
@@ -42,7 +41,33 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // Collect data
     while ($row = $result->fetch_assoc()) {
-        $row['price'] = number_format(round($row['price'], 2), 2, ',', '.'); // Format price
+        // Format price
+        $row['price'] = number_format(round($row['price'], 2), 2, ',', '.');
+
+        // Generate the image filename pattern based on category and drink ID
+        $category_id_padded = str_pad($row['category_id'], 2, '0', STR_PAD_LEFT); // 2-digit category ID
+        $cocktail_id_padded = str_pad($row['cocktail_id'], 3, '0', STR_PAD_LEFT); // 3-digit cocktail ID
+
+        // Path to the image directory
+        $image_directory = '../../images/drinks/'; // Adjust path as necessary
+
+        // Pattern to search for images
+        $image_pattern = $image_directory . "{$category_id_padded}_{$cocktail_id_padded}_*";
+
+        // Find files matching the pattern using glob()
+        $images = glob($image_pattern);
+
+        if (!empty($images)) {
+            // Use the first matched image
+            $image_filename = basename($images[0]);
+        } else {
+            // Use a placeholder image if no image was found
+            $image_filename = '../../images/icons/no_picture.png';
+        }
+
+        // Add the image filename to the API response
+        $row['image_filename'] = $image_filename;
+
         $drinks_items[] = $row;
     }
     echo json_encode($drinks_items, JSON_UNESCAPED_UNICODE);
@@ -50,5 +75,6 @@ if ($result->num_rows > 0) {
     echo json_encode([], JSON_UNESCAPED_UNICODE);
 }
 
+// Close the database connection
 $conn->close();
 ?>
