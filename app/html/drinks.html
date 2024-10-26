@@ -19,12 +19,12 @@
     <!-- Header with three sections: logo, navigation, theme switch -->
     <header></header>
         <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content scrollable">
         <!-- Slideshow Container -->
         <div class="slideshow-container">
             <!-- subheader card button (moved below the slideshow) -->
             <div class="subheader">
-                <p><a href="/app/html/drink_card.html" class="btn primary-btn">card</a></p>
+                <p><a href="#" id="drinkcard_button" class="btn primary-btn">card</a></p>
             </div>        
             <!-- Slides -->
             <div class="slide">
@@ -70,6 +70,11 @@
             <span class="dot"></span>
             <span class="dot"></span>
             <span class="dot"></span>
+        </div>
+
+        <!-- Dynamic content container (initially hidden) -->
+        <div id="dynamic-content" class="card-container" style="display: none;">
+            <!-- Dynamic content is loaded here -->
         </div>
 
     </main>

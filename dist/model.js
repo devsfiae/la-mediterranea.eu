@@ -8,17 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// Model for theme
-export class ThemeModel {
-    static saveThemePreference(isDarkMode) {
-        localStorage.setItem('darkMode', isDarkMode.toString());
+// Model for date
+export class DateModel {
+    static setDate(date) {
+        this.selectedDate = date;
     }
-    static getThemePreference() {
-        return localStorage.getItem('darkMode') === 'true';
+    static getDate() {
+        return this.selectedDate;
     }
-    static applyTheme() {
-        const isDarkMode = this.getThemePreference();
-        document.body.classList.toggle('dark-theme', isDarkMode);
+    static formatDate(date) {
+        return date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+    }
+}
+DateModel.selectedDate = new Date();
+// Model for drinks
+export class DrinkModel {
+    static fetchDrinks() {
+        return __awaiter(this, arguments, void 0, function* (category = 'all') {
+            const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
+            const response = yield fetch(url);
+            if (!response.ok)
+                throw new Error('Error when loading the drinks');
+            return response.json();
+        });
+    }
+}
+// Dynamic content model for menus, drinks, etc.
+export class DynamicContentModel {
+    static fetchData(url) {
+        return fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok (${response.status})`);
+            }
+            return response.json();
+        })
+            .catch(error => {
+            console.error('Fetch error:', error);
+            throw error;
+        });
     }
 }
 // Model for headers
@@ -45,8 +73,43 @@ export class HeaderModel {
         });
     }
 }
+// Model for reservations
+// Model for reservations
+export class ReservationModel {
+    constructor(data) {
+        this.table = data.table || '';
+        this.time = data.time || '';
+        this.persons = data.persons || 0;
+        this.state = data.state || '';
+        this.available = data.available || false;
+    }
+    static fetchReservations(date) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const formattedDate = DateModel.formatDate(date);
+            const url = `/app/api/get_reservations.php?date=${formattedDate}`;
+            const response = yield fetch(url);
+            if (!response.ok)
+                throw new Error('Error loading the reservations');
+            return response.json();
+        });
+    }
+    static saveReservation(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const url = '/app/api/set_reservations.php';
+            const response = yield fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+            if (!response.ok)
+                throw new Error('Error when saving the reservation');
+            return response.json();
+        });
+    }
+}
 // Model for slide show
-// model.ts
 export class SlideshowModel {
     static showSlides(index) {
         const slides = document.getElementsByClassName('slide');
@@ -84,69 +147,16 @@ export class SlideshowModel {
     }
 }
 SlideshowModel.slideIndex = 1;
-// Model for date
-export class DateModel {
-    static setDate(date) {
-        this.selectedDate = date;
+// Model for theme
+export class ThemeModel {
+    static saveThemePreference(isDarkMode) {
+        localStorage.setItem('darkMode', isDarkMode.toString());
     }
-    static getDate() {
-        return this.selectedDate;
+    static getThemePreference() {
+        return localStorage.getItem('darkMode') === 'true';
     }
-    static formatDate(date) {
-        return date.toISOString().split('T')[0]; // 'YYYY-MM-DD'
-    }
-}
-DateModel.selectedDate = new Date();
-// Model for drinks
-export class DrinkModel {
-    static fetchDrinks() {
-        return __awaiter(this, arguments, void 0, function* (category = 'all') {
-            const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
-            const response = yield fetch(url);
-            if (!response.ok)
-                throw new Error('Error when loading the drinks');
-            return response.json();
-        });
-    }
-}
-// Dynamic content model for menus, drinks, etc.
-// Model should only return the data, not generate HTML
-export class DynamicContentModel {
-    static fetchData(url) {
-        return fetch(url)
-            .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error loading data from ${url}`);
-            }
-            return response.json();
-        });
-    }
-}
-// Model for reservations
-export class ReservationModel {
-    static fetchReservations(date) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const formattedDate = DateModel.formatDate(date);
-            const url = `/app/api/get_reservations.php?date=${formattedDate}`;
-            const response = yield fetch(url);
-            if (!response.ok)
-                throw new Error('Error loading the reservations');
-            return response.json();
-        });
-    }
-    static saveReservation(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const url = '/app/api/set_reservations.php';
-            const response = yield fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            if (!response.ok)
-                throw new Error('Error when saving the reservation');
-            return response.json();
-        });
+    static applyTheme() {
+        const isDarkMode = this.getThemePreference();
+        document.body.classList.toggle('dark-theme', isDarkMode);
     }
 }

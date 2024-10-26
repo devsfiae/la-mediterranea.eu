@@ -488,6 +488,7 @@ body {
     font-size: 2rem;
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
+    -webkit-user-select: none; /* Safari */
     user-select: none;
     z-index: 3; /* Above the slideshow and the slides */
     transform: translateY(-50%);

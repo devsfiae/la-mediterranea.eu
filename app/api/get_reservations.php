@@ -1,25 +1,42 @@
 <?php
 // get_reservations.php
 
-// Fehlerberichterstattung aktivieren
+// Activate error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Ausgabe-Pufferung starten
+// Start output buffering
 ob_start();
 
-// Datenbankverbindung herstellen
-// $servername = "localhost";
+// Error handling function
+function handleError($errno, $errstr, $errfile, $errline) {
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['error' => "$errstr in $errfile on line $errline"]);
+    exit();
+}
+set_error_handler('handleError');
+
+// Exception handling function
+function handleException($exception) {
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode(['error' => $exception->getMessage()]);
+    exit();
+}
+set_exception_handler('handleException');
+
+// Establish database connection
 $servername = "81.169.190.112";
 $username = "la_mediterranea";
-$password = "theycantforceus!"; // Ersetzen Sie durch Ihr tatsächliches Passwort
+$password = "theycantforceus!";
 $dbname = "la_mediterranea";
 
-// Verbindung erstellen
+// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Überprüfen Sie die Verbindung
+// Check the connection
 if ($conn->connect_error) {
     $error = ["error" => "Connection failed: " . $conn->connect_error];
     ob_end_clean();
@@ -28,13 +45,13 @@ if ($conn->connect_error) {
     exit();
 }
 
-// Zeichensatz setzen
+// Set character set
 $conn->set_charset("utf8mb4");
 
-// Reservierungen initialisieren
+// Initialize reservations
 $reservations = [];
 
-// SQL-Abfrage vorbereiten
+// Prepare SQL query
 if (isset($_GET['date']) && !empty($_GET['date'])) {
     $date = $_GET['date'];
     $sql = "SELECT reservations.*, states.state_name
@@ -52,6 +69,40 @@ if (isset($_GET['date']) && !empty($_GET['date'])) {
     $stmt = $conn->prepare($sql);
 }
 
+// Check whether the query has been prepared
+if (!$stmt) {
+    $error = ["error" => "Failed to prepare SQL statement: " . $conn->error];
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($error);
+    exit();
+}
+
+// Execute query
+$stmt->execute();
+
+// Check for execution errors
+if ($stmt->errno) {
+    $error = ["error" => "Failed to execute SQL statement: " . $stmt->error];
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($error);
+    exit();
+}
+
+// Retrieve result
+$result = $stmt->get_result();
+
+// Check whether the result is valid
+if ($result === false) {
+    $error = ["error" => "Failed to get result set: " . $stmt->error];
+    ob_end_clean();
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($error);
+    exit();
+}
+
+// Collect data
 while ($row = $result->fetch_assoc()) {
     $available = ($row['state_id'] == 1);
 
@@ -66,67 +117,14 @@ while ($row = $result->fetch_assoc()) {
     $reservations[] = $reservation;
 }
 
-
-// Überprüfen Sie, ob die Abfrage vorbereitet wurde
-if (!$stmt) {
-    $error = ["error" => "Failed to prepare SQL statement: " . $conn->error];
-    ob_end_clean();
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($error);
-    exit();
-}
-
-// Abfrage ausführen
-$stmt->execute();
-
-// Überprüfen Sie auf Ausführungsfehler
-if ($stmt->errno) {
-    $error = ["error" => "Failed to execute SQL statement: " . $stmt->error];
-    ob_end_clean();
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($error);
-    exit();
-}
-
-// Ergebnis abrufen
-$result = $stmt->get_result();
-
-// Überprüfen Sie, ob das Ergebnis gültig ist
-if ($result === false) {
-    $error = ["error" => "Failed to get result set: " . $stmt->error];
-    ob_end_clean();
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode($error);
-    exit();
-}
-
-// Daten sammeln
-while ($row = $result->fetch_assoc()) {
-    // Überprüfen Sie auf mögliche Null-Werte und setzen Sie Standardwerte
-    $available = ($row['state_id'] == 1);
-
-    $reservation = [
-        'name' => isset($row['name']) ? $row['name'] : '',
-        'date' => isset($row['date_field']) ? $row['date_field'] : '',
-        'time' => isset($row['time_field']) ? $row['time_field'] : '',
-        'table' => isset($row['table_id']) ? $row['table_id'] : '',
-        'state' => isset($row['state_name']) ? $row['state_name'] : '',
-        'persons' => isset($row['persons']) ? $row['persons'] : 0,
-        'email' => isset($row['email']) ? $row['email'] : '',
-        'available' => $available
-    ];
-
-    $reservations[] = $reservation;
-}
-
-// Schließen Sie die Verbindung
+// Close the connection
 $stmt->close();
 $conn->close();
 
 // JSON-Encoding
 $output = json_encode($reservations, JSON_UNESCAPED_UNICODE);
 
-// Überprüfen Sie auf JSON-Fehler
+// Check for JSON errors
 if (json_last_error() !== JSON_ERROR_NONE) {
     $error = [
         "error" => "JSON Encoding Error: " . json_last_error_msg(),
@@ -138,9 +136,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-// Ausgabe-Puffer leeren und JSON ausgeben
+// Empty output buffer and output JSON
 ob_end_clean();
 header('Content-Type: application/json; charset=utf-8');
 echo $output;
-
-// Kein schließendes PHP-Tag

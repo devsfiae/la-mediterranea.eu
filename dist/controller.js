@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { DateModel, DynamicContentModel, HeaderModel, SlideshowModel, ThemeModel } from './model.js';
+import { DateModel, DynamicContentModel, HeaderModel, ReservationModel, SlideshowModel, ThemeModel } from './model.js';
 // Wait for the DOM to be fully loaded before initializing
 document.addEventListener('DOMContentLoaded', () => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -252,28 +252,46 @@ function openReservationForm(table, time) {
         const container = getElement('#reservation-container');
         if (container) {
             container.innerHTML = html;
-            // Add event listener for the reservation form
             const form = container.querySelector('.reservation-form');
             if (form) {
+                // Add hidden input for 'time' if it’s provided
+                if (time) {
+                    const timeInput = document.createElement('input');
+                    timeInput.type = 'hidden';
+                    timeInput.name = 'time';
+                    timeInput.value = time;
+                    form.appendChild(timeInput);
+                }
+                // Add hidden input for 'table' if it’s provided
+                if (table) {
+                    const tableInput = document.createElement('input');
+                    tableInput.type = 'hidden';
+                    tableInput.name = 'table';
+                    tableInput.value = table;
+                    form.appendChild(tableInput);
+                }
+                // Add event listener for the reservation form
                 form.addEventListener('submit', handleReservationSubmit);
             }
         }
     })
         .catch(error => console.error('Error loading reservation form:', error));
 }
-// Handles the reservation form submission
+// reservation_form.html
 function handleReservationSubmit(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
+    // Collect reservation data, including hidden fields
     const reservationData = {
         name: formData.get('name'),
         email: formData.get('email'),
         persons: formData.get('persons'),
-        table: formData.get('table'),
-        time: formData.get('time'),
+        table: formData.get('table'), // Retrieved from hidden input
+        time: formData.get('time'), // Retrieved from hidden input
         date: DateModel.getDate().toISOString().split('T')[0],
     };
+    console.log('Reservation Data:', reservationData); // Debugging log
     fetch('../api/submit_reservation.php', {
         method: 'POST',
         body: JSON.stringify(reservationData),
@@ -331,11 +349,12 @@ function updateDateButton(date) {
 }
 // Loads reservations for a specific date
 function loadReservations(date) {
-    const formattedDate = date.toISOString().split('T')[0]; // Date in 'YYYY-MM-DD' format
+    const formattedDate = date.toISOString().split('T')[0];
     const url = `../api/get_reservations.php?date=${formattedDate}`;
     DynamicContentModel.fetchData(url)
         .then((data) => {
-        renderContent(data, 'reservation');
+        const reservations = data.map((item) => new ReservationModel(item)); // Using ReservationModel
+        renderContent(reservations, 'reservation');
     })
         .catch((error) => console.error('Error loading reservations:', error));
 }
