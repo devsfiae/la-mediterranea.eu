@@ -25,15 +25,15 @@ $category = isset($_GET['category']) ? intval($_GET['category']) : null;
 
 if ($category) {
     // Query filtered by category
-    $sql = "SELECT cocktails.*, degrees.degree_name, categories.category_name FROM cocktails 
-            LEFT JOIN degrees ON cocktails.degree_id = degrees.degree_id
-            LEFT JOIN categories ON cocktails.category_id = categories.category_id
-            WHERE cocktails.category_id = $category";
+    $sql = "SELECT drink.*, degrees.degree_name, categories.category_name FROM drink
+            LEFT JOIN degrees ON drink.degree_id = degrees.degree_id
+            LEFT JOIN categories ON drink.category_id = categories.category_id
+            WHERE drink.category_id = $category";
 } else {
     // Default query (all drinks)
-    $sql = "SELECT cocktails.*, degrees.degree_name, categories.category_name FROM cocktails 
-            LEFT JOIN degrees ON cocktails.degree_id = degrees.degree_id
-            LEFT JOIN categories ON cocktails.category_id = categories.category_id";
+    $sql = "SELECT drink.*, degrees.degree_name, categories.category_name FROM drink
+            LEFT JOIN degrees ON drink.degree_id = degrees.degree_id
+            LEFT JOIN categories ON drink.category_id = categories.category_id";
 }
 
 $result = $conn->query($sql);
@@ -46,13 +46,13 @@ if ($result->num_rows > 0) {
 
         // Generate the image filename pattern based on category and drink ID
         $category_id_padded = str_pad($row['category_id'], 2, '0', STR_PAD_LEFT); // 2-digit category ID
-        $cocktail_id_padded = str_pad($row['cocktail_id'], 3, '0', STR_PAD_LEFT); // 3-digit cocktail ID
+        $drink_id_padded = str_pad($row['drink_id'], 3, '0', STR_PAD_LEFT); // 3-digit drink ID
 
         // Path to the image directory
         $image_directory = '../../images/drinks/'; // Adjust path as necessary
 
         // Pattern to search for images
-        $image_pattern = $image_directory . "{$category_id_padded}_{$cocktail_id_padded}_*";
+        $image_pattern = $image_directory . "{$category_id_padded}_{$drink_id_padded}_*";
 
         // Find files matching the pattern using glob()
         $images = glob($image_pattern);

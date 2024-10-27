@@ -1,12 +1,14 @@
-<!-- reservation_card.html -->
+<!-- app/html/reservation_card.html -->
 <div class="card">
     <div class="card-title">table: {{table}}</div>
-    <div class="card-text">time: {{time}}</div>
+    <img src="{{imagePath}}" alt="{{title}}" class="card-image" onerror="this.onerror=null;this.src='/images/icons/no_picture.png';">
+    <div class="card-text">{{date}}</div>
+    <div class="card-text">{{time}}</div>
     <div class="card-text">persons: {{persons}}</div>
-    <div class="card-text">state: {{state}}</div>
-    <div class="info-container">
+    <div class="info-container">{{state}}</div>
+    <p>
         {{#if available}}
-        <button class="btn primary-btn">reserve</button>
+        <button class="btn primary-btn" data-table="{{table}}" data-time="{{time}}">Reserve</button>
         {{/if}}
-    </div>
+    </p>
 </div>

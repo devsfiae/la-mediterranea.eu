@@ -28,6 +28,23 @@ function initializePage() {
         yield loadComponent('header', 'header');
         yield loadComponent('footer', 'footer');
         const currentPage = getCurrentPage();
+        const pageContentMap = {
+            'food.html': { contentType: 'menu' },
+            'drinks.html': { contentType: 'drink' },
+            'reservations.html': { contentType: 'reservation' },
+        };
+        const pageConfig = pageContentMap[currentPage];
+        if (pageConfig === null || pageConfig === void 0 ? void 0 : pageConfig.contentType) {
+            yield loadCategoryDropdown(pageConfig.contentType); // Load category dropdown
+            if (pageConfig.contentType === 'reservation') {
+                initializeDatePicker();
+                loadReservations(DateModel.getDate());
+            }
+            else {
+                loadContent(pageConfig.contentType, 'all');
+            }
+        }
+        ;
         // Initialize slideshow if present
         const slideshowContainer = getElement('.slideshow-container');
         if (slideshowContainer) {
@@ -36,21 +53,45 @@ function initializePage() {
         else {
             console.warn('Slideshow container not found.');
         }
-        // Map pages to specific content types (for dynamic loading)
-        const pageContentMap = {
-            'food.html': { contentType: 'menu', buttonId: 'foodcard_button' },
-            'drinks.html': { contentType: 'drink', buttonId: 'drinkcard_button' },
-            'reservations.html': { contentType: 'reservation' },
-        };
-        if (pageContentMap[currentPage]) {
-            const { contentType, buttonId } = pageContentMap[currentPage];
-            if (contentType === 'reservation') {
-                initializeDatePicker(); // Initialize date picker for reservations
-                loadReservations(DateModel.getDate()); // Load reservations for the current date
+    });
+}
+// Loads the category dropdown for dynamic content
+function loadCategoryDropdown(contentType) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dropdownContainer = document.querySelector('.dropdown-container');
+        if (!dropdownContainer) {
+            console.warn('Dropdown container not found.');
+            return;
+        }
+        // Build URL for fetching categories, using the 'content' parameter
+        const url = `/app/api/get_categories.php?content=${contentType}`;
+        console.log(`Fetching categories from: ${url}`); // Debug log
+        // Populate the dropdown initially with "All Categories"
+        dropdownContainer.innerHTML = `
+        <select id="${contentType}CategoryDropdown" class="dropdown">
+            <option value="all">All Categories</option>
+        </select>
+    `;
+        try {
+            const response = yield fetch(url);
+            const categories = yield response.json();
+            if (!Array.isArray(categories)) {
+                console.error('Invalid data format for categories:', categories);
+                dropdownContainer.innerHTML = '<p>Error loading categories</p>';
+                return;
             }
-            else if (buttonId) {
-                initializeContentButton(contentType, buttonId);
-            }
+            // Generate options for each category and append them to the dropdown
+            const categoryOptions = categories.map((category) => `<option value="${category.category_id}">${category.category_name}</option>`).join('');
+            const dropdown = document.getElementById(`${contentType}CategoryDropdown`);
+            dropdown.innerHTML += categoryOptions;
+            dropdown.addEventListener('change', (event) => {
+                const selectedCategory = event.target.value;
+                loadContent(contentType, selectedCategory);
+            });
+        }
+        catch (error) {
+            console.error('Error loading category dropdown:', error);
+            dropdownContainer.innerHTML = '<p>Error loading categories</p>';
         }
     });
 }
@@ -166,133 +207,126 @@ function setupSlideNavigation(selector, callback) {
 // Loads and renders dynamic content based on the specified type and category
 function loadContent(contentType, category) {
     const url = category === 'all'
-        ? `../api/get_${contentType}s.php`
-        : `../api/get_${contentType}s.php?category=${category}`;
+        ? `/app/api/get_${contentType}s.php`
+        : `/app/api/get_${contentType}s.php?category=${category}`;
     DynamicContentModel.fetchData(url)
         .then((data) => {
         renderContent(data, contentType);
     })
         .catch((error) => console.error(`Error when loading ${contentType}s:`, error));
 }
-// Renders content (menus, drinks, reservations) based on loaded data
+// Fetches and renders content based on data and content type
 function renderContent(data, contentType) {
-    let container;
-    if (contentType === 'reservation') {
-        container = getElement('#reservation-container');
-    }
-    else {
-        container = getElement('#dynamic-content');
-    }
-    if (!container) {
-        console.warn('Container for dynamic content not found.');
-        return;
-    }
-    container.innerHTML = ''; // Clear the container
-    data.forEach(item => {
-        let cardContent = '';
-        if (contentType === 'menu' || contentType === 'drink') {
-            const title = item.menu_name || item.drink_name;
-            const description = item.menu_ingredients || item.drink_ingredients;
-            const price = item.menu_price || item.drink_price;
-            const imageUrl = contentType === 'menu'
-                ? `../../images/food/${item.image_filename}`
-                : `../../images/drinks/${item.image_filename}`;
-            cardContent = `
-                <div class="card">
-                    <img src="${imageUrl}" alt="${title}" class="card-image" onerror="this.onerror=null;this.src='../../images/icons/no_picture.png';">
-                    <h3 class="card-title">${title}</h3>
-                    <p class="card-text">${description}</p>
-                    ${price ? `<p>Price: ${price} €</p>` : ''}
-                </div>
-            `;
+    return __awaiter(this, void 0, void 0, function* () {
+        const container = getElement('#dynamic-content'); // Use #dynamic-content as the main container
+        if (!container) {
+            console.warn('Container for dynamic content not found.');
+            return;
         }
-        else if (contentType === 'reservation') {
-            const table = item.table;
-            const time = item.time;
-            const persons = item.persons;
-            const state = item.state;
-            const available = item.available;
-            const imageUrl = `../../images/bar/table_${table}.png`;
-            cardContent = `
-                <div class="card">
-                    <img src="${imageUrl}" alt="Table ${table}" class="card-image" onerror="this.onerror=null;this.src='../../images/icons/no_picture.png';">
-                    <h3 class="card-title">Table: ${table}</h3>
-                    <p class="card-text">Time: ${time}</p>
-                    <p class="card-text">Persons: ${persons}</p>
-                    <p class="card-text">Status: ${state}</p>
-                    ${available ? `<button class="btn primary-btn" data-table="${table}" data-time="${time}">Reserve</button>` : ''}
-                </div>
-            `;
+        container.innerHTML = ''; // Clear the container
+        // Determine the template path based on content type
+        let templatePath;
+        let baseImagePath;
+        switch (contentType) {
+            case 'menu':
+                templatePath = '/app/html/food_card.html';
+                baseImagePath = '/images/food/';
+                break;
+            case 'drink':
+                templatePath = '/app/html/drink_card.html';
+                baseImagePath = '/images/drinks/';
+                break;
+            case 'reservation':
+                templatePath = '/app/html/reservation_card.html';
+                baseImagePath = '/images/bar/';
+                break;
+            case 'reservation_form':
+                templatePath = '/app/html/reservation_form.html';
+                break;
+            default:
+                console.warn(`Unknown content type: ${contentType}`);
+                return;
         }
-        const cardElement = document.createElement('div');
-        cardElement.innerHTML = cardContent;
-        container.appendChild(cardElement.firstElementChild);
-    });
-    // Add event listeners for reservation buttons
-    if (contentType === 'reservation') {
-        const reserveButtons = container.querySelectorAll('.btn.primary-btn');
-        reserveButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const target = event.currentTarget;
-                const table = target.getAttribute('data-table');
-                const time = target.getAttribute('data-time');
-                openReservationForm(table, time);
-            });
-        });
-    }
-}
-// Opens the reservation form for a specific table and time
-function openReservationForm(table, time) {
-    fetch('../html/reservation_form.html')
-        .then(response => response.text())
-        .then(html => {
-        // Replace placeholders with actual values
-        html = html.replace('{{table}}', table || '')
-            .replace('{{time}}', time || '');
-        const container = getElement('#reservation-container');
-        if (container) {
-            container.innerHTML = html;
-            const form = container.querySelector('.reservation-form');
-            if (form) {
-                // Add hidden input for 'time' if it’s provided
-                if (time) {
-                    const timeInput = document.createElement('input');
-                    timeInput.type = 'hidden';
-                    timeInput.name = 'time';
-                    timeInput.value = time;
-                    form.appendChild(timeInput);
+        // Load and render content items
+        if (contentType === 'reservation_form') {
+            if (data.length > 0) {
+                const formData = data[0];
+                formData.date = DateModel.getDate().toISOString().split('T')[0]; // Ensure date is included
+                const formTemplate = yield loadTemplate(templatePath);
+                const formContent = replacePlaceholders(formTemplate, formData);
+                container.innerHTML = formContent;
+                // Add submit event listener to the reservation form
+                const form = container.querySelector('.reservation-form');
+                if (form) {
+                    form.addEventListener('submit', handleReservationSubmit);
                 }
-                // Add hidden input for 'table' if it’s provided
-                if (table) {
-                    const tableInput = document.createElement('input');
-                    tableInput.type = 'hidden';
-                    tableInput.name = 'table';
-                    tableInput.value = table;
-                    form.appendChild(tableInput);
-                }
-                // Add event listener for the reservation form
-                form.addEventListener('submit', handleReservationSubmit);
             }
         }
-    })
-        .catch(error => console.error('Error loading reservation form:', error));
+        else {
+            // Render cards for each item and include image paths
+            for (const item of data) {
+                if (contentType === 'drink' || contentType === 'menu') {
+                    item.imagePath = baseImagePath + (item.image_filename || 'placeholder.jpg');
+                }
+                const template = yield loadTemplate(templatePath);
+                const cardContent = replacePlaceholders(template, item);
+                const cardElement = document.createElement('div');
+                cardElement.innerHTML = cardContent;
+                // Add event listeners for reservations if content is reservation
+                if (contentType === 'reservation' && item.available) {
+                    const button = cardElement.querySelector('.primary-btn');
+                    if (button) {
+                        button.addEventListener('click', () => {
+                            renderContent([item], 'reservation_form');
+                        });
+                    }
+                }
+                container.appendChild(cardElement.firstElementChild);
+            }
+        }
+    });
 }
-// reservation_form.html
+// Helper function to replace placeholders in the template with data
+function replacePlaceholders(template, data) {
+    return template
+        .replace('{{title}}', data.menu_name || data.drink_name || `Table: ${data.table}`)
+        .replace('{{description}}', data.menu_ingredients || data.drink_description || '')
+        .replace('{{price}}', data.menu_price || data.price || '')
+        .replace('{{degrees}}', data.drink_degrees || data.degree_name || '')
+        .replace('{{volume}}', data.drink_volume || data.volume || '')
+        .replace('{{category}}', data.category_name || '')
+        .replace('{{table}}', data.table || '')
+        .replace('{{time}}', data.time || '')
+        .replace('{{persons}}', data.persons || '')
+        .replace('{{state}}', data.state || '')
+        .replace('{{date}}', data.date || '')
+        .replace('{{available}}', data.available || '')
+        .replace('{{imagePath}}', data.imagePath || '/images/icons/no_picture.png');
+}
+// Helper function to fetch the template file
+function loadTemplate(path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(path);
+        if (!response.ok) {
+            throw new Error(`Failed to load template from ${path}: ${response.statusText}`);
+        }
+        return response.text();
+    });
+}
+// Handles the reservation form submission
 function handleReservationSubmit(event) {
     event.preventDefault();
     const form = event.target;
     const formData = new FormData(form);
-    // Collect reservation data, including hidden fields
     const reservationData = {
         name: formData.get('name'),
         email: formData.get('email'),
         persons: formData.get('persons'),
-        table: formData.get('table'), // Retrieved from hidden input
-        time: formData.get('time'), // Retrieved from hidden input
+        table: formData.get('table'),
+        time: formData.get('time'),
         date: DateModel.getDate().toISOString().split('T')[0],
     };
-    console.log('Reservation Data:', reservationData); // Debugging log
-    fetch('../api/submit_reservation.php', {
+    fetch('/app/api/submit_reservation.php', {
         method: 'POST',
         body: JSON.stringify(reservationData),
         headers: {
@@ -350,7 +384,7 @@ function updateDateButton(date) {
 // Loads reservations for a specific date
 function loadReservations(date) {
     const formattedDate = date.toISOString().split('T')[0];
-    const url = `../api/get_reservations.php?date=${formattedDate}`;
+    const url = `/app/api/get_reservations.php?date=${formattedDate}`;
     DynamicContentModel.fetchData(url)
         .then((data) => {
         const reservations = data.map((item) => new ReservationModel(item)); // Using ReservationModel

@@ -371,19 +371,6 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* CSS for the reservation form */
-.reservation-container {
-    display: flex;
-    margin-top: 70px; /* Distance between subheader and form */
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.reservation-container .card {
-    flex: 1; /* Beide Elemente nehmen gleich viel Platz ein */
-    max-width: 45%; /* Verhindert, dass sie zu groß werden */
-}
 
 .reservation-form {
     background-color: var(--secondary-color);
@@ -393,8 +380,8 @@ body {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
-    flex: 1 1 calc(25% - 20px); /* Gleiche Breite wie die Karten */
-    max-width: calc(25% - 20px);
+    flex: 1 1 calc(100% - 20px); /* Gleiche Breite wie die Karten */
+    max-width: calc(100% - 20px);
     box-sizing: border-box;
     margin-top: 20px;
 }

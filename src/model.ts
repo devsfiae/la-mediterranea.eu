@@ -20,7 +20,7 @@ export class DateModel {
 // Model for drinks
 export class DrinkModel {
     static async fetchDrinks(category: string = 'all'): Promise<any[]> {
-        const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
+        const url = category === 'all' ? '/app/api/get_drinks.php' : `?app/api/get_drinks.php?category=${category}`;
         const response = await fetch(url);
         if (!response.ok) throw new Error('Error when loading the drinks');
         return response.json();
@@ -68,7 +68,7 @@ export class HeaderModel {
 }
 
 // Model for reservations
-// Model for reservations
+
 export class ReservationModel {
     public table: string;
     public time: string;

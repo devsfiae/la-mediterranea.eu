@@ -25,7 +25,7 @@ DateModel.selectedDate = new Date();
 export class DrinkModel {
     static fetchDrinks() {
         return __awaiter(this, arguments, void 0, function* (category = 'all') {
-            const url = category === 'all' ? 'app/api/get_drinks.php' : `app/api/get_drinks.php?category=${category}`;
+            const url = category === 'all' ? '/app/api/get_drinks.php' : `?app/api/get_drinks.php?category=${category}`;
             const response = yield fetch(url);
             if (!response.ok)
                 throw new Error('Error when loading the drinks');
@@ -73,7 +73,6 @@ export class HeaderModel {
         });
     }
 }
-// Model for reservations
 // Model for reservations
 export class ReservationModel {
     constructor(data) {
